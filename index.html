@@ -4,447 +4,260 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- TEMPORARY: keeps the page out of search results while the roster is being finalized
-     and the OpenReview link is pending. The page stays reachable by direct link (chairs,
-     invitees, mailing lists). REMOVE these two lines once the CFP goes out. -->
+     and the OpenReview link is pending. Page stays reachable by direct link.
+     REMOVE these two lines once the CFP goes out. -->
 <meta name="robots" content="noindex, nofollow">
 <meta name="googlebot" content="noindex, nofollow">
 <title>Efficient Foundation Models for Real-Time Embodied AI — CoRL 2026 Workshop</title>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0f1b2d;
-  --navy-light:#1a2d4a;
-  --navy-mid:#243b5e;
-  --accent:#e8913a;
-  --accent-light:#f0a85c;
-  --text:#2c3e50;
-  --text-light:#5a6d80;
-  --bg:#fafbfd;
-  --white:#ffffff;
-  --border:#e2e8f0;
-  --section-alt:#f1f4f8;
+  --ink:#16191d;
+  --muted:#5f6874;
+  --rule:#e3e6ea;
+  --accent:#8a3324;
+  --bg:#fdfdfc;
+  --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
-html{scroll-behavior:smooth}
-body{font-family:'Segoe UI',system-ui,-apple-system,Helvetica,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.65;font-size:16px}
-a{color:var(--accent);text-decoration:none;transition:color .2s}
-a:hover{color:var(--accent-light)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  font-size:16.5px;
+  line-height:1.7;
+  color:var(--ink);
+  background:var(--bg);
+  padding:0 1.5rem;
+}
+.wrap{max-width:44rem;margin:0 auto}
 
-/* Nav */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(15,27,45,.97);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.08)}
-.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:.7rem 1.5rem}
-.nav-brand{color:var(--white);font-weight:700;font-size:.95rem;letter-spacing:.3px}
-.nav-brand span{color:var(--accent)}
-.nav-links{display:flex;gap:1.6rem;flex-wrap:wrap}
-.nav-links a{color:rgba(255,255,255,.75);font-size:.82rem;font-weight:500;letter-spacing:.2px;text-transform:uppercase}
-.nav-links a:hover{color:var(--accent)}
-.nav-toggle{display:none;background:none;border:none;color:var(--white);font-size:1.4rem;cursor:pointer}
+/* Masthead */
+header{padding:5rem 0 0}
+h1{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(1.85rem,4.2vw,2.6rem);
+  line-height:1.22;
+  letter-spacing:-.01em;
+  margin-bottom:.9rem;
+}
+.standfirst{font-size:1.06rem;color:var(--muted);max-width:34rem;margin-bottom:1.6rem}
+.meta{font-size:.92rem;color:var(--muted);padding-bottom:1.4rem}
+.meta strong{color:var(--ink);font-weight:600}
+nav{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.75rem 0;margin-bottom:3.5rem}
+nav a{
+  font-size:.82rem;color:var(--muted);text-decoration:none;
+  margin-right:1.45rem;letter-spacing:.02em;
+}
+nav a:hover{color:var(--accent)}
 
-/* Hero */
-.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 50%,#1e3a5f 100%);color:var(--white);padding:8rem 1.5rem 5rem;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(232,145,58,.07) 0%,transparent 60%);pointer-events:none}
-.hero-badge{display:inline-block;background:rgba(232,145,58,.15);border:1px solid rgba(232,145,58,.3);color:var(--accent-light);padding:.35rem 1.2rem;border-radius:2rem;font-size:.8rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:1.5rem}
-.hero h1{font-size:clamp(1.8rem,4.5vw,3rem);font-weight:800;line-height:1.2;max-width:850px;margin:0 auto 1rem}
-.hero h1 em{font-style:normal;color:var(--accent)}
-.hero-sub{font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,.7);max-width:650px;margin:0 auto 2rem;font-weight:400}
-.hero-meta{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;font-size:.9rem;color:rgba(255,255,255,.6)}
-.hero-meta span{display:flex;align-items:center;gap:.4rem}
-.hero-meta strong{color:rgba(255,255,255,.9)}
+/* Sections */
+section{padding:2.6rem 0;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:none;padding-top:0}
+h2{
+  font-family:var(--serif);
+  font-size:1.42rem;font-weight:600;letter-spacing:-.005em;
+  margin-bottom:1.1rem;
+}
+h3{font-size:.97rem;font-weight:650;margin:1.8rem 0 .35rem}
+p{margin-bottom:1rem}
+p:last-child{margin-bottom:0}
+a{color:var(--accent)}
+em{font-style:italic}
+strong{font-weight:650}
+.lede{font-size:1.04rem}
+.note{font-size:.9rem;color:var(--muted)}
 
-/* Section layout */
-section{padding:4.5rem 1.5rem}
-section:nth-child(even){background:var(--section-alt)}
-.container{max-width:960px;margin:0 auto}
-.section-label{text-transform:uppercase;font-size:.75rem;font-weight:700;letter-spacing:1.5px;color:var(--accent);margin-bottom:.5rem}
-.section-title{font-size:1.8rem;font-weight:800;color:var(--navy);margin-bottom:.4rem}
-.section-desc{color:var(--text-light);font-size:1rem;max-width:680px;margin-bottom:2.5rem;line-height:1.7}
+/* Research questions */
+.rq{margin:1.6rem 0;padding-left:1.6rem;border-left:2px solid var(--rule)}
+.rq h3{margin-top:0;font-family:var(--serif);font-size:1.05rem;font-weight:600}
+.rq p{font-size:.95rem;color:#3a4048;margin-bottom:0}
+.rq + .rq{margin-top:1.5rem}
 
-/* About */
-.about-text{font-size:1.02rem;line-height:1.8;color:var(--text)}
-.about-text p+p{margin-top:1rem}
-.rq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
-.rq-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.5rem;transition:box-shadow .2s}
-.rq-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.06)}
-.rq-num{font-size:.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem}
-.rq-card h3{font-size:1.05rem;font-weight:700;color:var(--navy);margin-bottom:.5rem}
-.rq-card p{font-size:.9rem;color:var(--text-light);line-height:1.6}
+/* Definition rows: speakers, organizers, dates */
+dl{margin:1.2rem 0}
+.row{
+  display:grid;grid-template-columns:11.5rem 1fr;gap:.6rem 1.6rem;
+  padding:.72rem 0;border-top:1px solid var(--rule);
+}
+.row:last-child{border-bottom:1px solid var(--rule)}
+.row dt{font-weight:600;font-size:.95rem}
+.row dd{font-size:.93rem;color:var(--muted)}
+.row dd .who{color:var(--ink)}
+.tag{
+  display:inline-block;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+  color:#2f6b46;border:1px solid #cfe3d6;background:#f2f8f4;
+  padding:.05rem .42rem;border-radius:2px;margin-left:.45rem;vertical-align:1px;
+}
+@media(max-width:33rem){
+  .row{grid-template-columns:1fr;gap:.15rem}
+  .row dd{font-size:.9rem}
+}
 
 /* Schedule */
-.schedule-table{width:100%;border-collapse:collapse}
-.schedule-table tr{border-bottom:1px solid var(--border)}
-.schedule-table tr:last-child{border-bottom:none}
-.schedule-table td{padding:.85rem .6rem;vertical-align:top;font-size:.92rem}
-.schedule-table .time{width:110px;font-weight:700;color:var(--navy);white-space:nowrap;font-variant-numeric:tabular-nums}
-.schedule-table .event-title{font-weight:600;color:var(--navy)}
-.schedule-table .event-detail{color:var(--text-light);font-size:.85rem;margin-top:.15rem}
-.schedule-table .break-row{background:var(--section-alt)}
-.schedule-table .break-row .event-title{color:var(--text-light);font-weight:500}
-.keynote-badge{display:inline-block;background:var(--accent);color:var(--white);font-size:.65rem;font-weight:700;padding:.15rem .5rem;border-radius:3px;text-transform:uppercase;letter-spacing:.5px;margin-left:.4rem;vertical-align:middle}
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.93rem}
+th{
+  text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:600;padding-bottom:.5rem;border-bottom:1px solid var(--rule);
+}
+td{padding:.66rem .8rem .66rem 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td.t{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums;width:6.6rem}
+td .d{color:var(--muted);font-size:.88rem;margin-top:.1rem}
 
-/* Speakers */
-.speakers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.8rem}
-.speaker-card{text-align:center}
-.speaker-photo{width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));margin:0 auto .8rem;display:flex;align-items:center;justify-content:center;font-size:2rem;color:rgba(255,255,255,.4);border:3px solid var(--border);overflow:hidden}
-.speaker-photo img{width:100%;height:100%;object-fit:cover}
-.speaker-initials{font-size:1.3rem;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1px}
-.speaker-card h4{font-size:.95rem;font-weight:700;color:var(--navy);margin-bottom:.15rem}
-.speaker-card .affil{font-size:.8rem;color:var(--text-light);margin-bottom:.3rem}
-.speaker-card .topic{font-size:.78rem;color:var(--accent);font-style:italic;line-height:1.4}
-.speaker-status{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:.15rem .5rem;border-radius:2rem;display:inline-block;margin-bottom:.5rem}
-.status-confirmed{background:rgba(46,160,67,.12);color:#1a7f37}
-.status-invited{background:rgba(232,145,58,.12);color:#c07722}
+/* Lists */
+ul{margin:.6rem 0 1rem 1.1rem}
+li{margin-bottom:.4rem;font-size:.95rem}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.86em;background:#f2f2ef;padding:.08em .35em;border-radius:2px;
+}
 
-/* CFP */
-.topics-list{columns:2;column-gap:2rem;margin-bottom:2rem}
-.topics-list li{font-size:.92rem;color:var(--text);padding:.3rem 0;break-inside:avoid;list-style:none;position:relative;padding-left:1.2rem}
-.topics-list li::before{content:'';position:absolute;left:0;top:.65rem;width:6px;height:6px;border-radius:50%;background:var(--accent)}
-
-/* Challenge */
-.challenge-box{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:14px;padding:2.5rem;color:var(--white)}
-.challenge-box h3{font-size:1.3rem;margin-bottom:1rem}
-.challenge-box p{color:rgba(255,255,255,.8);line-height:1.7;font-size:.95rem}
-.challenge-box p+p{margin-top:.8rem}
-.metrics-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1.5rem}
-.metric-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:1rem;text-align:center}
-.metric-card .rank{font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent-light);font-weight:600}
-.metric-card h4{font-size:.95rem;margin-top:.3rem}
-.metric-card p{font-size:.78rem;color:rgba(255,255,255,.55);margin-top:.2rem}
-
-/* Dates */
-.dates-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
-.date-card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.3rem;position:relative;overflow:hidden}
-.date-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
-.date-card .date{font-weight:800;color:var(--navy);font-size:1rem}
-.date-card .label{color:var(--text-light);font-size:.88rem;margin-top:.2rem}
-
-/* Organizers */
-.org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
-.org-card{display:flex;align-items:flex-start;gap:1rem;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.2rem}
-.org-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.org-avatar .speaker-initials{font-size:.85rem}
-.org-card h4{font-size:.92rem;font-weight:700;color:var(--navy)}
-.org-card .affil{font-size:.8rem;color:var(--text-light)}
-.org-card .expertise{font-size:.75rem;color:var(--accent);margin-top:.2rem}
-
-/* Footer */
-footer{background:var(--navy);color:rgba(255,255,255,.5);text-align:center;padding:2.5rem 1.5rem;font-size:.82rem}
-footer a{color:var(--accent-light)}
-footer p+p{margin-top:.4rem}
-
-/* Responsive */
-@media(max-width:768px){
-  .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--navy);padding:1rem 1.5rem;gap:.8rem;border-top:1px solid rgba(255,255,255,.08)}
-  .nav-links.open{display:flex}
-  .nav-toggle{display:block}
-  .hero{padding:7rem 1.2rem 3.5rem}
-  .hero-meta{flex-direction:column;align-items:center;gap:.6rem}
-  section{padding:3rem 1.2rem}
-  .topics-list{columns:1}
-  .speakers-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1.2rem}
+footer{
+  border-top:1px solid var(--rule);
+  margin-top:1rem;padding:2.2rem 0 4rem;
+  font-size:.89rem;color:var(--muted);
 }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<!-- Navigation -->
-<nav>
-  <div class="nav-inner">
-    <div class="nav-brand">Efficient <span>Embodied AI</span></div>
-    <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
-    <div class="nav-links">
-      <a href="#about">About</a>
-      <a href="#speakers">Speakers</a>
-      <a href="#schedule">Schedule</a>
-      <a href="#cfp">Call for Papers</a>
-      <a href="#challenge">Challenge</a>
-      <a href="#dates">Dates</a>
-      <a href="#organizers">Organizers</a>
-    </div>
-  </div>
-</nav>
-
-<!-- Hero -->
-<header class="hero">
-  <div class="container">
-    <div class="hero-badge">CoRL 2026 Workshop</div>
-    <h1>Efficient Foundation Models for <em>Real-Time Embodied AI</em></h1>
-    <p class="hero-sub">If robot foundation models cannot run fast and cheap, deployment stalls. Efficiency is the gating factor between laboratory demonstration and real-world deployment.</p>
-    <div class="hero-meta">
-      <span><strong>November 12, 2026</strong></span>
-      <span>Austin, TX</span>
-      <span>Half-Day Workshop</span>
-    </div>
-  </div>
+<header>
+  <h1>Efficient Foundation Models<br>for Real-Time Embodied AI</h1>
+  <p class="standfirst">A half-day workshop on making robot foundation models fast enough, cheap enough, and safe enough to actually deploy.</p>
+  <p class="meta"><strong>CoRL 2026</strong> &nbsp;·&nbsp; November 12, 2026 &nbsp;·&nbsp; Austin, Texas</p>
+  <nav>
+    <a href="#overview">Overview</a><a href="#speakers">Speakers</a><a href="#schedule">Schedule</a><a href="#cfp">Call for Papers</a><a href="#challenge">Challenge</a><a href="#dates">Dates</a><a href="#organizers">Organizers</a>
+  </nav>
 </header>
 
-<!-- About -->
-<section id="about">
-  <div class="container">
-    <div class="section-label">About</div>
-    <h2 class="section-title">The Efficiency Crisis</h2>
-    <div class="about-text">
-      <p>In 2024, the field asked: <em>can we build robot foundation models?</em> RT-2, Octo, and Open X-Embodiment proved the concept. In 2025, the question shifted to real-world viability &mdash; pi0 folded laundry, GR00T N1 controlled humanoids, and OpenVLA made a 7B generalist policy available to any lab. Now a harder question emerges: <strong>can they work fast enough, cheaply enough, and safely enough to actually deploy?</strong></p>
-      <p>RT-2's 55B parameters run at 1&ndash;3&thinsp;Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6&thinsp;Hz on an RTX&nbsp;4090, still an order of magnitude below the 20&ndash;50&thinsp;Hz that dexterous manipulation demands, and that is on a desktop GPU rather than anything that rides onboard. Meanwhile near-term humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: when the robot itself costs less than a datacenter GPU, onboard compute is a hard budget, not a preference. Every one of these systems needs a foundation model that runs in real time, on affordable hardware, with latency guarantees that satisfy safety requirements.</p>
-    </div>
-    <div class="rq-grid">
-      <div class="rq-card">
-        <div class="rq-num">Research Question 1</div>
-        <h3>Architecture &amp; Compression Across Embodied Foundation Models</h3>
-        <p>What combination of smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute enables robot control at 20+&thinsp;Hz? No systematic comparison exists.</p>
-      </div>
-      <div class="rq-card">
-        <div class="rq-num">Research Question 2</div>
-        <h3>Edge-Cloud Co-Design Across Heterogeneous Hardware</h3>
-        <p>At 10,000 robots, can you afford a GPU on each one? The accelerator landscape is now heterogeneous &mdash; NVIDIA GPUs, Google TPUs, AWS Trainium/Inferentia, mobile NPUs &mdash; each with different cost, latency, and energy trade-offs. No published analysis compares total cost of ownership across edge-only, cloud-only, and hybrid architectures, or across these accelerators.</p>
-      </div>
-      <div class="rq-card">
-        <div class="rq-num">Research Question 3</div>
-        <h3>Safety Under Latency Constraints</h3>
-        <p>When a robot's foundation model is still computing, what should it do &mdash; freeze, revert to a safe policy, or extrapolate? No principled framework exists for certifying stochastic-latency systems.</p>
-      </div>
-    </div>
+<section id="overview">
+  <h2>Overview</h2>
+  <p class="lede">In 2024 the field asked whether we could build robot foundation models. RT-2, Octo, and Open X-Embodiment proved the concept. In 2025 the question shifted to real-world viability: &pi;<sub>0</sub> folded laundry, GR00T N1 controlled humanoids, and OpenVLA put a 7B generalist policy in reach of any lab. The harder question now is the same for all of them. Can they run fast enough, cheaply enough, and safely enough to deploy?</p>
+  <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, an order of magnitude below the 20 to 50 Hz that dexterous manipulation demands, and that is on a desktop GPU rather than anything that rides onboard. Meanwhile near-term humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: when the robot itself costs less than a datacenter GPU, onboard compute is a hard budget rather than a preference.</p>
+  <p>This workshop treats efficiency as a first-class problem across the whole space of embodied foundation models, vision-language-action policies, world-action models, and emerging architectures alike, rather than any single family. No system today is simultaneously <em>general</em>, <em>fast</em>, and <em>deployable</em> within a real onboard budget. That trilemma is architecture-independent, and it organizes the program.</p>
+
+  <div class="rq">
+    <h3>C1. Architecture and compression across embodied foundation models</h3>
+    <p>What combination of smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute enables robot control above 20 Hz? Individual speedups span 1.5&times; to 120&times;, but no systematic study confirms they compose, or that they transfer between policies and world models.</p>
+  </div>
+  <div class="rq">
+    <h3>C2. Edge-cloud co-design across heterogeneous hardware</h3>
+    <p>At ten thousand robots, can you afford a GPU on each one? The accelerator landscape is now heterogeneous: NVIDIA GPUs, Google TPUs, AWS Trainium and Inferentia, mobile NPUs, each with different cost, latency, and energy trade-offs. No published analysis compares total cost of ownership across edge-only, cloud-only, and hybrid architectures at fleet scale.</p>
+  </div>
+  <div class="rq">
+    <h3>C3. Safety under latency constraints</h3>
+    <p>Action chunking commits a robot to open-loop execution with no principled interruption mechanism. While the model is still computing, should it freeze, revert to a safe policy, or extrapolate? Certifying systems with stochastic response time remains unsolved.</p>
   </div>
 </section>
 
-<!-- Speakers -->
 <section id="speakers">
-  <div class="container">
-    <div class="section-label">Invited Speakers</div>
-    <h2 class="section-title">Speakers</h2>
-    <p class="section-desc">Spanning the four pillars of the efficiency problem: model compression, VLA architecture, hardware systems, and safety-aware deployment.</p>
-    <div class="speakers-grid">
-      <div class="speaker-card">
-        <span class="speaker-status status-confirmed">Confirmed</span>
-        <div class="speaker-photo"><span class="speaker-initials">JW</span></div>
-        <h4>Jiajun Wu</h4>
-        <div class="affil">Stanford University</div>
-        <div class="topic">World models for embodied AI: efficient learned models for online planning</div>
-      </div>
-      <div class="speaker-card">
-        <span class="speaker-status status-confirmed">Confirmed</span>
-        <div class="speaker-photo"><span class="speaker-initials">JM</span></div>
-        <h4>Yecheng "Jason" Ma</h4>
-        <div class="affil">Dyna Robotics</div>
-        <div class="topic">Embodied foundation models on a commercial duty cycle: DYNA-1, DYNA-2 world-action model (C2/C3)</div>
-      </div>
+  <h2>Speakers</h2>
+  <dl>
+    <div class="row">
+      <dt>Jiajun Wu<span class="tag">confirmed</span></dt>
+      <dd><span class="who">Stanford University.</span> World models for embodied AI: efficient learned models for online planning.</dd>
     </div>
-    <p style="margin-top:1.8rem;color:var(--text-light);font-size:.95rem">
-      Additional invited speakers will be announced here as invitations are confirmed.
-    </p>
-  </div>
+    <div class="row">
+      <dt>Yecheng &ldquo;Jason&rdquo; Ma<span class="tag">confirmed</span></dt>
+      <dd><span class="who">Dyna Robotics.</span> Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model.</dd>
+    </div>
+  </dl>
+  <p class="note">Additional invited speakers will be announced here as invitations are confirmed.</p>
 </section>
 
-<!-- Schedule -->
 <section id="schedule">
-  <div class="container">
-    <div class="section-label">Program</div>
-    <h2 class="section-title">Schedule</h2>
-    <p class="section-desc">A half-day (~4h) format built around four interactive elements &mdash; live profiling on real Jetson hardware, a structured debate, the VLA Efficiency Challenge with live results, and a roadmap working session. Exactly one passive talk slot.</p>
-    <table class="schedule-table">
-      <tr>
-        <td class="time">9:00&thinsp;&ndash;&thinsp;9:10</td>
-        <td><div class="event-title">Opening + framing: "The Trilemma"</div><div class="event-detail">Organizers frame the generality&ndash;speed&ndash;deployability trilemma</div></td>
-      </tr>
-      <tr>
-        <td class="time">9:10&thinsp;&ndash;&thinsp;10:00</td>
-        <td><div class="event-title">Keynote (TBD) + live profiling<span class="keynote-badge">Keynote</span></div><div class="event-detail">30min keynote, then 20min live: challenge chairs profile vanilla OpenVLA on a Jetson on stage: memory and kernel bottlenecks. Show, don't tell.</div></td>
-      </tr>
-      <tr>
-        <td class="time">10:00&thinsp;&ndash;&thinsp;10:30</td>
-        <td><div class="event-title">Lightning talks (5 &times; 5min)</div><div class="event-detail">Contributed papers, selected for method diversity</div></td>
-      </tr>
-      <tr class="break-row">
-        <td class="time">10:30&thinsp;&ndash;&thinsp;10:55</td>
-        <td><div class="event-title">Coffee + posters</div><div class="event-detail">All accepted papers; live demos welcome</div></td>
-      </tr>
-      <tr>
-        <td class="time">10:55&thinsp;&ndash;&thinsp;11:25</td>
-        <td><div class="event-title">Invited talk</div><div class="event-detail">C3: certifiable safety under latency &middot; 20 + 10</div></td>
-      </tr>
-      <tr>
-        <td class="time">11:25&thinsp;&ndash;&thinsp;12:10</td>
-        <td><div class="event-title">Debate: "The 1B Ceiling"</div><div class="event-detail">Oxford-style, moderated &middot; audience vote before and after</div></td>
-      </tr>
-      <tr>
-        <td class="time">12:10&thinsp;&ndash;&thinsp;12:35</td>
-        <td><div class="event-title">VLA Efficiency Challenge results</div><div class="event-detail">Top-3 teams &middot; 7min talk + 1min Q&amp;A each</div></td>
-      </tr>
-      <tr>
-        <td class="time">12:35&thinsp;&ndash;&thinsp;12:55</td>
-        <td><div class="event-title">Synthesis: roadmap working session</div><div class="event-detail">Organizer-facilitated; industry speaker + audience whiteboarding</div></td>
-      </tr>
-      <tr>
-        <td class="time">12:55&thinsp;&ndash;&thinsp;13:00</td>
-        <td><div class="event-title">Best Paper + closing</div></td>
-      </tr>
-    </table>
-  </div>
+  <h2>Schedule</h2>
+  <p>Half a day, roughly four hours, built around four interactive elements: live profiling on real Jetson hardware, a structured debate, the challenge results, and a roadmap working session. Talk segments are kept short.</p>
+  <table>
+    <tr><th>Time</th><th>Session</th></tr>
+    <tr><td class="t">9:00</td><td>Opening and framing<div class="d">Organizers frame the generality, speed, and deployability trilemma</div></td></tr>
+    <tr><td class="t">9:10</td><td>Keynote and live profiling<div class="d">30 minute keynote, then 20 minutes live: organizers profile vanilla OpenVLA on a Jetson on stage, narrating memory and kernel bottlenecks</div></td></tr>
+    <tr><td class="t">10:00</td><td>Lightning talks<div class="d">Five contributed papers, selected for method diversity</div></td></tr>
+    <tr><td class="t">10:30</td><td>Coffee and posters<div class="d">All accepted papers; live demos welcome</div></td></tr>
+    <tr><td class="t">10:55</td><td>Invited talk<div class="d">C3: certifiable safety under latency</div></td></tr>
+    <tr><td class="t">11:25</td><td>Debate: the 1B ceiling<div class="d">Oxford-style and moderated, with an audience vote before and after</div></td></tr>
+    <tr><td class="t">12:10</td><td>Challenge results<div class="d">Top entries present, seven minutes each</div></td></tr>
+    <tr><td class="t">12:35</td><td>Synthesis: roadmap working session<div class="d">Organizer-facilitated, feeding the post-workshop report</div></td></tr>
+    <tr><td class="t">12:55</td><td>Best paper and closing</td></tr>
+  </table>
 </section>
 
-<!-- Call for Papers -->
 <section id="cfp">
-  <div class="container">
-    <div class="section-label">Submissions</div>
-    <h2 class="section-title">Call for Papers</h2>
-    <p class="section-desc">We solicit 4-page extended abstracts (plus unlimited pages for references) on efficiency across the whole space of embodied foundation models: VLA policies, world-action models, and emerging architectures alike.</p>
+  <h2>Call for Papers</h2>
+  <p>We solicit four-page extended abstracts, plus unlimited pages for references, on efficiency across the whole space of embodied foundation models: VLA policies, world-action models, and emerging architectures alike.</p>
 
-    <h3 style="font-size:1.05rem;font-weight:700;color:var(--navy);margin:0 0 1rem">Topics of Interest</h3>
-    <ul class="topics-list">
-      <li>Efficient architectures for VLA policies, world-action models, and emerging designs (action chunking, MoE, early exit, diffusion/flow step-reduction)</li>
-      <li>Compression for robot foundation models (quantization, pruning, distillation)</li>
-      <li>Memory-efficient adaptation and fine-tuning</li>
-      <li>Benchmarking methodology, including whether efficiency techniques compose</li>
-      <li>Hardware-aware design across accelerators (GPU, TPU, AWS Trainium/Inferentia, mobile NPUs)</li>
-      <li>Edge-cloud hybrid architectures for robot fleets</li>
-      <li>Safety-latency trade-offs and fallback policies under stochastic response time</li>
-      <li>Efficient world models for online planning and real-time safety monitoring</li>
-    </ul>
+  <h3>Topics</h3>
+  <ul>
+    <li>Efficient architectures for VLA policies, world-action models, and emerging designs: action chunking, mixture-of-experts, early exit, diffusion and flow step-reduction</li>
+    <li>Compression for robot foundation models: quantization, pruning, distillation</li>
+    <li>Memory-efficient adaptation and fine-tuning</li>
+    <li>Benchmarking methodology, including whether efficiency techniques compose</li>
+    <li>Hardware-aware design across accelerators: GPU, TPU, AWS Trainium and Inferentia, mobile NPUs</li>
+    <li>Edge-cloud hybrid architectures for robot fleets</li>
+    <li>Safety and latency trade-offs, and fallback policies under stochastic response time</li>
+    <li>Efficient world models for online planning and real-time safety monitoring</li>
+  </ul>
 
-    <div class="rq-grid">
-      <div class="rq-card">
-        <div class="rq-num">Format</div>
-        <h3>4-Page Extended Abstracts</h3>
-        <p>Plus unlimited pages for references. OpenReview-hosted, double-blind review: submissions must be anonymized.</p>
-      </div>
-      <div class="rq-card">
-        <div class="rq-num">Dual Submission</div>
-        <h3>New and Published Work Both Welcome</h3>
-        <p>New, unpublished work and previously-published work that fits the workshop scope are both eligible, tracked and reviewed separately.</p>
-      </div>
-      <div class="rq-card">
-        <div class="rq-num">Review</div>
-        <h3>3 Reviews per Submission</h3>
-        <p>Reviewed by the core organizing committee and a program committee, with additional reviewers recruited via the speaker network and an open call.</p>
-      </div>
-      <div class="rq-card">
-        <div class="rq-num">Presentation</div>
-        <h3>Poster, Plus Select Lightning Talks</h3>
-        <p>All accepted papers are presented as posters. About 5 papers are additionally selected for a 5-minute lightning talk.</p>
-      </div>
-    </div>
+  <h3>Submission</h3>
+  <p>Four pages plus unlimited references, hosted on OpenReview, reviewed double-blind. Submissions must be anonymized. New work and previously published work that fits the workshop scope are both eligible, tracked and reviewed separately.</p>
 
-    <p class="section-desc" style="margin-top:2rem">
-      Submission portal and full dates are listed under <a href="#dates">Important Dates</a> below.
-    </p>
-  </div>
+  <h3>Review and presentation</h3>
+  <p>Each submission receives three reviews from the organizing committee and program committee. All accepted papers are presented as posters, and roughly five are additionally selected for a five-minute lightning talk.</p>
+  <p class="note">Submission portal and full dates appear under <a href="#dates">Important Dates</a>.</p>
 </section>
 
-<!-- VLA Efficiency Challenge -->
 <section id="challenge">
-  <div class="container">
-    <div class="section-label">Competition</div>
-    <h2 class="section-title">VLA Efficiency Challenge</h2>
-    <p class="section-desc">A benchmarking competition producing a concrete, citable artifact for the community.</p>
-    <div class="challenge-box">
-      <h3>Compress OpenVLA. Beat the Clock.</h3>
-      <p><strong>Reference model:</strong> OpenVLA-7B with a frozen evaluation harness (~14GB in bf16, which does not fit a 16GB Jetson, so quantization, sharding, or offload is required).</p>
-      <p><strong>Target budget:</strong> Jetson Orin NX (16GB) class hardware. Teams run on their own device.</p>
-      <p><strong>How it works:</strong> We release a reference Docker container and evaluation script. You run it on your hardware and submit code, reported metrics, and a hardware attestation. Organizers re-run the top entries to verify before results are announced, so the leaderboard is reproducibility-checked rather than centrally hosted.</p>
-      <p><strong>Tasks:</strong> LIBERO Spatial, Object, and Goal suites.</p>
-      <p><strong>Open to all architectures:</strong> the compress-to-a-budget methodology is architecture-agnostic. World-model and emerging-architecture entries are explicitly welcome.</p>
-      <p><strong>Artifact:</strong> All submissions, baselines, and the harness become <code>embodied-efficiency-bench</code>, a permanent open-source community resource.</p>
-      <p><strong>Recognition:</strong> Best Efficiency Award and a presentation slot. Travel grant subject to sponsorship. Top entries present at the workshop.</p>
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="rank">Primary</div>
-          <h4>Task Success Rate</h4>
-          <p>Must exceed baseline &minus; 15%</p>
-        </div>
-        <div class="metric-card">
-          <div class="rank">Secondary</div>
-          <h4>Inference Latency</h4>
-          <p>Median and p99 (ms/action)</p>
-        </div>
-        <div class="metric-card">
-          <div class="rank">Tertiary</div>
-          <h4>Model Size</h4>
-          <p>Parameters &amp; peak memory (MB)</p>
-        </div>
-      </div>
-    </div>
-  </div>
+  <h2>Embodied Efficiency Challenge</h2>
+  <p>A benchmarking competition producing a concrete, citable artifact. The task is to compress a reference policy until it fits a real onboard budget without losing the capability that made it worth deploying.</p>
+  <dl>
+    <div class="row"><dt>Reference model</dt><dd>OpenVLA-7B with a frozen evaluation harness. About 14 GB in bf16, which does not fit a 16 GB Jetson, so quantization, sharding, or offload is required.</dd></div>
+    <div class="row"><dt>Target budget</dt><dd>Jetson Orin NX (16 GB) class hardware. Teams run on their own device.</dd></div>
+    <div class="row"><dt>How it works</dt><dd>We release a reference Docker container and evaluation script. You run it on your hardware and submit code, reported metrics, and a hardware attestation. Organizers re-run the top entries to verify before results are announced, so the leaderboard is reproducibility-checked rather than centrally hosted.</dd></div>
+    <div class="row"><dt>Tasks</dt><dd>LIBERO Spatial, Object, and Goal suites.</dd></div>
+    <div class="row"><dt>Metrics</dt><dd>Success rate first, within 15 points of the published reference. Then median and p99 latency per action. Then parameters and peak memory.</dd></div>
+    <div class="row"><dt>Open to all</dt><dd>The compress-to-a-budget methodology is architecture-agnostic. World-model and emerging-architecture entries are explicitly welcome.</dd></div>
+    <div class="row"><dt>Artifact</dt><dd>All submissions, baselines, and the harness become <code>embodied-efficiency-bench</code>, a permanent open-source resource.</dd></div>
+    <div class="row"><dt>Recognition</dt><dd>Best Efficiency Award and a presentation slot. Travel grant subject to sponsorship.</dd></div>
+  </dl>
 </section>
 
-<!-- Important Dates -->
 <section id="dates">
-  <div class="container">
-    <div class="section-label">Timeline</div>
-    <h2 class="section-title">Important Dates</h2>
-    <p class="section-desc">All deadlines are 11:59 PM Anywhere on Earth (AoE).</p>
-    <div class="dates-grid">
-      <div class="date-card">
-        <div class="date">September 25, 2026</div>
-        <div class="label">Challenge harness and reference container released</div>
-      </div>
-      <div class="date-card">
-        <div class="date">October 10, 2026</div>
-        <div class="label">Paper submission deadline (4-page extended abstracts, OpenReview)</div>
-      </div>
-      <div class="date-card">
-        <div class="date">October 25, 2026</div>
-        <div class="label">Paper acceptance notification</div>
-      </div>
-      <div class="date-card">
-        <div class="date">October 25, 2026</div>
-        <div class="label">Challenge submission deadline</div>
-      </div>
-      <div class="date-card">
-        <div class="date">November 5, 2026</div>
-        <div class="label">Challenge results verified and announced</div>
-      </div>
-      <div class="date-card">
-        <div class="date">November 12, 2026</div>
-        <div class="label">Workshop day at CoRL 2026, Austin, TX</div>
-      </div>
-    </div>
-  </div>
+  <h2>Important Dates</h2>
+  <dl>
+    <div class="row"><dt>September 25</dt><dd>Challenge harness and reference container released</dd></div>
+    <div class="row"><dt>October 10</dt><dd>Paper submission deadline</dd></div>
+    <div class="row"><dt>October 25</dt><dd>Paper acceptance notification</dd></div>
+    <div class="row"><dt>October 25</dt><dd>Challenge submission deadline</dd></div>
+    <div class="row"><dt>November 5</dt><dd>Challenge results verified and announced</dd></div>
+    <div class="row"><dt>November 12</dt><dd>Workshop, CoRL 2026, Austin</dd></div>
+  </dl>
+  <p class="note">All deadlines are 11:59 PM Anywhere on Earth.</p>
 </section>
 
-<!-- Organizers -->
 <section id="organizers">
-  <div class="container">
-    <div class="section-label">Team</div>
-    <h2 class="section-title">Organizers</h2>
-    <p class="section-desc">At least one organizer (the lead) commits to attending CoRL 2026 in person in Austin, TX.</p>
-    <div class="org-grid">
-      <div class="org-card">
-        <div class="org-avatar"><span class="speaker-initials">JY</span></div>
-        <div>
-          <span class="speaker-status status-confirmed">Confirmed</span>
-          <h4>Jiafan Yu <span style="font-weight:500;color:var(--text-light)">(lead)</span></h4>
-          <div class="affil">Google</div>
-          <div class="expertise">VLA models &amp; inference optimization for real-time deployment</div>
-        </div>
-      </div>
-      <div class="org-card">
-        <div class="org-avatar"><span class="speaker-initials">CL</span></div>
-        <div>
-          <span class="speaker-status status-confirmed">Confirmed</span>
-          <h4>Changliu Liu</h4>
-          <div class="affil">Carnegie Mellon University</div>
-          <div class="expertise">Safe robot learning; real-time optimization-based control</div>
-        </div>
-      </div>
-      <div class="org-card">
-        <div class="org-avatar"><span class="speaker-initials">JW</span></div>
-        <div>
-          <span class="speaker-status status-confirmed">Confirmed</span>
-          <h4>Jiajun Wu</h4>
-          <div class="affil">Stanford University</div>
-          <div class="expertise">World models &amp; visual reasoning for robot learning</div>
-        </div>
-      </div>
+  <h2>Organizers</h2>
+  <dl>
+    <div class="row">
+      <dt>Jiafan Yu<span class="tag">lead</span></dt>
+      <dd><span class="who">Google.</span> Inference optimization for embodied foundation models.</dd>
     </div>
-    <h3 style="font-size:1.05rem;font-weight:700;color:var(--navy);margin:2.5rem 0 .8rem">Program Committee</h3>
-    <p class="about-text" style="font-size:.92rem">The program committee is being formed and will be announced here shortly.</p>
-  </div>
+    <div class="row">
+      <dt>Changliu Liu</dt>
+      <dd><span class="who">Carnegie Mellon University.</span> Safe robot learning and real-time optimization-based control.</dd>
+    </div>
+    <div class="row">
+      <dt>Jiajun Wu</dt>
+      <dd><span class="who">Stanford University.</span> World models and visual reasoning for robot learning.</dd>
+    </div>
+  </dl>
+  <p class="note">The program committee is being formed and will be announced here shortly.</p>
 </section>
 
-<!-- Footer -->
 <footer>
-  <p><strong>Efficient Foundation Models for Real-Time Embodied AI</strong></p>
-  <p>CoRL 2026 Workshop &middot; November 12, 2026 &middot; Austin, TX</p>
-  <p style="margin-top:.8rem">Questions? Contact <a href="mailto:yu@jiafan.org">yu@jiafan.org</a></p>
+  Contact <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> &nbsp;·&nbsp; A workshop at the Conference on Robot Learning, Austin, Texas, November 12, 2026.
 </footer>
 
+</div>
 </body>
 </html>
