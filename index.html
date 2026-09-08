@@ -162,6 +162,25 @@ code{
 .data a:hover{border-bottom-color:var(--accent)}
 .caption{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:0}
 
+/* Side navigator, wide screens only */
+#rail{display:none}
+@media (min-width: 68rem){
+  #rail{
+    display:block;position:fixed;top:50%;transform:translateY(-50%);
+    left:calc(50% - 22rem - 11.5rem);width:10rem;
+  }
+  #rail ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--rule)}
+  #rail li{margin:0}
+  #rail a{
+    display:block;padding:.34rem 0 .34rem .85rem;margin-left:-1px;
+    font-size:.78rem;line-height:1.35;color:var(--muted);text-decoration:none;
+    border-left:1px solid transparent;transition:color .15s,border-color .15s;
+  }
+  #rail a:hover{color:var(--ink)}
+  #rail a.on{color:var(--accent);border-left-color:var(--accent)}
+  nav{display:none}
+}
+
 footer{
   border-top:1px solid var(--rule);
   margin-top:1rem;padding:2.2rem 0 4rem;
@@ -170,6 +189,18 @@ footer{
 </style>
 </head>
 <body>
+<nav id="rail" aria-label="Section navigation">
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#speakers">Speakers</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#cfp">Call for Papers</a></li>
+    <li><a href="#challenge">Challenge</a></li>
+    <li><a href="#dates">Important Dates</a></li>
+    <li><a href="#organizers">Organizers</a></li>
+  </ol>
+</nav>
+
 <div class="wrap">
 
 <header>
@@ -374,5 +405,24 @@ footer{
 </footer>
 
 </div>
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('#rail a'));
+  if(!links.length || !('IntersectionObserver' in window)) return;
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+  var visible = {};
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ visible[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; });
+    var best=null, bestVal=0;
+    Object.keys(visible).forEach(function(id){ if(visible[id] > bestVal){ bestVal=visible[id]; best=id; } });
+    links.forEach(function(a){ a.classList.remove('on'); });
+    if(best && map[best]) map[best].classList.add('on');
+  }, {rootMargin:'-25% 0px -55% 0px', threshold:[0,0.15,0.5,1]});
+  Object.keys(map).forEach(function(id){
+    var el=document.getElementById(id); if(el) obs.observe(el);
+  });
+})();
+</script>
 </body>
 </html>
