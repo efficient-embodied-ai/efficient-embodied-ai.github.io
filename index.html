@@ -107,6 +107,30 @@ code{
   font-size:.86em;background:#f2f2ef;padding:.08em .35em;border-radius:2px;
 }
 
+/* Speaker rows with photos */
+.person{
+  display:grid;grid-template-columns:4.25rem 1fr;gap:1.15rem;
+  padding:1rem 0;border-top:1px solid var(--rule);align-items:start;
+}
+.person:last-of-type{border-bottom:1px solid var(--rule)}
+.avatar{
+  position:relative;width:4.25rem;height:4.25rem;border-radius:50%;
+  overflow:hidden;background:#eceae5;flex-shrink:0;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.15rem;color:#9aa0a8;letter-spacing:.02em;
+}
+.avatar img+span{display:none}
+.person .name{font-weight:600;font-size:1rem;margin-bottom:.1rem}
+.person .aff{font-size:.9rem;color:var(--ink);margin-bottom:.2rem}
+.person .topic{font-size:.9rem;color:var(--muted);line-height:1.55}
+@media(max-width:34rem){
+  .person{grid-template-columns:3.25rem 1fr;gap:.9rem}
+  .avatar{width:3.25rem;height:3.25rem}
+}
+
 /* Trilemma */
 .trilemma{
   display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
@@ -202,25 +226,39 @@ footer{
 
 <section id="speakers">
   <h2>Speakers</h2>
-  <dl>
-    <div class="row">
-      <dt>Jiajun Wu</dt>
-      <dd><span class="who">Stanford University.</span> World models for embodied AI: efficient learned models for online planning.</dd>
+  <div class="person">
+    <div class="avatar"><img src="speakers/jiajun_wu.jpg" alt="Jiajun Wu" loading="lazy" onerror="this.remove()"><span>JW</span></div>
+    <div>
+      <div class="name">Jiajun Wu</div>
+      <div class="aff">Stanford University</div>
+      <div class="topic">World models for embodied AI: efficient learned models for online planning.</div>
     </div>
-    <div class="row">
-      <dt>Yecheng &ldquo;Jason&rdquo; Ma</dt>
-      <dd><span class="who">Dyna Robotics.</span> Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model.</dd>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/jason_ma.jpg" alt="Yecheng &ldquo;Jason&rdquo; Ma" loading="lazy" onerror="this.remove()"><span>JM</span></div>
+    <div>
+      <div class="name">Yecheng &ldquo;Jason&rdquo; Ma</div>
+      <div class="aff">Dyna Robotics</div>
+      <div class="topic">Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model.</div>
     </div>
-    <div class="row">
-      <dt>Dhruv Shah</dt>
-      <dd><span class="who">Princeton University and Google DeepMind.</span> Post-training as the stage where most deployable-efficiency decisions are made.</dd>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/dhruv_shah.jpg" alt="Dhruv Shah" loading="lazy" onerror="this.remove()"><span>DS</span></div>
+    <div>
+      <div class="name">Dhruv Shah</div>
+      <div class="aff">Princeton University and Google DeepMind</div>
+      <div class="topic">Post-training as the stage where most deployable-efficiency decisions are made.</div>
     </div>
-    <div class="row">
-      <dt>Ouais Alsharif</dt>
-      <dd><span class="who">Google DeepMind.</span> Engineering robot foundation models for production deployment.</dd>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/ouais_alsharif.jpg" alt="Ouais Alsharif" loading="lazy" onerror="this.remove()"><span>OA</span></div>
+    <div>
+      <div class="name">Ouais Alsharif</div>
+      <div class="aff">Google DeepMind</div>
+      <div class="topic">Engineering robot foundation models for production deployment.</div>
     </div>
-  </dl>
-  <p class="note">Additional invited speakers will be announced here as invitations are confirmed.</p>
+  </div>
+  <p class="note" style="margin-top:1.1rem">Additional invited speakers will be announced here as invitations are confirmed.</p>
 </section>
 
 <section id="schedule">
