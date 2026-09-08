@@ -152,7 +152,8 @@ code{
 .data td{padding:.5rem 1rem .5rem 0;border-bottom:1px solid #eef0f2}
 .data td:first-child{font-weight:600;white-space:nowrap}
 .data td:nth-child(2),.data td:nth-child(3){color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-.data td:last-child{font-variant-numeric:tabular-nums}
+.data td:nth-child(4){font-variant-numeric:tabular-nums}
+.data td.meas{color:var(--muted);font-size:.82rem;white-space:nowrap}
 .data tr.grp td{
   border-bottom:none;padding-top:1.1rem;padding-bottom:.2rem;
   font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;
@@ -185,21 +186,21 @@ footer{
   <p class="lede">In 2024 the field asked whether we could build robot foundation models. RT-2, Octo, and Open X-Embodiment proved the concept. In 2025 the question shifted to real-world viability: &pi;<sub>0</sub> folded laundry, GR00T N1 controlled humanoids, and OpenVLA put a 7B generalist policy in reach of any lab. The harder question now is the same for all of them. Can they run fast enough, cheaply enough, and safely enough to deploy?</p>
   <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, an order of magnitude below the 20 to 50 Hz that dexterous manipulation demands, and that is on a desktop GPU rather than anything that rides onboard. Meanwhile near-term humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: when the robot itself costs less than a datacenter GPU, onboard compute is a hard budget rather than a preference.</p>
   <table class="data">
-    <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure, as stated</th></tr>
-    <tr class="grp"><td colspan="4">Action policies</td></tr>
-    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz control</td></tr>
-    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz (bf16 throughput)</td></tr>
-    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&mdash;</td><td>50 Hz (open-loop chunks)</td></tr>
-    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; lower latency vs OpenVLA</td></tr>
-    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO, 1-cam)</td></tr>
-    <tr><td><a href="https://ai.stanford.edu/blog/minivla/">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td></tr>
-    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>120&times; vs OpenVLA (482&rarr;4 ms/step)</td></tr>
-    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&mdash;</td><td>11&times; less memory vs OFT</td></tr>
-    <tr class="grp"><td colspan="4">World models</td></tr>
-    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS rollout</td></tr>
-    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz closed-loop, real robot</td></tr>
+    <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure</th><th>Measures</th></tr>
+    <tr class="grp"><td colspan="5">Action policies</td></tr>
+    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz control</td><td class="meas">closed-loop control</td></tr>
+    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz (bf16 throughput)</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&mdash;</td><td>50 Hz (open-loop chunks)</td><td class="meas">open-loop chunk rate</td></tr>
+    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; lower latency vs OpenVLA</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO, 1-cam)</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://ai.stanford.edu/blog/minivla/">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>120&times; vs OpenVLA (482&rarr;4 ms/step)</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&mdash;</td><td>11&times; less memory vs OFT</td><td class="meas">relative memory</td></tr>
+    <tr class="grp"><td colspan="5">World models</td></tr>
+    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS rollout</td><td class="meas">offline rollout</td></tr>
+    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz closed-loop, real robot</td><td class="meas">closed-loop control</td></tr>
   </table>
-  <p class="caption">Rates are as reported, across differing hardware, tasks, and protocols, and span both action policies and world models, which report different quantities: control rate against rollout rate. That cross-paradigm incomparability is what the workshop&rsquo;s shared benchmark exists to remove.</p>
+  <p class="caption">These figures are not directly comparable, and the last column says why: they variously measure closed-loop control rate, raw throughput, open-loop chunk execution, and offline rollout, on different hardware and tasks. That incomparability is not a flaw in the table. It is the problem the workshop exists to address, and what the shared benchmark is built to remove.</p>
 
   <p>This workshop treats efficiency as a first-class problem across the whole space of embodied foundation models, vision-language-action policies, world-action models, and emerging architectures alike, rather than any single family. No system today is simultaneously <em>general</em>, <em>fast</em>, and <em>deployable</em> within a real onboard budget. That trilemma is architecture-independent, and it organizes the program.</p>
 
@@ -263,15 +264,15 @@ footer{
 
 <section id="schedule">
   <h2>Schedule</h2>
-  <p>Roughly four hours, built around four interactive elements: live profiling on real Jetson hardware, a structured debate, the challenge results, and a roadmap working session. Talk segments are kept short.</p>
+  <p>Roughly four hours, built around four interactive elements: live profiling on real Jetson hardware, a structured debate, the challenge results, and a roadmap working session. Talk segments are kept short. Slots marked to be announced are still being filled.</p>
   <table>
     <tr><th>Time</th><th>Session</th></tr>
     <tr><td class="t">9:00</td><td>Opening and framing<div class="d">Organizers frame the generality, speed, and deployability trilemma</div></td></tr>
-    <tr><td class="t">9:10</td><td>Keynote and live profiling<div class="d">30 minute keynote, then 20 minutes live: organizers profile vanilla OpenVLA on a Jetson on stage, narrating memory and kernel bottlenecks</div></td></tr>
+    <tr><td class="t">9:10</td><td>Keynote, speaker to be announced<div class="d">30 minute keynote, then 20 minutes live: organizers profile vanilla OpenVLA on a Jetson on stage, narrating memory and kernel bottlenecks</div></td></tr>
     <tr><td class="t">10:00</td><td>Lightning talks<div class="d">Five contributed papers, selected for method diversity</div></td></tr>
     <tr><td class="t">10:30</td><td>Coffee and posters<div class="d">All accepted papers; live demos welcome</div></td></tr>
-    <tr><td class="t">10:55</td><td>Invited talk<div class="d">C3: certifiable safety under latency</div></td></tr>
-    <tr><td class="t">11:25</td><td>Debate: the 1B ceiling<div class="d">Oxford-style and moderated, with an audience vote before and after</div></td></tr>
+    <tr><td class="t">10:55</td><td>Invited talk, speaker to be announced<div class="d">C3: certifiable safety under latency</div></td></tr>
+    <tr><td class="t">11:25</td><td>Debate: the 1B ceiling, participants to be announced<div class="d">Oxford-style and moderated, with an audience vote before and after</div></td></tr>
     <tr><td class="t">12:10</td><td>Challenge results<div class="d">Top entries present, seven minutes each</div></td></tr>
     <tr><td class="t">12:35</td><td>Synthesis: roadmap working session<div class="d">Organizer-facilitated, feeding the post-workshop report</div></td></tr>
     <tr><td class="t">12:55</td><td>Best paper and closing</td></tr>
@@ -295,11 +296,12 @@ footer{
   </ul>
 
   <h3>Submission</h3>
-  <p>Four pages plus unlimited references, hosted on OpenReview, reviewed double-blind. Submissions must be anonymized. New work and previously published work that fits the workshop scope are both eligible, tracked and reviewed separately.</p>
+  <p>Four pages plus unlimited references, hosted on OpenReview, reviewed double-blind. Submissions must be anonymized.</p>
+  <p><strong>Non-archival.</strong> Accepted papers are not archived as formal publications, so submitting here does not affect your ability to submit the same work to a main conference. Concurrent submissions and work under review elsewhere are permitted. Previously published work that fits the scope is also eligible, tracked and reviewed separately from new work.</p>
+  <p class="note"><strong>Submission portal:</strong> the OpenReview venue request is submitted and pending approval. The link will appear here as soon as the venue is live.</p>
 
   <h3>Review and presentation</h3>
-  <p>Each submission receives three reviews from the organizing committee and program committee. All accepted papers are presented as posters, and roughly five are additionally selected for a five-minute lightning talk.</p>
-  <p class="note">Submission portal and full dates appear under <a href="#dates">Important Dates</a>.</p>
+  <p>We aim for three reviews per submission, from the organizing committee and an invited program committee, subject to reviewer availability. All accepted papers are presented as posters, and roughly five are additionally selected for a five-minute lightning talk.</p>
 </section>
 
 <section id="challenge">
@@ -321,9 +323,9 @@ footer{
   <h2>Important Dates</h2>
   <dl>
     <div class="row"><dt>September 25</dt><dd>Challenge harness and reference container released</dd></div>
-    <div class="row"><dt>October 10</dt><dd>Paper submission deadline</dd></div>
-    <div class="row"><dt>October 25</dt><dd>Paper acceptance notification</dd></div>
-    <div class="row"><dt>October 25</dt><dd>Challenge submission deadline</dd></div>
+    <div class="row"><dt>October 12</dt><dd>Paper submission deadline</dd></div>
+    <div class="row"><dt>October 26</dt><dd>Paper acceptance notification</dd></div>
+    <div class="row"><dt>October 23</dt><dd>Challenge submission deadline</dd></div>
     <div class="row"><dt>November 5</dt><dd>Challenge results verified and announced</dd></div>
     <div class="row"><dt>November 12</dt><dd>Workshop, CoRL 2026, Austin</dd></div>
   </dl>
