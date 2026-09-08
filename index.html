@@ -84,11 +84,6 @@ dl{margin:1.2rem 0}
 .row dt{font-weight:600;font-size:.95rem}
 .row dd{font-size:.93rem;color:var(--muted)}
 .row dd .who{color:var(--ink)}
-.tag{
-  display:inline-block;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
-  color:#2f6b46;border:1px solid #cfe3d6;background:#f2f8f4;
-  padding:.05rem .42rem;border-radius:2px;margin-left:.45rem;vertical-align:1px;
-}
 @media(max-width:33rem){
   .row{grid-template-columns:1fr;gap:.15rem}
   .row dd{font-size:.9rem}
@@ -154,7 +149,7 @@ footer{
 
 <header>
   <h1>Efficient Foundation Models<br>for Real-Time Embodied AI</h1>
-  <p class="standfirst">A half-day workshop on making robot foundation models fast enough, cheap enough, and safe enough to actually deploy.</p>
+  <p class="standfirst">Making robot foundation models fast enough, cheap enough, and safe enough to actually deploy.</p>
   <p class="meta"><strong>CoRL 2026</strong> &nbsp;·&nbsp; November 12, 2026 &nbsp;·&nbsp; Austin, Texas</p>
   <nav>
     <a href="#overview">Overview</a><a href="#speakers">Speakers</a><a href="#schedule">Schedule</a><a href="#cfp">Call for Papers</a><a href="#challenge">Challenge</a><a href="#dates">Dates</a><a href="#organizers">Organizers</a>
@@ -209,12 +204,20 @@ footer{
   <h2>Speakers</h2>
   <dl>
     <div class="row">
-      <dt>Jiajun Wu<span class="tag">confirmed</span></dt>
+      <dt>Jiajun Wu</dt>
       <dd><span class="who">Stanford University.</span> World models for embodied AI: efficient learned models for online planning.</dd>
     </div>
     <div class="row">
-      <dt>Yecheng &ldquo;Jason&rdquo; Ma<span class="tag">confirmed</span></dt>
+      <dt>Yecheng &ldquo;Jason&rdquo; Ma</dt>
       <dd><span class="who">Dyna Robotics.</span> Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model.</dd>
+    </div>
+    <div class="row">
+      <dt>Dhruv Shah</dt>
+      <dd><span class="who">Princeton University and Google DeepMind.</span> Post-training as the stage where most deployable-efficiency decisions are made.</dd>
+    </div>
+    <div class="row">
+      <dt>Ouais Alsharif</dt>
+      <dd><span class="who">Google DeepMind.</span> Engineering robot foundation models for production deployment.</dd>
     </div>
   </dl>
   <p class="note">Additional invited speakers will be announced here as invitations are confirmed.</p>
@@ -222,7 +225,7 @@ footer{
 
 <section id="schedule">
   <h2>Schedule</h2>
-  <p>Half a day, roughly four hours, built around four interactive elements: live profiling on real Jetson hardware, a structured debate, the challenge results, and a roadmap working session. Talk segments are kept short.</p>
+  <p>Roughly four hours, built around four interactive elements: live profiling on real Jetson hardware, a structured debate, the challenge results, and a roadmap working session. Talk segments are kept short.</p>
   <table>
     <tr><th>Time</th><th>Session</th></tr>
     <tr><td class="t">9:00</td><td>Opening and framing<div class="d">Organizers frame the generality, speed, and deployability trilemma</div></td></tr>
@@ -293,7 +296,7 @@ footer{
   <h2>Organizers</h2>
   <dl>
     <div class="row">
-      <dt>Jiafan Yu<span class="tag">lead</span></dt>
+      <dt>Jiafan Yu</dt>
       <dd><span class="who">Google.</span> Inference optimization for embodied foundation models.</dd>
     </div>
     <div class="row">
