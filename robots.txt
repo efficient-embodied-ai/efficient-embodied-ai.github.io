@@ -1,4 +1,2 @@
-# Temporary while the workshop roster is finalized and the OpenReview venue is pending.
-# Remove this file when the call for papers circulates.
 User-agent: *
-Disallow: /
+Allow: /
