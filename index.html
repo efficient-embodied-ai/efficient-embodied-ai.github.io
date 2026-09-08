@@ -112,6 +112,36 @@ code{
   font-size:.86em;background:#f2f2ef;padding:.08em .35em;border-radius:2px;
 }
 
+/* Trilemma */
+.trilemma{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule);
+  margin:1.9rem 0;
+}
+.trilemma div{background:var(--bg);padding:1.05rem 1.1rem}
+.trilemma h4{
+  font-family:var(--serif);font-size:1.02rem;font-weight:600;
+  margin-bottom:.28rem;letter-spacing:-.005em;
+}
+.trilemma p{font-size:.87rem;color:var(--muted);margin:0;line-height:1.55}
+.trilemma-note{font-size:.9rem;color:var(--muted);margin-top:-.6rem}
+@media(max-width:34rem){.trilemma{grid-template-columns:1fr}}
+
+/* Data table */
+.data{font-size:.88rem;margin:1.6rem 0 .7rem}
+.data th{padding-right:1rem}
+.data td{padding:.5rem 1rem .5rem 0;border-bottom:1px solid #eef0f2}
+.data td:first-child{font-weight:600;white-space:nowrap}
+.data td:nth-child(2),.data td:nth-child(3){color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.data td:last-child{font-variant-numeric:tabular-nums}
+.data tr.grp td{
+  border-bottom:none;padding-top:1.1rem;padding-bottom:.2rem;
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;
+}
+.data a{text-decoration:none;border-bottom:1px solid #e0cfcb}
+.data a:hover{border-bottom-color:var(--accent)}
+.caption{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:0}
+
 footer{
   border-top:1px solid var(--rule);
   margin-top:1rem;padding:2.2rem 0 4rem;
@@ -135,7 +165,31 @@ footer{
   <h2>Overview</h2>
   <p class="lede">In 2024 the field asked whether we could build robot foundation models. RT-2, Octo, and Open X-Embodiment proved the concept. In 2025 the question shifted to real-world viability: &pi;<sub>0</sub> folded laundry, GR00T N1 controlled humanoids, and OpenVLA put a 7B generalist policy in reach of any lab. The harder question now is the same for all of them. Can they run fast enough, cheaply enough, and safely enough to deploy?</p>
   <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, an order of magnitude below the 20 to 50 Hz that dexterous manipulation demands, and that is on a desktop GPU rather than anything that rides onboard. Meanwhile near-term humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: when the robot itself costs less than a datacenter GPU, onboard compute is a hard budget rather than a preference.</p>
+  <table class="data">
+    <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure, as stated</th></tr>
+    <tr class="grp"><td colspan="4">Action policies</td></tr>
+    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz control</td></tr>
+    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz (bf16 throughput)</td></tr>
+    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&mdash;</td><td>50 Hz (open-loop chunks)</td></tr>
+    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; lower latency vs OpenVLA</td></tr>
+    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO, 1-cam)</td></tr>
+    <tr><td><a href="https://ai.stanford.edu/blog/minivla/">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>120&times; vs OpenVLA (482&rarr;4 ms/step)</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&mdash;</td><td>11&times; less memory vs OFT</td></tr>
+    <tr class="grp"><td colspan="4">World models</td></tr>
+    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS rollout</td></tr>
+    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz closed-loop, real robot</td></tr>
+  </table>
+  <p class="caption">Rates are as reported, across differing hardware, tasks, and protocols, and span both action policies and world models, which report different quantities: control rate against rollout rate. That cross-paradigm incomparability is what the workshop&rsquo;s shared benchmark exists to remove.</p>
+
   <p>This workshop treats efficiency as a first-class problem across the whole space of embodied foundation models, vision-language-action policies, world-action models, and emerging architectures alike, rather than any single family. No system today is simultaneously <em>general</em>, <em>fast</em>, and <em>deployable</em> within a real onboard budget. That trilemma is architecture-independent, and it organizes the program.</p>
+
+  <div class="trilemma">
+    <div><h4>General</h4><p>One policy across tasks, objects, and embodiments, rather than a model per skill.</p></div>
+    <div><h4>Fast</h4><p>Above 50 Hz closed-loop, the rate dexterous manipulation actually demands.</p></div>
+    <div><h4>Deployable</h4><p>Inside a fixed onboard power, memory, and cost budget, not merely running somewhere.</p></div>
+  </div>
+  <p class="trilemma-note">Speed and deployability are distinct axes precisely because Hz is purchasable with bigger hardware. OpenVLA-OFT reaches 109.7 Hz, but on an A100 that will never ride on the robot.</p>
 
   <div class="rq">
     <h3>C1. Architecture and compression across embodied foundation models</h3>
