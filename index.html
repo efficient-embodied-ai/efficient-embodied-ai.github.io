@@ -189,45 +189,49 @@ footer{
 
 <section id="overview">
   <h2>Overview</h2>
-  <p class="lede">In 2024 the field asked whether we could build robot foundation models. RT-2, Octo, and Open X-Embodiment proved the concept. In 2025 the question shifted to real-world viability: &pi;<sub>0</sub> folded laundry, GR00T N1 controlled humanoids, and OpenVLA put a 7B generalist policy in reach of any lab. The harder question now is the same for all of them. Can they run fast enough, cheaply enough, and safely enough to deploy?</p>
-  <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, an order of magnitude below the 20 to 50 Hz that dexterous manipulation demands, and that is on a desktop GPU rather than anything that rides onboard. Meanwhile near-term humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: when the robot itself costs less than a datacenter GPU, onboard compute is a hard budget rather than a preference.</p>
+  <p class="lede">Embodied foundation models are now good enough to matter. Most of them still miss the latency, memory, and power budgets required to run on the robot itself. This workshop is about that gap: what it actually takes to make an embodied model general, fast, and deployable on real hardware rather than in a datacenter.</p>
+
+  <p><strong>This is for you if</strong> you work on compression, quantization, distillation, adaptive compute, action chunking, hardware-aware design, edge-cloud systems, or safety and control under timing constraints, whether you build vision-language-action policies, world-action models, or something that does not fit either label. Submissions are <strong>non-archival</strong> and close <strong>October 12</strong>.</p>
+
+  <h3>Why now</h3>
+  <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, and that is a desktop GPU rather than anything that rides onboard. Dexterous manipulation generally wants closed-loop rates well above what these policies deliver, and while some systems close that gap with a fast low-level servo loop under a slower policy, the policy rate still bounds how quickly the robot can change its mind. Meanwhile humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: on platforms where the robot costs less than a datacenter GPU, onboard compute is a budget rather than a preference.</p>
+
   <table class="data">
     <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure</th><th>Measures</th></tr>
     <tr class="grp"><td colspan="5">Action policies</td></tr>
-    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz control</td><td class="meas">closed-loop control</td></tr>
-    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz (bf16 throughput)</td><td class="meas">throughput</td></tr>
-    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&mdash;</td><td>50 Hz (open-loop chunks)</td><td class="meas">open-loop chunk rate</td></tr>
-    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; lower latency vs OpenVLA</td><td class="meas">relative latency</td></tr>
-    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO, 1-cam)</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz</td><td class="meas">closed-loop control</td></tr>
+    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&mdash;</td><td>50 Hz</td><td class="meas">open-loop chunk rate</td></tr>
+    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; vs OpenVLA</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO)</td><td class="meas">throughput</td></tr>
     <tr><td><a href="https://ai.stanford.edu/blog/minivla/">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td><td class="meas">throughput</td></tr>
-    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>120&times; vs OpenVLA (482&rarr;4 ms/step)</td><td class="meas">relative latency</td></tr>
-    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&mdash;</td><td>11&times; less memory vs OFT</td><td class="meas">relative memory</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>482&rarr;4 ms/step</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&mdash;</td><td>11&times; vs OFT</td><td class="meas">relative memory</td></tr>
     <tr class="grp"><td colspan="5">World models</td></tr>
-    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS rollout</td><td class="meas">offline rollout</td></tr>
-    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz closed-loop, real robot</td><td class="meas">closed-loop control</td></tr>
+    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS</td><td class="meas">offline rollout</td></tr>
+    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz</td><td class="meas">closed-loop control</td></tr>
   </table>
-  <p class="caption">These figures are not directly comparable, and the last column says why: they variously measure closed-loop control rate, raw throughput, open-loop chunk execution, and offline rollout, on different hardware and tasks. That incomparability is not a flaw in the table. It is the problem the workshop exists to address, and what the shared benchmark is built to remove.</p>
-
-  <p>This workshop treats efficiency as a first-class problem across the whole space of embodied foundation models, vision-language-action policies, world-action models, and emerging architectures alike, rather than any single family. No system today is simultaneously <em>general</em>, <em>fast</em>, and <em>deployable</em> within a real onboard budget. That trilemma is architecture-independent, and it organizes the program.</p>
+  <p class="caption">The last column is the point: these numbers measure different things on different hardware, so they cannot be ranked against each other. Building an evaluation that can is one of the things we want papers about.</p>
 
   <div class="trilemma">
     <div><h4>General</h4><p>One policy across tasks, objects, and embodiments, rather than a model per skill.</p></div>
-    <div><h4>Fast</h4><p>Above 50 Hz closed-loop, the rate dexterous manipulation actually demands.</p></div>
+    <div><h4>Fast</h4><p>Closed-loop rates that keep up with contact-rich manipulation.</p></div>
     <div><h4>Deployable</h4><p>Inside a fixed onboard power, memory, and cost budget, not merely running somewhere.</p></div>
   </div>
-  <p class="trilemma-note">Speed and deployability are distinct axes precisely because Hz is purchasable with bigger hardware. OpenVLA-OFT reaches 109.7 Hz, but on an A100 that will never ride on the robot.</p>
+  <p class="trilemma-note">Systems trade these off differently, and few manage all three at once. Speed and deployability pull apart in particular, because raw Hz can be bought with bigger hardware: OpenVLA-OFT reaches 109.7 Hz, but on an A100 that will never ride on the robot.</p>
 
+  <h3>What we want papers on</h3>
   <div class="rq">
-    <h3>C1. Architecture and compression across embodied foundation models</h3>
-    <p>What combination of smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute enables robot control above 20 Hz? Individual speedups span 1.5&times; to 120&times;, but no systematic study confirms they compose, or that they transfer between policies and world models.</p>
+    <h3>Architecture and compression</h3>
+    <p>Smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute for policies and world models alike. Results reporting real latency, memory, energy, or control-rate gains on robot-relevant hardware are especially welcome, as is any evidence about whether these techniques compose.</p>
   </div>
   <div class="rq">
-    <h3>C2. Edge-cloud co-design across heterogeneous hardware</h3>
-    <p>At ten thousand robots, can you afford a GPU on each one? The accelerator landscape is now heterogeneous: NVIDIA GPUs, Google TPUs, AWS Trainium and Inferentia, mobile NPUs, each with different cost, latency, and energy trade-offs. No published analysis compares total cost of ownership across edge-only, cloud-only, and hybrid architectures at fleet scale.</p>
+    <h3>Edge-cloud co-design</h3>
+    <p>Deployment trade-offs across onboard, hybrid, and cloud setups, and across heterogeneous accelerators: GPUs, TPUs, Trainium and Inferentia, mobile NPUs. Total cost of ownership at fleet scale is close to unstudied.</p>
   </div>
   <div class="rq">
-    <h3>C3. Safety under latency constraints</h3>
-    <p>Action chunking commits a robot to open-loop execution with no principled interruption mechanism. While the model is still computing, should it freeze, revert to a safe policy, or extrapolate? Certifying systems with stochastic response time remains unsolved.</p>
+    <h3>Safety under latency</h3>
+    <p>Interruption, fallback, and certification when inference is slow or its timing is variable. Action chunking commits a robot to open-loop execution with no principled way to interrupt it, and certifying systems with stochastic response time remains open.</p>
   </div>
 </section>
 
