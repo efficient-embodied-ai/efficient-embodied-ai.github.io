@@ -241,7 +241,7 @@ footer p+p{margin-top:.4rem}
       </tr>
       <tr>
         <td class="time">9:10&thinsp;&ndash;&thinsp;10:00</td>
-        <td><div class="event-title">Keynote (TBD) + live profiling<span class="keynote-badge">Keynote</span></div><div class="event-detail">30min keynote, then 20min live: challenge chairs profile vanilla OpenVLA on a Jetson on stage: memory/kernel/gRPC bottlenecks. Show, don't tell.</div></td>
+        <td><div class="event-title">Keynote (TBD) + live profiling<span class="keynote-badge">Keynote</span></div><div class="event-detail">30min keynote, then 20min live: challenge chairs profile vanilla OpenVLA on a Jetson on stage: memory and kernel bottlenecks. Show, don't tell.</div></td>
       </tr>
       <tr>
         <td class="time">10:00&thinsp;&ndash;&thinsp;10:30</td>
@@ -318,13 +318,14 @@ footer p+p{margin-top:.4rem}
     <h2 class="section-title">VLA Efficiency Challenge</h2>
     <p class="section-desc">A benchmarking competition producing a concrete, citable artifact for the community.</p>
     <div class="challenge-box">
-      <h3>Compress OpenVLA. Beat the Clock. Win.</h3>
-      <p><strong>Reference model:</strong> OpenVLA-7B with a frozen evaluation harness (~14GB in bf16 &mdash; exceptionally tight on a 16GB Jetson, so quantization, sharding, or offload is required).</p>
-      <p><strong>Hardware:</strong> Organizer-hosted NVIDIA Jetson Orin NX (16GB), accessed remotely via gRPC; harness orchestrates LIBERO on a cloud GPU and routes observations to the participant's Jetson container.</p>
-      <p><strong>Two phases:</strong> A local TensorRT-LLM emulator (July 15) mirrors the Jetson runtime bit-exactly so teams iterate without network jitter; the remote leaderboard on real hardware opens August 1.</p>
-      <p><strong>Tasks:</strong> 5 LIBERO tasks across 3 suites (Spatial, Object, Goal).</p>
-      <p><strong>Artifact:</strong> All submissions, baselines, and the evaluation harness become <code>vla-efficiency-bench</code>, a permanent open-source community resource.</p>
-      <p><strong>Prize:</strong> Best Efficiency Award (plaque + travel grant), sponsored by industry partners. Top 3 teams present at the workshop.</p>
+      <h3>Compress OpenVLA. Beat the Clock.</h3>
+      <p><strong>Reference model:</strong> OpenVLA-7B with a frozen evaluation harness (~14GB in bf16, which does not fit a 16GB Jetson, so quantization, sharding, or offload is required).</p>
+      <p><strong>Target budget:</strong> Jetson Orin NX (16GB) class hardware. Teams run on their own device.</p>
+      <p><strong>How it works:</strong> We release a reference Docker container and evaluation script. You run it on your hardware and submit code, reported metrics, and a hardware attestation. Organizers re-run the top entries to verify before results are announced, so the leaderboard is reproducibility-checked rather than centrally hosted.</p>
+      <p><strong>Tasks:</strong> LIBERO Spatial, Object, and Goal suites.</p>
+      <p><strong>Open to all architectures:</strong> the compress-to-a-budget methodology is architecture-agnostic. World-model and emerging-architecture entries are explicitly welcome.</p>
+      <p><strong>Artifact:</strong> All submissions, baselines, and the harness become <code>embodied-efficiency-bench</code>, a permanent open-source community resource.</p>
+      <p><strong>Recognition:</strong> Best Efficiency Award and a presentation slot. Travel grant subject to sponsorship. Top entries present at the workshop.</p>
       <div class="metrics-grid">
         <div class="metric-card">
           <div class="rank">Primary</div>
@@ -354,6 +355,10 @@ footer p+p{margin-top:.4rem}
     <p class="section-desc">All deadlines are 11:59 PM Anywhere on Earth (AoE).</p>
     <div class="dates-grid">
       <div class="date-card">
+        <div class="date">September 25, 2026</div>
+        <div class="label">Challenge harness and reference container released</div>
+      </div>
+      <div class="date-card">
         <div class="date">October 10, 2026</div>
         <div class="label">Paper submission deadline (4-page extended abstracts, OpenReview)</div>
       </div>
@@ -362,8 +367,12 @@ footer p+p{margin-top:.4rem}
         <div class="label">Paper acceptance notification</div>
       </div>
       <div class="date-card">
-        <div class="date">To be announced</div>
-        <div class="label">Embodied Efficiency Challenge timeline</div>
+        <div class="date">October 25, 2026</div>
+        <div class="label">Challenge submission deadline</div>
+      </div>
+      <div class="date-card">
+        <div class="date">November 5, 2026</div>
+        <div class="label">Challenge results verified and announced</div>
       </div>
       <div class="date-card">
         <div class="date">November 12, 2026</div>
