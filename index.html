@@ -178,12 +178,12 @@ footer p+p{margin-top:.4rem}
     <h2 class="section-title">The Efficiency Crisis</h2>
     <div class="about-text">
       <p>In 2024, the field asked: <em>can we build robot foundation models?</em> RT-2, Octo, and Open X-Embodiment proved the concept. In 2025, the question shifted to real-world viability &mdash; pi0 folded laundry, GR00T N1 controlled humanoids, and OpenVLA made a 7B generalist policy available to any lab. Now a harder question emerges: <strong>can they work fast enough, cheaply enough, and safely enough to actually deploy?</strong></p>
-      <p>RT-2's 55B parameters run at 3&thinsp;Hz on hardware that costs more than the robot. OpenVLA manages 1.8&thinsp;Hz on an L4 GPU &mdash; an order of magnitude below the 20&ndash;50&thinsp;Hz that dexterous manipulation demands. Meanwhile, Tesla is scaling to 50,000 Optimus units and manufacturers are projecting mass humanoid production. Every one of these systems needs a foundation model that runs in real time, on affordable hardware, with latency guarantees that satisfy safety requirements.</p>
+      <p>RT-2's 55B parameters run at 1&ndash;3&thinsp;Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6&thinsp;Hz on an RTX&nbsp;4090, still an order of magnitude below the 20&ndash;50&thinsp;Hz that dexterous manipulation demands, and that is on a desktop GPU rather than anything that rides onboard. Meanwhile near-term humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: when the robot itself costs less than a datacenter GPU, onboard compute is a hard budget, not a preference. Every one of these systems needs a foundation model that runs in real time, on affordable hardware, with latency guarantees that satisfy safety requirements.</p>
     </div>
     <div class="rq-grid">
       <div class="rq-card">
         <div class="rq-num">Research Question 1</div>
-        <h3>Architecture &amp; Compression for Real-Time VLAs</h3>
+        <h3>Architecture &amp; Compression Across Embodied Foundation Models</h3>
         <p>What combination of smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute enables robot control at 20+&thinsp;Hz? No systematic comparison exists.</p>
       </div>
       <div class="rq-card">
@@ -280,34 +280,46 @@ footer p+p{margin-top:.4rem}
   <div class="container">
     <div class="section-label">Submissions</div>
     <h2 class="section-title">Call for Papers</h2>
-    <p class="section-desc">We solicit 4-page extended abstracts (plus unlimited references) on the following topics:</p>
+    <p class="section-desc">We solicit 4-page extended abstracts (plus unlimited pages for references) on efficiency across the whole space of embodied foundation models: VLA policies, world-action models, and emerging architectures alike.</p>
+
+    <h3 style="font-size:1.05rem;font-weight:700;color:var(--navy);margin:0 0 1rem">Topics of Interest</h3>
     <ul class="topics-list">
-      <li>Efficient VLA architectures (small models, action chunking, MoE, early exit)</li>
-      <li>Compression for robot foundation models (quantization, pruning, distillation, speculative decoding)</li>
-      <li>Edge deployment and hardware-aware model design</li>
-      <li>Memory-efficient training and fine-tuning (LoRA/QLoRA for VLAs)</li>
-      <li>Safety-latency tradeoffs and fallback policies</li>
-      <li>Cloud-edge hybrid architectures for robot fleets</li>
-      <li>Efficient world models for online planning</li>
-      <li>Benchmarking and metrics for robot FM efficiency</li>
+      <li>Efficient architectures for VLA policies, world-action models, and emerging designs (action chunking, MoE, early exit, diffusion/flow step-reduction)</li>
+      <li>Compression for robot foundation models (quantization, pruning, distillation)</li>
+      <li>Memory-efficient adaptation and fine-tuning</li>
+      <li>Benchmarking methodology, including whether efficiency techniques compose</li>
+      <li>Hardware-aware design across accelerators (GPU, TPU, AWS Trainium/Inferentia, mobile NPUs)</li>
+      <li>Edge-cloud hybrid architectures for robot fleets</li>
+      <li>Safety-latency trade-offs and fallback policies under stochastic response time</li>
+      <li>Efficient world models for online planning and real-time safety monitoring</li>
     </ul>
+
     <div class="rq-grid">
       <div class="rq-card">
         <div class="rq-num">Format</div>
         <h3>4-Page Extended Abstracts</h3>
-        <p>Plus unlimited references. Submissions will be reviewed in a double-blind process. Accepted papers will be presented as spotlight talks or posters.</p>
+        <p>Plus unlimited pages for references. OpenReview-hosted, double-blind review: submissions must be anonymized.</p>
       </div>
       <div class="rq-card">
-        <div class="rq-num">Diversity</div>
-        <h3>Travel Grants Available</h3>
-        <p>Travel grants for students from underrepresented groups. Virtual presentation option for accepted papers to reduce geographic barriers.</p>
+        <div class="rq-num">Dual Submission</div>
+        <h3>New and Published Work Both Welcome</h3>
+        <p>New, unpublished work and previously-published work that fits the workshop scope are both eligible, tracked and reviewed separately.</p>
       </div>
       <div class="rq-card">
-        <div class="rq-num">Cross-Community</div>
-        <h3>Efficient ML Meets Robotics</h3>
-        <p>We explicitly invite the efficient ML community to apply compression techniques to VLAs. Industry talks on real deployment constraints from Tesla, Agility, Figure AI, and Physical Intelligence.</p>
+        <div class="rq-num">Review</div>
+        <h3>3 Reviews per Submission</h3>
+        <p>Reviewed by the core organizing committee and a program committee, with additional reviewers recruited via the speaker network and an open call.</p>
+      </div>
+      <div class="rq-card">
+        <div class="rq-num">Presentation</div>
+        <h3>Poster, Plus Select Lightning Talks</h3>
+        <p>All accepted papers are presented as posters. About 5 papers are additionally selected for a 5-minute lightning talk.</p>
       </div>
     </div>
+
+    <p class="section-desc" style="margin-top:2rem">
+      Submission portal and full dates are listed under <a href="#dates">Important Dates</a> below.
+    </p>
   </div>
 </section>
 
