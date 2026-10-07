@@ -322,30 +322,29 @@ footer{
 
 <section id="challenge">
   <h2>Embodied Efficiency Challenge</h2>
-  <p>A benchmarking competition producing a concrete, citable artifact. The task is to compress a reference policy until it fits a real onboard budget without losing the capability that made it worth deploying.</p>
+  <p>A rolling benchmark producing a concrete, citable artifact. The task is to compress a reference policy until it fits a real onboard budget without losing the capability that made it worth deploying. The board opens when the harness ships and stays open past the workshop.</p>
   <dl>
     <div class="row"><dt>Reference model</dt><dd>OpenVLA-7B with a frozen evaluation harness. About 14 GB in bf16, which does not fit a 16 GB Jetson, so quantization, sharding, or offload is required.</dd></div>
     <div class="row"><dt>Target budget</dt><dd>Jetson Orin NX (16 GB) class hardware. Teams run on their own device.</dd></div>
-    <div class="row"><dt>How it works</dt><dd>We release a reference Docker container and evaluation script. You run it on your hardware and submit code, reported metrics, and a hardware attestation. Organizers re-run the top entries to verify before results are announced, so the leaderboard is reproducibility-checked rather than centrally hosted.</dd></div>
+    <div class="row"><dt>How it works</dt><dd>We release a reference Docker container and evaluation script. You run it on your hardware and submit code, reported metrics, and a hardware attestation by pull request. Submissions are published as they arrive, each labelled <em>self-reported</em>, <em>organizer-reproduced</em>, or <em>third-party reproduced</em>, so nothing waits on us to re-run it first.</dd></div>
     <div class="row"><dt>Tasks</dt><dd>LIBERO Spatial, Object, and Goal suites.</dd></div>
-    <div class="row"><dt>Metrics</dt><dd>Success rate first, within 15 points of the published reference. Then median and p99 latency per action. Then parameters and peak memory.</dd></div>
+    <div class="row"><dt>Metrics</dt><dd>We publish a Pareto frontier, not a ranking: LIBERO success rate against sustained closed-loop control frequency, one curve per hardware class. Observation staleness is reported alongside, so action chunking and asynchronous inference are not free. Peak memory is the budget gate rather than a tiebreaker, and normalized action jerk is reported as a validity check.</dd></div>
+    <div class="row"><dt>What you submit</dt><dd>At least three configurations spanning your method's own knobs, quantization width, chunk length, denoising steps, whichever apply. Each entry traces a curve rather than claiming a point. Single-configuration entries are accepted and plotted as points.</dd></div>
     <div class="row"><dt>Open to all</dt><dd>The compress-to-a-budget methodology is architecture-agnostic. World-model and emerging-architecture entries are explicitly welcome.</dd></div>
     <div class="row"><dt>Artifact</dt><dd>All submissions, baselines, and the harness become <code>embodied-efficiency-bench</code>, a permanent open-source resource.</dd></div>
-    <div class="row"><dt>Recognition</dt><dd>Best Efficiency Award and a presentation slot. Travel grant subject to sponsorship.</dd></div>
+    <div class="row"><dt>Recognition</dt><dd>Best Efficiency Award, judged on the board as it stands on November 7, and a presentation slot. Travel grant subject to sponsorship.</dd></div>
   </dl>
 </section>
 
 <section id="dates">
   <h2>Important Dates</h2>
   <dl>
-    <div class="row"><dt>September 25</dt><dd>Challenge harness and reference container released</dd></div>
     <div class="row"><dt>October 12</dt><dd>Paper submission deadline</dd></div>
     <div class="row"><dt>October 26</dt><dd>Paper acceptance notification</dd></div>
-    <div class="row"><dt>October 23</dt><dd>Challenge submission deadline</dd></div>
-    <div class="row"><dt>November 5</dt><dd>Challenge results verified and announced</dd></div>
+    <div class="row"><dt>November 7</dt><dd>Final program published, and the challenge board snapshot for the Best Efficiency Award</dd></div>
     <div class="row"><dt>November 12</dt><dd>Workshop, CoRL 2026, Austin</dd></div>
   </dl>
-  <p class="note">All deadlines are 11:59 PM Anywhere on Earth.</p>
+  <p class="note">All paper deadlines are 11:59 PM Anywhere on Earth. The challenge has no submission deadline; the board opens with the harness and stays open past the workshop.</p>
 </section>
 
 <section id="organizers">
