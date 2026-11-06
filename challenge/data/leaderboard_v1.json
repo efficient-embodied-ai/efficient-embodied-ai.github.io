@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "benchmark": "embodied-efficiency-bench",
+  "benchmark_version": "1.0.0",
+  "season": "Season 1",
+  "status": "OPEN_FOR_FOUNDING_SUBMISSIONS",
+  "updated_at": "2026-10-30T00:00:00Z",
+  "checkpoint_1_corl_spotlight_freeze_utc": "2026-11-10T23:59:59Z",
+  "corl_2026_workshop_date": "2026-11-12",
+  "checkpoint_2_season_1_awards_freeze_aoe": "2026-12-18T23:59:59-12:00",
+  "entries": []
+}

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmbodiedX Benchmark and Challenge &middot; CoRL 2026 EEAI Workshop</title>
+<style>
+:root{
+  --ink:#16191d;
+  --muted:#5f6874;
+  --rule:#e3e6ea;
+  --accent:#8a3324;
+  --bg:#fdfdfc;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  font-size:16.5px;
+  line-height:1.7;
+  color:var(--ink);
+  background:var(--bg);
+  padding:0 1.5rem;
+}
+.wrap{max-width:50rem;margin:0 auto}
+
+/* Masthead */
+header{padding:4.5rem 0 0}
+h1{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(1.85rem,4vw,2.5rem);
+  line-height:1.22;
+  letter-spacing:-.01em;
+  margin-bottom:.85rem;
+}
+.standfirst{font-size:1.05rem;color:var(--muted);max-width:42rem;margin-bottom:1.3rem}
+.meta{font-size:.91rem;color:var(--muted);padding-bottom:.65rem;max-width:46rem}
+.meta strong{color:var(--ink);font-weight:600}
+.head-links{font-size:.9rem;padding-bottom:1.4rem;color:var(--muted)}
+.head-links a{text-decoration:none;border-bottom:1px solid #e0cfcb}
+.head-links a:hover{border-bottom-color:var(--accent)}
+nav{
+  position:sticky;top:0;z-index:20;
+  display:flex;flex-wrap:wrap;gap:.35rem 1.35rem;
+  background:var(--bg);
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:.75rem 0;margin-bottom:3rem;
+}
+nav a{
+  font-size:.82rem;color:var(--muted);text-decoration:none;
+  letter-spacing:.02em;white-space:nowrap;
+}
+nav a:hover,nav a.on{color:var(--accent)}
+
+/* Sections */
+section{padding:2.2rem 0;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:none;padding-top:0}
+h2{
+  font-family:var(--serif);
+  font-size:1.42rem;font-weight:600;letter-spacing:-.005em;
+  margin-bottom:1rem;
+}
+h3{font-size:.97rem;font-weight:650;margin:1.7rem 0 .35rem}
+p{margin-bottom:1rem;max-width:44rem}
+p:last-child{margin-bottom:0}
+a{color:var(--accent)}
+em{font-style:italic}
+strong{font-weight:650}
+.note{font-size:.9rem;color:var(--muted);max-width:44rem}
+.caption{font-size:.84rem;color:var(--muted);line-height:1.6;max-width:46rem;margin-bottom:1.2rem}
+code{
+  font-family:var(--mono);
+  font-size:.85em;background:#f2f2ef;padding:.08em .34em;border-radius:2px;
+}
+pre{
+  font-family:var(--mono);
+  font-size:.82rem;line-height:1.6;
+  background:#f7f7f4;border:1px solid var(--rule);
+  padding:.95rem 1.1rem;margin:1rem 0 1.1rem;
+  overflow-x:auto;color:var(--ink);
+}
+pre code{background:none;padding:0;font-size:inherit}
+
+/* Definition rows */
+dl{margin:1.1rem 0}
+.row{
+  display:grid;grid-template-columns:12.5rem 1fr;gap:.6rem 1.6rem;
+  padding:.72rem 0;border-top:1px solid var(--rule);
+}
+.row:last-child{border-bottom:1px solid var(--rule)}
+.row dt{font-weight:600;font-size:.94rem;color:var(--ink)}
+.row dd{font-size:.93rem;color:var(--muted);max-width:36rem}
+.row dd strong{color:var(--ink)}
+@media(max-width:36rem){
+  .row{grid-template-columns:1fr;gap:.18rem}
+  .row dd{font-size:.9rem}
+}
+
+/* Hairline tables */
+table{width:100%;border-collapse:collapse;margin:1.15rem 0 .85rem;font-size:.9rem;font-variant-numeric:tabular-nums}
+th{
+  text-align:left;font-size:.73rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:600;padding:0 .8rem .5rem 0;border-bottom:1px solid var(--rule);
+}
+td{padding:.62rem .8rem .62rem 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td:first-child{font-weight:600;color:var(--ink)}
+td.muted{color:var(--muted)}
+td:last-child,th:last-child{padding-right:0}
+@media(max-width:40rem){
+  table{display:block;overflow-x:auto}
+}
+
+/* Scientific chart frame */
+.chart-box{
+  border:1px solid var(--rule);background:#fff;
+  padding:.95rem 1.1rem .8rem;margin:1.25rem 0 1.35rem;
+  position:relative;
+}
+.chart-bar{
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:.5rem 1rem;padding-bottom:.65rem;margin-bottom:.65rem;
+  border-bottom:1px solid var(--rule);
+}
+.chart-tabs{display:flex;flex-wrap:wrap;gap:1.15rem}
+.tab-link{
+  background:none;border:none;border-bottom:1.5px solid transparent;
+  padding:0 0 .18rem;cursor:pointer;font-family:var(--sans);
+  font-size:.86rem;color:var(--muted);
+}
+.tab-link:hover{color:var(--ink)}
+.tab-link.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.chart-select{display:flex;align-items:center;gap:.45rem;font-size:.84rem;color:var(--muted)}
+.chart-select select{
+  font-family:var(--sans);font-size:.84rem;color:var(--ink);
+  background:var(--bg);border:1px solid var(--rule);padding:.26rem .5rem;
+}
+#paretoSvg{width:100%;height:auto;display:block}
+.chart-legend{
+  display:flex;flex-wrap:wrap;gap:.45rem 1.35rem;
+  padding-top:.6rem;margin-top:.35rem;border-top:1px solid var(--rule);
+  font-size:.81rem;color:var(--muted);
+}
+.leg-item{display:inline-flex;align-items:center;gap:.45rem}
+.chart-tip{
+  display:none;position:absolute;pointer-events:none;z-index:10;
+  background:var(--bg);color:var(--ink);border:1px solid var(--rule);
+  padding:.48rem .62rem;font-size:.79rem;line-height:1.5;max-width:19rem;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+}
+
+footer{
+  border-top:1px solid var(--rule);
+  margin-top:1rem;padding:2.2rem 0 4rem;
+  font-size:.89rem;color:var(--muted);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>EmbodiedX Benchmark and Challenge</h1>
+  <p class="standfirst">An open, closed-loop serving benchmark for Vision-Language-Action policies and embodied world models at the CoRL 2026 EEAI Workshop. Submissions chart the single-chip latency-throughput Pareto frontier under real-time control deadlines.</p>
+  <p class="meta"><strong>Standard hardware:</strong> NVIDIA L40S (48 GB) and Google Cloud TPU v6e-1 (32 GB) &nbsp;&middot;&nbsp; <strong>CoRL spotlight freeze:</strong> Nov 10, 2026 &nbsp;&middot;&nbsp; <strong>Season 1 final freeze:</strong> Dec 18, 2026<br><strong>Awards:</strong> Monetary prizes, CoRL 2026 EEAI Workshop Award Certificates, an invitation to apply for Google Cloud credits, and <em>Season 1 Systems Report</em> co-authorship</p>
+  <p class="head-links">
+    <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench">GitHub Repository</a> &nbsp;&middot;&nbsp;
+    <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench/blob/main/docs/EmbodiedX_Benchmark_Methodology_and_Metrics.pdf">Methodology Specification (PDF)</a> &nbsp;&middot;&nbsp;
+    <a href="#submit">Submit a Run</a>
+  </p>
+  <nav>
+    <a href="../">&larr; Workshop</a><a href="#leaderboard">Leaderboard</a><a href="#awards">Awards</a><a href="#tracks">Tracks &amp; Hardware</a><a href="#rules">Protocol</a><a href="#submit">Submit</a>
+  </nav>
+</header>
+
+<section id="leaderboard">
+  <h2>Leaderboard and Pareto Frontier</h2>
+  <p id="leaderboardLead">Season 1 opened October 30, 2026 (0 community submissions recorded so far; the reference harness and eight-gate verifier were validated end-to-end on physical NVIDIA L40S and Cloud TPU v6e-1 without seeding organizer scores). Merged pull requests populate this chart automatically; dashed lines illustrate how concurrency sweeps (<em>C</em> = 1..16) trace the latency-throughput frontier against each track's real-time control deadline.</p>
+
+  <div class="chart-box" id="chartFrame">
+    <div class="chart-bar">
+      <div class="chart-tabs" role="tablist" aria-label="Pareto Y-axis metric">
+        <button type="button" class="tab-link on" data-metric="primary" role="tab" aria-selected="true">Throughput vs. Interactivity</button>
+        <button type="button" class="tab-link" data-metric="perfw" role="tab" aria-selected="false">Efficiency vs. Interactivity</button>
+      </div>
+      <label class="chart-select" for="selTrack">
+        <span>Track</span>
+        <select id="selTrack">
+          <option value="pi05_track">Track 1A: pi0.5-LIBERO</option>
+          <option value="gr00t_track">Track 1B: GR00T N1.7-3B</option>
+          <option value="wm_track">Track 2: Cosmos-Predict2.5-2B</option>
+        </select>
+      </label>
+    </div>
+    <svg id="paretoSvg" viewBox="0 0 760 330" role="img" aria-label="EmbodiedX latency-throughput Pareto frontier"></svg>
+    <div class="chart-legend" id="chartLegend"></div>
+    <div class="chart-tip" id="chartTip"></div>
+  </div>
+
+  <table aria-label="Season 1 track status">
+    <thead>
+      <tr><th>Track</th><th>Target Hardware</th><th>Leading Entry</th><th>Real-Time SLA</th></tr>
+    </thead>
+    <tbody id="statusTableBody">
+      <tr>
+        <td>Track 1A: &pi;<sub>0.5</sub>-LIBERO</td>
+        <td class="muted">NVIDIA L40S (48 GB) &middot; TPU v6e-1 (32 GB)</td>
+        <td class="muted">Open (no submissions yet; submit PR #1)</td>
+        <td class="muted">p99 &le; 250 ms (&ge; 4.0 Chunks/s)</td>
+      </tr>
+      <tr>
+        <td>Track 1B: GR00T N1.7-3B</td>
+        <td class="muted">NVIDIA L40S (48 GB) &middot; TPU v6e-1 (32 GB)</td>
+        <td class="muted">Open (no submissions yet; submit PR #1)</td>
+        <td class="muted">p99 &le; 400 ms (&ge; 2.5 Chunks/s)</td>
+      </tr>
+      <tr>
+        <td>Track 2: Cosmos-Predict2.5-2B</td>
+        <td class="muted">NVIDIA L40S (48 GB) &middot; TPU v6e-1 (32 GB)</td>
+        <td class="muted">Open (no submissions yet; submit PR #1)</td>
+        <td class="muted">p99 &le; 1000 ms (&ge; 1.0 Pred/s)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="awards">
+  <h2>Awards and Key Dates</h2>
+  <p>Because closed-loop deployments trade tail latency against batch throughput, two Pareto curves may cross. Season 1 evaluates each track on the two standardized cloud platforms using three scalar award categories anchored to the track's real-time control deadline.</p>
+
+  <table aria-label="Season 1 award categories">
+    <thead>
+      <tr><th>Award Category</th><th>Scalar Ranking Metric</th><th>Admissibility Requirement</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Interactive Reactivity (<code>C = 1</code>)</td>
+        <td class="muted">Highest single-stream control rate <code>1000 / p99_ms</code> at concurrency <code>C = 1</code> (lowest <code>C = 1</code> <code>p99</code> latency, tie-broken by lowest <code>p50_ms</code>).</td>
+        <td class="muted">Unimodal latency tail <code>p99 / p50 &le; 1.5</code> at <code>C = 1</code>.</td>
+      </tr>
+      <tr>
+        <td>Real-Time Fleet Throughput</td>
+        <td class="muted">Highest aggregate <code>Actions/s</code> (Track 1) or <code>Predictions/s</code> (Track 2) achieved over canonical points <code>C &isin; {1, 2, 4, 8, 16}</code>.</td>
+        <td class="muted">Selected point must satisfy the track's gapless real-time <code>p99</code> SLA.</td>
+      </tr>
+      <tr>
+        <td>Green Embodied Efficiency</td>
+        <td class="muted">Highest hardware-measured <code>Actions/J</code> (Track 1) or <code>Predictions/J</code> (Track 2) across SLA-compliant points in <code>{1, 2, 4, 8, 16}</code>.</td>
+        <td class="muted"><code>10 Hz NVML</code> board TBP power on <code>NVIDIA L40S</code> at constant cap (TPU reported as <code>N/A</code>).</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="caption">Exact ties are broken by lower-step Real-Time Hypervolume over SLA-compliant discrete points relative to reference origin <code>(0.5 &middot; X<sub>SLA</sub>, 0)</code>.</p>
+  <p><strong>Winner recognition.</strong> Verified Season 1 category winners receive monetary prizes, an official CoRL 2026 EEAI Workshop Award Certificate, an invitation to apply for Google Cloud credits, permanent verified leaderboard attribution, and an invitation to co-author the post-season <em>EmbodiedX Season 1 Systems Report</em>. Early submissions merged before the November 10 freeze are recognized live on stage at CoRL on November 12 at Hilton Austin, Room 408 (2:00&ndash;6:00 PM CST).</p>
+
+  <dl>
+    <div class="row"><dt>Oct 30, 2026</dt><dd>Benchmark v1.0 harness and public Season 1 leaderboard open for pull requests.</dd></div>
+    <div class="row"><dt>Nov 10, 2026 (23:59 UTC)</dt><dd><strong>Checkpoint 1: CoRL live spotlight freeze.</strong> All valid pull requests merged by this deadline are featured on stage on November 12 as Founding Frontier Leaders.</dd></div>
+    <div class="row"><dt>Nov 12, 2026</dt><dd><strong>CoRL 2026 EEAI Workshop session</strong> at Hilton Austin, Room 408 (2:00&ndash;6:00 PM CST; 17:35 CST challenge session) and live founding-frontier presentation.</dd></div>
+    <div class="row"><dt>Dec 18, 2026 (23:59 AoE)</dt><dd><strong>Checkpoint 2: Season 1 final PR freeze.</strong> Shortlisted finalists complete their 24-hour private container reveal for clean-hardware organizer re-runs; the public leaderboard continues on a rolling basis in 2027.</dd></div>
+  </dl>
+</section>
+
+<section id="tracks">
+  <h2>Tracks and Standard Hardware</h2>
+  <p>EmbodiedX separates the two action-policy workloads (Track 1A and Track 1B) from world-model video prediction (Track 2) because their per-action compute budgets and latency deadlines differ substantially. A 20 Hz servo step corresponds to <code>50 ms</code> (<code>20 Chunks/s</code> single-tick reaction).</p>
+
+  <table aria-label="EmbodiedX Season 1 benchmark tracks">
+    <thead>
+      <tr><th>Track</th><th>Checkpoint and Input Suite</th><th>Locked Horizon</th><th>Gapless SLA and Closed Gate</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Track 1A: &pi;<sub>0.5</sub>-LIBERO</td>
+        <td class="muted"><code>lerobot/pi05_libero_finetuned_v044</code> (10 ODE steps, dual <code>224&times;224</code> RGB on LIBERO traces)</td>
+        <td class="muted"><code>H = 10</code>, <code>K<sub>eval</sub> = 5</code></td>
+        <td class="muted"><code>p99 &le; 250 ms</code> (<code>&ge; 4.0 Chunks/s</code>); <code>CosSim &ge; 0.995</code> + <code>CVaR-1%</code></td>
+      </tr>
+      <tr>
+        <td>Track 1B: GR00T N1.7-3B</td>
+        <td class="muted"><code>nvidia/GR00T-N1.7-LIBERO</code> (<code>libero_10</code>; 16 DiT steps, dual <code>256&times;256</code> RGB on LIBERO traces)</td>
+        <td class="muted"><code>H = 16</code>, <code>K<sub>eval</sub> = 8</code></td>
+        <td class="muted"><code>p99 &le; 400 ms</code> (<code>&ge; 2.5 Chunks/s</code>); <code>CosSim &ge; 0.995</code> + <code>CVaR-1%</code></td>
+      </tr>
+      <tr>
+        <td>Track 2: Cosmos-Predict2.5-2B</td>
+        <td class="muted"><code>nvidia/Cosmos-Predict2.5-2B</code> (<code>robot/action-cond</code>; 10 steps, <code>CFG = 1.0</code>, <code>256&times;256</code> rollout traces)</td>
+        <td class="muted"><code>K<sub>eval</sub> = 16</code> frames</td>
+        <td class="muted"><code>p99 &le; 1000 ms</code> (<code>&ge; 1.0 Pred/s</code>); <code>SSIM &ge; 0.88</code>, <code>PSNR &ge; 26.0 dB</code>, <code>CVaR-1% SSIM &ge; 0.80</code>, <code>CVaR-1% PSNR &ge; 22.0 dB</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="compute-access">Standard Season 1 cloud hardware</h3>
+  <p>Every submission runs on a single physical chip (<code>num_devices == 1</code>, <code>TP = PP = EP = 1</code>) at stock vendor clock and power limits. Season 1 standardizes on one NVIDIA GPU and one Google Cloud TPU so entries compete strictly on kernel, compiler, and serving systems engineering rather than hardware budget, and so organizers can re-run every finalist on identical cloud silicon.</p>
+
+  <dl>
+    <div class="row">
+      <dt>NVIDIA L40S (48 GB)</dt>
+      <dd>Ada Lovelace SM89, 48 GB GDDR6, 350 W board TDP, 362.05 TF dense BF16, native FP8 Tensor Cores, and standardized <code>10 Hz NVML</code> board energy telemetry. Available on demand through Shadeform (~$0.88&ndash;$1.15/hr), AWS EC2 <code>g6e.xlarge</code>, or the <a href="https://www.nvidia.com/en-us/industries/higher-education-research/academic-grant-program/">NVIDIA Academic Grant Program</a>.</dd>
+    </div>
+    <div class="row">
+      <dt>Cloud TPU v6e-1 (32 GB)</dt>
+      <dd>Trillium single-chip slice with 32 GB HBM2e supporting native JAX/Pallas and PyTorch/<code>TorchTPU</code> stacks. Available on demand through Google Cloud (~$1.375/hr) or free via a renewable 30-day <a href="https://sites.research.google/trc/">Google TPU Research Cloud (TRC)</a> academic allocation.</dd>
+    </div>
+  </dl>
+  <p class="note">Onboard edge modules are reserved for future seasons so Season 1 remains strictly reproducible on standardized cloud hardware.</p>
+</section>
+
+<section id="rules">
+  <h2>Evaluation Protocol and Fair Play</h2>
+  <dl>
+    <div class="row">
+      <dt>Closed vs. Open divisions</dt>
+      <dd>Both divisions lock the execution horizon <code>K<sub>eval</sub></code> so action throughput cannot be inflated by lengthening open-loop chunks. <strong>Closed</strong> keeps checkpoint architecture, weights, and solver step count fixed under BF16/FP16/FP8 numerics verified by inline Golden-IO parity (<code>CosSim</code> plus <code>CVaR-1%</code> tail floor for Track 1; <code>SSIM &ge; 0.88</code>, <code>PSNR &ge; 26.0 dB</code>, <code>CVaR-1% SSIM &ge; 0.80</code>, and <code>CVaR-1% PSNR &ge; 22.0 dB</code> for Track 2). <strong>Open</strong> allows INT4 quantization, pruning, step distillation, or token merging only when accompanied by a signed Stage-2 quality receipt: latency-coupled <code>LIBERO-RT</code> success within <code>-5.0 pp</code> of reference for Track 1, or <code>SSIM &ge; 0.88</code>, <code>PSNR &ge; 26.0 dB</code>, <code>LPIPS &le; 0.12</code>, <code>FVD &le; 120</code>, <code>InvDyn &ge; 0.99</code>, and ranking <code>Kendall &tau; &ge; 0.80</code> for Track 2.</dd>
+    </div>
+    <div class="row">
+      <dt>Measurement protocol</dt>
+      <dd>A closed-loop HTTP/gRPC client sweeps canonical concurrencies <code>C &isin; {1, 2, 4, 8, 16}</code> starting at <code>C = 1</code> (allowing only monotonic tail truncation on device OOM, with zero off-grid concurrencies and zero curve interpolation). Each point requires <code>N = 3</code> trials within <code>&le; 8%</code> inter-run <code>p99</code> spread and <code>p99 / p50 &le; 1.5</code> at <code>C = 1</code>, measured after real-model warmup (<code>--warmup 30</code> to <code>50</code>) at stock vendor TDP/clocks with zero host-CPU neural offload and per-frame cryptographic pixel micro-jitter against trace caching.</dd>
+    </div>
+    <div class="row">
+      <dt>Power telemetry</dt>
+      <dd><code>Actions/J</code> and <code>Predictions/J</code> rankings strictly require <code>power_provenance == "MEASURED"</code> from active hardware sensors (<code>10 Hz NVML</code> total board power on <code>NVIDIA L40S</code>) held at a constant power limit across all concurrencies in the bundle. Assumed-wattage flags (<code>--assume-power-watts</code>) are rejected; <code>Cloud TPU v6e-1</code> entries report power as <code>N/A</code> where guest VMs do not expose board wattage.</dd>
+    </div>
+    <div class="row">
+      <dt>Two-phase commit-reveal</dt>
+      <dd>Public Phase-1 pull requests submit only <code>bundle_summary.json</code> and <code>submission_meta.json</code> carrying <code>recipe_commit_sha256</code>, a SHA-256 digest over a canonical <code>reveal_manifest.json</code> pinning the immutable OCI container image (<code>@sha256</code>), checkpoint shard digests, lockfile hash, and exact launch command. Submitted curves render live on the public leaderboard while custom kernels and serving recipes remain private until the contest freeze.</dd>
+    </div>
+    <div class="row">
+      <dt>Finalist verification</dt>
+      <dd>Within 24 hours after December 18 (23:59 AoE), shortlisted finalists (at most one slot per laboratory or organization per track and division) privately supply their matching container to the organizers. Official Season 1 awards are ranked strictly by organizer clean-hardware re-runs on a private held-out trace split, where <code>&plusmn; 8%</code> agreement against Phase 1 serves strictly as an anti-fraud disqualification gate. Confirmed Season 1 winners publish reproducible open recipes (<code>Verified Open Recipe</code>); continuous post-CoRL entries may carry either open or <code>Proprietary / Audit-Only</code> attribution.</dd>
+    </div>
+  </dl>
+</section>
+
+<section id="submit">
+  <h2>Quickstart and Submission</h2>
+  <pre><code>git clone https://github.com/efficient-embodied-ai/embodied-efficiency-bench.git
+cd embodied-efficiency-bench &amp;&amp; pip install -e ".[vla,gpu]"
+
+eeb data prepare-traces --track vla --split mini --out ./data/traces
+eeb data generate-golden --model pi05 --traces ./data/traces --num-samples 100 --out ./data/pi05_golden.npz
+eeb serve --model pi05 --checkpoint lerobot/pi05_libero_finetuned_v044 --port 8080 &amp;
+
+eeb measure --track track1a --division closed --hardware nvidia_l40s_48gb \
+  --server http://127.0.0.1:8080 --traces ./data/traces --golden ./data/pi05_golden.npz \
+  --sweep 1,2,4,8,16 --warmup 30 --calls 320 --runs 3 --strict \
+  --out ./runs/my_pi05_l40s
+
+eeb prepare-commit-bundle --run-dir ./runs/my_pi05_l40s \
+  --output ./submissions/track1_vla/my_lab_pi05_l40s
+eeb verify-bundle ./submissions/track1_vla/my_lab_pi05_l40s --strict</code></pre>
+  <p>Open a Phase-1 pull request placing <code>bundle_summary.json</code> and <code>submission_meta.json</code> (containing your <code>recipe_commit_sha256</code> digest) under <code>submissions/&lt;track_dir&gt;/&lt;submission_id&gt;/</code> in <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench"><code>efficient-embodied-ai/embodied-efficiency-bench</code></a>. Full packaging details, Cloud TPU v6e-1 (<code>tpu_v6e_1_32gb</code>) single-chip environment flags, and coding-agent harnesses are documented in <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench/blob/main/submissions/README.md"><code>submissions/README.md</code></a> and the <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench/blob/main/docs/EmbodiedX_Benchmark_Methodology_and_Metrics.pdf">EmbodiedX Methodology Specification (PDF)</a>.</p>
+</section>
+
+<footer>
+  Contact <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> &nbsp;&middot;&nbsp; Efficient Foundation Models for Real-Time Embodied AI &nbsp;&middot;&nbsp; CoRL 2026 Workshop &nbsp;&middot;&nbsp; November 12, 2026, Hilton Austin, Room 408 (2:00&ndash;6:00 PM CST), Austin, Texas.
+</footer>
+
+</div>
+<script>
+(function(){
+  var SCENARIOS = {
+    pi05_track: {
+      rowTitle: 'Track 1A: \u03c00.5-LIBERO',
+      htmlTitle: 'Track 1A: &pi;<sub>0.5</sub>-LIBERO',
+      targetHw: 'NVIDIA L40S (48 GB) \u00b7 TPU v6e-1 (32 GB)',
+      slaText: 'p99 \u2264 250 ms (\u2265 4.0 Chunks/s)',
+      cutoffX: 4.0,
+      xMax: 40,
+      xTicks: [0, 4, 10, 20, 30, 40],
+      xLabel: 'Guaranteed Interactivity: 1000 / p99_ms (Chunks/s)',
+      yLabelPrimary: 'Fleet Throughput (Actions/s)',
+      yLabelPerfw: 'Energy Efficiency (Actions/J)',
+      xUnit: ' Chunks/s',
+      yUnitPrimary: ' Act/s',
+      yUnitPerfw: ' Act/J',
+      vLines: [
+        { x: 4.0, label: '4.0 Chunks/s SLA (250 ms)', primary: true },
+        { x: 20.0, label: '20 Chunks/s 1-tick (50 ms)', primary: false }
+      ],
+      schematic: [
+        {
+          name: 'Compiled continuous-batched server (C=1..16)',
+          color: '#8a3324', dash: '5,4', illustrative: true, powerProvenance: 'ILLUSTRATIVE',
+          pts: [
+            { c: 1, x: 28.0, p99: 35.7, p50: 32.0, y: 150, eff: 0.62 },
+            { c: 2, x: 22.0, p99: 45.5, p50: 41.0, y: 240, eff: 0.88 },
+            { c: 4, x: 14.0, p99: 71.4, p50: 64.0, y: 310, eff: 1.05 },
+            { c: 8, x: 7.5,  p99: 133.3, p50: 120.0, y: 350, eff: 1.14 },
+            { c: 16, x: 3.2, p99: 312.5, p50: 285.0, y: 365, eff: 1.16 }
+          ]
+        },
+        {
+          name: 'Serial unbatched server (C=1..8)',
+          color: '#5f6874', dash: '2,3', illustrative: true, powerProvenance: 'ILLUSTRATIVE',
+          pts: [
+            { c: 1, x: 16.0, p99: 62.5, p50: 57.0, y: 85, eff: 0.38 },
+            { c: 2, x: 8.5,  p99: 117.6, p50: 108.0, y: 90, eff: 0.40 },
+            { c: 4, x: 4.2,  p99: 238.1, p50: 220.0, y: 92, eff: 0.41 },
+            { c: 8, x: 2.1,  p99: 476.2, p50: 445.0, y: 92, eff: 0.41 }
+          ]
+        }
+      ]
+    },
+    gr00t_track: {
+      rowTitle: 'Track 1B: GR00T N1.7-3B',
+      htmlTitle: 'Track 1B: GR00T N1.7-3B',
+      targetHw: 'NVIDIA L40S (48 GB) \u00b7 TPU v6e-1 (32 GB)',
+      slaText: 'p99 \u2264 400 ms (\u2265 2.5 Chunks/s)',
+      cutoffX: 2.5,
+      xMax: 40,
+      xTicks: [0, 2.5, 10, 20, 30, 40],
+      xLabel: 'Guaranteed Interactivity: 1000 / p99_ms (Chunks/s)',
+      yLabelPrimary: 'Fleet Throughput (Actions/s)',
+      yLabelPerfw: 'Energy Efficiency (Actions/J)',
+      xUnit: ' Chunks/s',
+      yUnitPrimary: ' Act/s',
+      yUnitPerfw: ' Act/J',
+      vLines: [
+        { x: 2.5, label: '2.5 Chunks/s SLA (400 ms)', primary: true },
+        { x: 20.0, label: '20 Chunks/s 1-tick (50 ms)', primary: false }
+      ],
+      schematic: [
+        {
+          name: 'Compiled continuous-batched server (C=1..16)',
+          color: '#8a3324', dash: '5,4', illustrative: true, powerProvenance: 'ILLUSTRATIVE',
+          pts: [
+            { c: 1, x: 30.0, p99: 33.3, p50: 30.0, y: 250, eff: 0.95 },
+            { c: 2, x: 24.0, p99: 41.7, p50: 37.5, y: 390, eff: 1.35 },
+            { c: 4, x: 15.0, p99: 66.7, p50: 60.0, y: 500, eff: 1.62 },
+            { c: 8, x: 8.0,  p99: 125.0, p50: 112.0, y: 560, eff: 1.75 },
+            { c: 16, x: 3.5, p99: 285.7, p50: 260.0, y: 580, eff: 1.78 }
+          ]
+        },
+        {
+          name: 'Serial unbatched server (C=1..8)',
+          color: '#5f6874', dash: '2,3', illustrative: true, powerProvenance: 'ILLUSTRATIVE',
+          pts: [
+            { c: 1, x: 18.0, p99: 55.6, p50: 50.0, y: 150, eff: 0.58 },
+            { c: 2, x: 9.5,  p99: 105.3, p50: 96.0, y: 158, eff: 0.60 },
+            { c: 4, x: 4.8,  p99: 208.3, p50: 190.0, y: 160, eff: 0.61 },
+            { c: 8, x: 2.2,  p99: 454.5, p50: 420.0, y: 160, eff: 0.61 }
+          ]
+        }
+      ]
+    },
+    wm_track: {
+      rowTitle: 'Track 2: Cosmos-Predict2.5-2B',
+      htmlTitle: 'Track 2: Cosmos-Predict2.5-2B',
+      targetHw: 'NVIDIA L40S (48 GB) \u00b7 TPU v6e-1 (32 GB)',
+      slaText: 'p99 \u2264 1000 ms (\u2265 1.0 Pred/s)',
+      cutoffX: 1.0,
+      xMax: 6.0,
+      xTicks: [0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0],
+      xLabel: 'Guaranteed Interactivity: 1000 / p99_ms (Predictions/s)',
+      yLabelPrimary: 'Fleet Throughput (Predictions/s)',
+      yLabelPerfw: 'Energy Efficiency (Predictions/J)',
+      xUnit: ' Pred/s',
+      yUnitPrimary: ' Pred/s',
+      yUnitPerfw: ' Pred/J',
+      vLines: [
+        { x: 1.0, label: '1.0 Pred/s SLA (1000 ms)', primary: true },
+        { x: 2.5, label: '2.5 Pred/s (400 ms)', primary: false }
+      ],
+      schematic: [
+        {
+          name: 'Compiled continuous-batched server (C=1..8)',
+          color: '#8a3324', dash: '5,4', illustrative: true, powerProvenance: 'ILLUSTRATIVE',
+          pts: [
+            { c: 1, x: 4.5, p99: 222.2, p50: 205.0, y: 4.6, eff: 0.018 },
+            { c: 2, x: 3.2, p99: 312.5, p50: 290.0, y: 6.4, eff: 0.023 },
+            { c: 4, x: 1.9, p99: 526.3, p50: 490.0, y: 7.6, eff: 0.026 },
+            { c: 8, x: 0.9, p99: 1111.1, p50: 1040.0, y: 7.8, eff: 0.026 }
+          ]
+        },
+        {
+          name: 'Serial unbatched server (C=1..4)',
+          color: '#5f6874', dash: '2,3', illustrative: true, powerProvenance: 'ILLUSTRATIVE',
+          pts: [
+            { c: 1, x: 2.4,  p99: 416.7, p50: 390.0, y: 2.5, eff: 0.010 },
+            { c: 2, x: 1.25, p99: 800.0, p50: 755.0, y: 2.6, eff: 0.010 },
+            { c: 4, x: 0.62, p99: 1612.9, p50: 1540.0, y: 2.6, eff: 0.010 }
+          ]
+        }
+      ]
+    }
+  };
+
+  var LIVE_COLORS = ['#8a3324', '#1d4ed8', '#0f766e', '#6d28d9', '#b45309', '#374151'];
+  var state = {
+    track: 'pi05_track',
+    metric: 'primary',
+    liveByTrack: { pi05_track: [], gr00t_track: [], wm_track: [] },
+    totalLive: 0
+  };
+
+  var svg = document.getElementById('paretoSvg');
+  var legendEl = document.getElementById('chartLegend');
+  var tipEl = document.getElementById('chartTip');
+  var frameEl = document.getElementById('chartFrame');
+  var selTrack = document.getElementById('selTrack');
+  var leadEl = document.getElementById('leaderboardLead');
+  var statusBody = document.getElementById('statusTableBody');
+  var tabBtns = Array.prototype.slice.call(document.querySelectorAll('.tab-link'));
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function routeTrack(raw) {
+    var key = [raw.scenario_key, raw.track_id, raw.track, raw.model_id, raw.model, raw.recipe_id].join(' ').toLowerCase();
+    if (key.indexOf('gr00t') >= 0 || key.indexOf('track1b') >= 0 || key.indexOf('1b') >= 0) return 'gr00t_track';
+    if (key.indexOf('cosmos') >= 0 || key.indexOf('wm_track') >= 0 || key.indexOf('track2') >= 0 || key.indexOf('world') >= 0) return 'wm_track';
+    return 'pi05_track';
+  }
+
+  function normalizeEntry(raw, idx) {
+    if (!raw || typeof raw !== 'object') raw = {};
+    var palette = LIVE_COLORS;
+    var tKey = routeTrack(raw);
+    var isWm = tKey === 'wm_track';
+    var candPts = raw.points || raw.pts || raw.sweep_points || [];
+    var rawPts = Array.isArray(candPts) ? candPts : [];
+    var prov = String(raw.power_provenance || 'UNAVAILABLE').toUpperCase();
+    var pts = [];
+    rawPts.forEach(function(pt) {
+      if (!pt || typeof pt !== 'object') return;
+      var rawC = Number(pt.concurrency || pt.batch_size || pt.c || 1);
+      var c = (isFinite(rawC) && rawC > 0) ? rawC : 1;
+      var p99 = Number(pt.p99_ms || pt.latency_p99_ms || pt.p99 || 0);
+      var x = Number(pt.x || pt.interactivity_per_s || pt.chunks_per_s_p99 || pt.predictions_per_s_p99 || (p99 > 0 ? 1000 / p99 : 0));
+      if ((!isFinite(p99) || p99 <= 0) && isFinite(x) && x > 0) p99 = 1000 / x;
+      var rawP50 = Number(pt.p50_ms || pt.latency_p50_ms || pt.p50 || p99);
+      var p50 = (isFinite(rawP50) && rawP50 > 0) ? rawP50 : p99;
+      var y = Number(pt.predictions_per_s || pt.rollouts_per_s || pt.actions_per_s || pt.y || 0);
+      if ((!isFinite(y) || y <= 0) && isWm && pt.frames_per_s) y = Number(pt.frames_per_s) / 16.0;
+      var eff = null;
+      if (prov === 'MEASURED') {
+        var rawEff = null;
+        if (pt.predictions_per_joule != null) rawEff = Number(pt.predictions_per_joule);
+        else if (pt.actions_per_joule != null) rawEff = Number(pt.actions_per_joule);
+        else if (pt.eff != null) rawEff = Number(pt.eff);
+        else if (isWm && pt.frames_per_joule != null) rawEff = Number(pt.frames_per_joule) / 16.0;
+        else if (Number(pt.mean_power_w) > 0 && isFinite(y) && y > 0) rawEff = y / Number(pt.mean_power_w);
+        if (rawEff !== null && isFinite(rawEff) && rawEff > 0) eff = rawEff;
+      }
+      if (isFinite(x) && x > 0 && isFinite(y) && y > 0 && isFinite(p99) && p99 > 0) {
+        pts.push({ c: c, x: x, p99: p99, p50: p50, y: y, eff: eff });
+      }
+    });
+    pts.sort(function(a, b) { return a.c - b.c; });
+    const safeColor = (typeof raw.color === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(raw.color.trim())) ? raw.color.trim() : palette[idx % palette.length];
+    var safeDiv = (raw.division && String(raw.division).toUpperCase() === 'OPEN') ? 'OPEN' : 'CLOSED';
+    return {
+      track: tKey,
+      name: String(raw.name || ((raw.team || 'Entry') + ' \u00b7 ' + (raw.hardware_sku || raw.sku || 'Single-Chip') + ' \u00b7 ' + (raw.engine || raw.runtime || 'Server'))),
+      hw: String(raw.hardware_sku || raw.hw || raw.sku || ''),
+      division: safeDiv,
+      color: safeColor,
+      dash: safeDiv === 'OPEN' ? '6,3' : '',
+      illustrative: false,
+      powerProvenance: prov,
+      pts: pts
+    };
+  }
+
+  function valY(pt) {
+    return state.metric === 'perfw' ? pt.eff : pt.y;
+  }
+
+  function applyLeaderboardData(data) {
+    var byTrack = { pi05_track: [], gr00t_track: [], wm_track: [] };
+    if (!data || typeof data !== 'object') data = {};
+    const list = Array.isArray(data.entries) ? data.entries : (Array.isArray(data.submissions) ? data.submissions : []);
+    var count = 0;
+    list.forEach(function(raw, idx) {
+      var norm = normalizeEntry(raw, idx);
+      if (norm.pts.length) {
+        byTrack[norm.track].push(norm);
+        count += 1;
+      }
+    });
+    state.liveByTrack = byTrack;
+    state.totalLive = count;
+    updateLeadAndTable();
+    render();
+  }
+
+  function updateLeadAndTable() {
+    if (leadEl) {
+      if (state.totalLive > 0) {
+        var safeCount = Number(state.totalLive) || 0;
+        leadEl.innerHTML = 'Season 1 live leaderboard: <strong>' + safeCount + '</strong> verified community ' +
+          (safeCount === 1 ? 'submission' : 'submissions') +
+          ' recorded on standardized single-chip cloud hardware. Curves plot measured concurrency sweeps across <em>C</em> &isin; {1, 2, 4, 8, 16} against each track\'s gapless real-time control deadline.';
+      } else {
+        leadEl.innerHTML = 'Season 1 opened October 30, 2026 (0 community submissions recorded so far; the reference harness and eight-gate verifier were validated end-to-end on physical NVIDIA L40S and Cloud TPU v6e-1 without seeding organizer scores). Merged pull requests populate this chart automatically; dashed lines illustrate how concurrency sweeps (<em>C</em> = 1..16) trace the latency-throughput frontier against each track\'s real-time control deadline.';
+      }
+    }
+    if (!statusBody) return;
+    var rows = ['pi05_track', 'gr00t_track', 'wm_track'].map(function(k) {
+      var sc = SCENARIOS[k];
+      var live = state.liveByTrack[k] || [];
+      var leader = 'Open (no submissions yet; submit PR #1)';
+      if (live.length > 0) {
+        var best = null;
+        live.forEach(function(c) {
+          c.pts.forEach(function(p) {
+            if (p.x >= sc.cutoffX && (!best || p.y > best.y)) {
+              best = { name: c.name, y: p.y, c: p.c };
+            }
+          });
+        });
+        if (best) {
+          leader = esc(best.name) + ' (' + best.y.toFixed(1) + esc(sc.yUnitPrimary) + ' @ C=' + esc(best.c) + ')';
+        } else {
+          leader = Number(live.length) + ' submitted (none clearing SLA yet)';
+        }
+      }
+      return '<tr><td>' + sc.htmlTitle + '</td><td class="muted">' + esc(sc.targetHw) +
+        '</td><td class="muted">' + leader + '</td><td class="muted">' + esc(sc.slaText) + '</td></tr>';
+    });
+    statusBody.innerHTML = rows.join('');
+  }
+
+  function fmtNum(v) {
+    if (v >= 100) return v.toFixed(0);
+    if (v >= 10) return v.toFixed(1);
+    if (v >= 1) return v.toFixed(2);
+    return v.toFixed(3);
+  }
+
+  function render() {
+    if (!svg) return;
+    var sc = SCENARIOS[state.track];
+    var live = state.liveByTrack[state.track] || [];
+    var isSchematic = live.length === 0;
+    var curves = isSchematic ? sc.schematic : live;
+
+    var plotCurves = curves.map(function(c) {
+      var pts = c.pts.filter(function(p) {
+        var yv = valY(p);
+        return typeof yv === 'number' && isFinite(yv) && yv > 0;
+      });
+      return { curve: c, pts: pts };
+    });
+
+    var xMax = sc.xMax;
+    var maxY = 0;
+    plotCurves.forEach(function(item) {
+      item.pts.forEach(function(p) {
+        if (p.x > xMax) xMax = Math.ceil(p.x * 1.1);
+        var yv = valY(p);
+        if (yv > maxY) maxY = yv;
+      });
+    });
+    if (maxY <= 0) maxY = 1.0;
+    var yMax = maxY * 1.18;
+
+    var W = 760, H = 330;
+    var mL = 62, mR = 22, mT = 26, mB = 46;
+    var pW = W - mL - mR, pH = H - mT - mB;
+    function xPx(v) { return mL + (Math.min(xMax, Math.max(0, v)) / xMax) * pW; }
+    function yPx(v) { return mT + pH - (Math.min(yMax, Math.max(0, v)) / yMax) * pH; }
+
+    var out = [];
+    for (var i = 0; i <= 4; i++) {
+      var yVal = (yMax * i) / 4;
+      var gy = yPx(yVal);
+      out.push('<line x1="' + mL + '" y1="' + gy.toFixed(1) + '" x2="' + (W - mR) + '" y2="' + gy.toFixed(1) + '" stroke="#eef0f2" stroke-width="1"/>');
+      out.push('<text x="' + (mL - 8) + '" y="' + (gy + 3.5).toFixed(1) + '" text-anchor="end" font-size="10.5" fill="#5f6874">' + fmtNum(yVal) + '</text>');
+    }
+
+    sc.xTicks.forEach(function(tv) {
+      if (tv > xMax) return;
+      var gx = xPx(tv);
+      out.push('<line x1="' + gx.toFixed(1) + '" y1="' + mT + '" x2="' + gx.toFixed(1) + '" y2="' + (mT + pH) + '" stroke="#f3f4f6" stroke-width="1"/>');
+      out.push('<text x="' + gx.toFixed(1) + '" y="' + (mT + pH + 16) + '" text-anchor="middle" font-size="10.5" fill="#5f6874">' + esc(tv) + '</text>');
+    } );
+
+    out.push('<line x1="' + mL + '" y1="' + (mT + pH) + '" x2="' + (W - mR) + '" y2="' + (mT + pH) + '" stroke="#cfd5dc" stroke-width="1"/>');
+    out.push('<line x1="' + mL + '" y1="' + mT + '" x2="' + mL + '" y2="' + (mT + pH) + '" stroke="#cfd5dc" stroke-width="1"/>');
+
+    sc.vLines.forEach(function(vl, idx) {
+      if (vl.x > xMax) return;
+      var vx = xPx(vl.x);
+      var col = vl.primary ? '#8a3324' : '#7b8490';
+      out.push('<line x1="' + vx.toFixed(1) + '" y1="' + mT + '" x2="' + vx.toFixed(1) + '" y2="' + (mT + pH) + '" stroke="' + col + '" stroke-width="1" stroke-dasharray="4,3"/>');
+      var anchor = vx > W - 180 ? 'end' : 'start';
+      var dx = anchor === 'end' ? -5 : 5;
+      out.push('<text x="' + (vx + dx).toFixed(1) + '" y="' + (mT + 11 + idx * 13) + '" text-anchor="' + anchor + '" font-size="10" fill="' + col + '">' + esc(vl.label) + '</text>');
+    });
+
+    if (isSchematic) {
+      out.push('<text x="' + (W - mR - 4) + '" y="' + (mT + pH - 8) + '" text-anchor="end" font-size="10" fill="#7b8490" font-style="italic">Illustrative shape only (0 submissions recorded)</text>');
+    } else {
+      var cand = [];
+      plotCurves.forEach(function(item) {
+        item.pts.forEach(function(p) {
+          if (p.x >= sc.cutoffX) cand.push({ x: p.x, y: valY(p) });
+        });
+      });
+      cand.sort(function(a, b) { return b.x - a.x || b.y - a.y; });
+      var front = [], bestSoFar = -1;
+      cand.forEach(function(p) {
+        if (p.y > bestSoFar) { front.push(p); bestSoFar = p.y; }
+      });
+      if (front.length >= 2) {
+        var fPath = ['M ' + xPx(front[0].x).toFixed(1) + ' ' + yPx(front[0].y).toFixed(1)];
+        for (var fi = 1; fi < front.length; fi++) {
+          fPath.push('L ' + xPx(front[fi].x).toFixed(1) + ' ' + yPx(front[fi - 1].y).toFixed(1));
+          fPath.push('L ' + xPx(front[fi].x).toFixed(1) + ' ' + yPx(front[fi].y).toFixed(1));
+        }
+        out.push('<path d="' + fPath.join(' ') + '" fill="none" stroke="#8a3324" stroke-opacity="0.28" stroke-width="3"/>');
+      }
+    }
+
+    var yUnit = state.metric === 'perfw' ? sc.yUnitPerfw : sc.yUnitPrimary;
+    plotCurves.forEach(function(item) {
+      var c = item.curve, pts = item.pts;
+      if (!pts.length) return;
+      var lineColor = (typeof c.color === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(c.color)) ? c.color : '#5f6874';
+      var lineDash = (typeof c.dash === 'string' && /^[0-9,]+$/.test(c.dash)) ? c.dash : '';
+      var d = pts.map(function(p, i) {
+        return (i === 0 ? 'M ' : 'L ') + xPx(p.x).toFixed(1) + ' ' + yPx(valY(p)).toFixed(1);
+      }).join(' ');
+      var dashAttr = lineDash ? ' stroke-dasharray="' + lineDash + '"' : '';
+      out.push('<path d="' + d + '" fill="none" stroke="' + lineColor + '" stroke-width="1.6"' + dashAttr + '/>');
+      pts.forEach(function(p) {
+        var px = xPx(p.x), py = yPx(valY(p));
+        var meetsSla = p.x >= sc.cutoffX;
+        var fill = (c.illustrative || !meetsSla) ? '#ffffff' : lineColor;
+        var tag = c.illustrative ? 'Illustrative curve (not measured hardware data)' : ('Verified ' + c.division + ' submission');
+        var tip = esc(c.name + ' (C=' + p.c + ') | ' + p.x.toFixed(2) + sc.xUnit + ' (p99 ' + p.p99.toFixed(1) + ' ms) | ' + fmtNum(valY(p)) + yUnit + ' | ' + tag);
+        out.push('<circle class="pt-node" cx="' + px.toFixed(1) + '" cy="' + py.toFixed(1) + '" r="3.6" fill="' + fill + '" stroke="' + lineColor + '" stroke-width="1.5" style="cursor:pointer" data-tip="' + tip + '"/>');
+      });
+    });
+
+    var yAxisTitle = state.metric === 'perfw' ? sc.yLabelPerfw : sc.yLabelPrimary;
+    out.push('<text x="' + (mL + pW / 2).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="11" fill="#16191d">' + esc(sc.xLabel) + '</text>');
+    out.push('<text transform="translate(15,' + (mT + pH / 2).toFixed(1) + ') rotate(-90)" text-anchor="middle" font-size="11" fill="#16191d">' + esc(yAxisTitle) + '</text>');
+
+    svg.innerHTML = out.join('');
+
+    legendEl.innerHTML = curves.map(function(c) {
+      var swColor = (typeof c.color === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(c.color)) ? c.color : '#5f6874';
+      var omitted = (state.metric === 'perfw' && !c.illustrative && c.powerProvenance !== 'MEASURED');
+      var suffix = c.illustrative ? ' &middot; illustrative curve (no submissions yet)' : (omitted ? ' &middot; N/A (power unexposed)' : '');
+      var swStyle = c.dash
+        ? 'width:16px;border-top:1.6px dashed ' + swColor + ';display:inline-block'
+        : 'width:16px;border-top:2px solid ' + swColor + ';display:inline-block';
+      return '<span class="leg-item"><span style="' + swStyle + '"></span><span>' + esc(c.name) + suffix + '</span></span>';
+    }).join('');
+
+    Array.prototype.slice.call(svg.querySelectorAll('.pt-node')).forEach(function(node) {
+      function show(ev) {
+        tipEl.textContent = node.getAttribute('data-tip');
+        tipEl.style.display = 'block';
+        var r = frameEl.getBoundingClientRect ? frameEl.getBoundingClientRect() : { left: 0, top: 0, width: 640 };
+        var lx = (ev.clientX || 0) - r.left + 12;
+        var ty = (ev.clientY || 0) - r.top - 32;
+        if (lx > r.width - 260) lx = Math.max(8, lx - 240);
+        tipEl.style.left = Math.max(8, lx) + 'px';
+        tipEl.style.top = Math.max(8, ty) + 'px';
+      }
+      node.addEventListener('mouseenter', show);
+      node.addEventListener('mousemove', show);
+      node.addEventListener('mouseleave', function() { tipEl.style.display = 'none'; });
+    });
+  }
+
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      state.metric = btn.getAttribute('data-metric') || 'primary';
+      tabBtns.forEach(function(b) {
+        var on = b.getAttribute('data-metric') === state.metric;
+        b.classList.toggle('on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      render();
+    });
+  });
+
+  if (selTrack) {
+    selTrack.addEventListener('change', function() {
+      state.track = selTrack.value || 'pi05_track';
+      render();
+    });
+  }
+
+  function fetchLiveLeaderboard() {
+    if (window.__EMBODIEDX_PREVIEW_LEADERBOARD__ && typeof window.__EMBODIEDX_PREVIEW_LEADERBOARD__ === 'object') {
+      applyLeaderboardData(window.__EMBODIEDX_PREVIEW_LEADERBOARD__);
+      return;
+    }
+    if (typeof fetch !== 'function') return;
+    if (window.location && window.location.protocol === 'file:') return;
+    fetch('./data/leaderboard_v1.json', { cache: 'no-store' })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (data && typeof data === 'object') {
+          applyLeaderboardData(data);
+        }
+      })
+      .catch(function() {});
+  }
+
+  window.EmbodiedXExplorer = {
+    applyLeaderboardData: applyLeaderboardData,
+    setTrack: function(t) { if (SCENARIOS[t]) { state.track = t; if (selTrack) selTrack.value = t; render(); } },
+    setMetric: function(m) { state.metric = m === 'perfw' ? 'perfw' : 'primary'; render(); },
+    getState: function() { return state; },
+    render: render
+  };
+
+  render();
+  fetchLiveLeaderboard();
+
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('nav a[href^="#"]'));
+  if (navLinks.length && ('IntersectionObserver' in window)) {
+    var map = {}, vis = {};
+    navLinks.forEach(function(a) { map[a.getAttribute('href').slice(1)] = a; });
+    var obs = new IntersectionObserver(function(es) {
+      es.forEach(function(e) { vis[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; });
+      var best = null, b = 0;
+      Object.keys(vis).forEach(function(id) { if (vis[id] > b) { b = vis[id]; best = id; } });
+      navLinks.forEach(function(a) { a.classList.remove('on'); });
+      if (best && map[best]) map[best].classList.add('on');
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: [0, .2, .6, 1] });
+    Object.keys(map).forEach(function(id) { var el = document.getElementById(id); if (el) obs.observe(el); });
+  }
+})();
+</script>
+</body>
+</html>

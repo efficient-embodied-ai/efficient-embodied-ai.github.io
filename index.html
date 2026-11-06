@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Efficient Foundation Models for Real-Time Embodied AI &middot; CoRL 2026 Workshop</title>
+<style>
+:root{
+  --ink:#16191d;
+  --muted:#5f6874;
+  --rule:#e3e6ea;
+  --accent:#8a3324;
+  --bg:#fdfdfc;
+  --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--sans);
+  font-size:16.5px;
+  line-height:1.7;
+  color:var(--ink);
+  background:var(--bg);
+  padding:0 1.5rem;
+}
+.wrap{max-width:44rem;margin:0 auto}
+
+/* Masthead */
+header{padding:5rem 0 0}
+h1{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:clamp(1.85rem,4.2vw,2.6rem);
+  line-height:1.22;
+  letter-spacing:-.01em;
+  margin-bottom:.9rem;
+}
+.standfirst{font-size:1.06rem;color:var(--muted);max-width:34rem;margin-bottom:1.6rem}
+.meta{font-size:.92rem;color:var(--muted);padding-bottom:1.4rem}
+.meta strong{color:var(--ink);font-weight:600}
+nav{
+  position:sticky;top:0;z-index:20;
+  display:flex;flex-wrap:wrap;gap:.35rem 1.25rem;
+  background:var(--bg);
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  padding:.75rem 0;margin-bottom:3.5rem;
+}
+nav a.on{color:var(--accent)}
+nav a{
+  font-size:.82rem;color:var(--muted);text-decoration:none;
+  letter-spacing:.02em;white-space:nowrap;
+}
+nav a:hover{color:var(--accent)}
+
+/* Sections */
+section{padding:2.6rem 0;border-top:1px solid var(--rule)}
+section:first-of-type{border-top:none;padding-top:0}
+h2{
+  font-family:var(--serif);
+  font-size:1.42rem;font-weight:600;letter-spacing:-.005em;
+  margin-bottom:1.1rem;
+}
+h3{font-size:.97rem;font-weight:650;margin:1.8rem 0 .35rem}
+p{margin-bottom:1rem}
+p:last-child{margin-bottom:0}
+a{color:var(--accent)}
+em{font-style:italic}
+strong{font-weight:650}
+.lede{font-size:1.04rem}
+.note{font-size:.9rem;color:var(--muted)}
+
+/* Research questions */
+.rq{margin:1.6rem 0;padding-left:1.6rem;border-left:2px solid var(--rule)}
+.rq h3{margin-top:0;font-family:var(--serif);font-size:1.05rem;font-weight:600}
+.rq p{font-size:.95rem;color:#3a4048;margin-bottom:0}
+.rq + .rq{margin-top:1.5rem}
+
+/* Definition rows: speakers, organizers, dates */
+dl{margin:1.2rem 0}
+.row{
+  display:grid;grid-template-columns:11.5rem 1fr;gap:.6rem 1.6rem;
+  padding:.72rem 0;border-top:1px solid var(--rule);
+}
+.row:last-child{border-bottom:1px solid var(--rule)}
+.row dt{font-weight:600;font-size:.95rem}
+.row dd{font-size:.93rem;color:var(--muted)}
+.row dd .who{color:var(--ink)}
+@media(max-width:33rem){
+  .row{grid-template-columns:1fr;gap:.15rem}
+  .row dd{font-size:.9rem}
+}
+
+/* Schedule */
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:.93rem}
+th{
+  text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);font-weight:600;padding-bottom:.5rem;border-bottom:1px solid var(--rule);
+}
+td{padding:.66rem .8rem .66rem 0;border-bottom:1px solid var(--rule);vertical-align:top}
+td.t{white-space:nowrap;color:var(--muted);font-variant-numeric:tabular-nums;width:6.6rem}
+td .d{color:var(--muted);font-size:.88rem;margin-top:.1rem}
+
+/* Lists */
+ul{margin:.6rem 0 1rem 1.1rem}
+li{margin-bottom:.4rem;font-size:.95rem}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.86em;background:#f2f2ef;padding:.08em .35em;border-radius:2px;
+}
+
+/* Speaker rows with photos */
+.person{
+  display:grid;grid-template-columns:4.25rem 1fr;gap:1.15rem;
+  padding:1rem 0;border-top:1px solid var(--rule);align-items:start;
+}
+.person:last-of-type{border-bottom:1px solid var(--rule)}
+.avatar{
+  position:relative;width:4.25rem;height:4.25rem;border-radius:50%;
+  overflow:hidden;background:#eceae5;flex-shrink:0;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar span{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:1.15rem;color:#9aa0a8;letter-spacing:.02em;
+}
+.avatar img+span{display:none}
+.person .name{font-weight:600;font-size:1rem;margin-bottom:.1rem}
+.person .aff{font-size:.9rem;color:var(--ink);margin-bottom:.2rem}
+.person .topic{font-size:.9rem;color:var(--muted);line-height:1.55}
+@media(max-width:34rem){
+  .person{grid-template-columns:3.25rem 1fr;gap:.9rem}
+  .avatar{width:3.25rem;height:3.25rem}
+}
+
+/* Trilemma */
+.trilemma{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
+  background:var(--rule);border:1px solid var(--rule);
+  margin:1.9rem 0;
+}
+.trilemma div{background:var(--bg);padding:1.05rem 1.1rem}
+.trilemma h4{
+  font-family:var(--serif);font-size:1.02rem;font-weight:600;
+  margin-bottom:.28rem;letter-spacing:-.005em;
+}
+.trilemma p{font-size:.87rem;color:var(--muted);margin:0;line-height:1.55}
+.trilemma-note{font-size:.9rem;color:var(--muted);margin-top:-.6rem}
+@media(max-width:34rem){.trilemma{grid-template-columns:1fr}}
+
+/* Data table */
+.data{font-size:.88rem;margin:1.6rem 0 .7rem}
+.data th{padding-right:1rem}
+.data td{padding:.5rem 1rem .5rem 0;border-bottom:1px solid #eef0f2}
+.data td:first-child{font-weight:600;white-space:nowrap}
+.data td:nth-child(2),.data td:nth-child(3){color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.data td:nth-child(4){font-variant-numeric:tabular-nums}
+.data td.meas{color:var(--muted);font-size:.82rem;white-space:nowrap}
+.data tr.grp td{
+  border-bottom:none;padding-top:1.1rem;padding-bottom:.2rem;
+  font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;
+}
+.data a{text-decoration:none;border-bottom:1px solid #e0cfcb}
+.data a:hover{border-bottom-color:var(--accent)}
+.caption{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:0}
+@media(max-width:40rem){.data{display:block;overflow-x:auto}}
+
+footer{
+  border-top:1px solid var(--rule);
+  margin-top:1rem;padding:2.2rem 0 4rem;
+  font-size:.89rem;color:var(--muted);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Efficient Foundation Models<br>for Real-Time Embodied AI</h1>
+  <p class="standfirst">Making robot foundation models fast enough, cheap enough, and safe enough to actually deploy.</p>
+  <p class="meta"><strong>CoRL 2026</strong> &nbsp;&middot;&nbsp; November 12, 2026 &nbsp;&middot;&nbsp; 2:00&ndash;6:00 PM CST &nbsp;&middot;&nbsp; Hilton Austin, Room 408</p>
+  <nav>
+    <a href="#overview">Overview</a><a href="#updates">Updates</a><a href="#speakers">Speakers</a><a href="#schedule">Schedule</a><a href="#cfp">Call for Papers</a><a href="#challenge">Challenge</a><a href="#dates">Dates</a><a href="#organizers">Organizers</a>
+  </nav>
+</header>
+
+<section id="overview">
+  <h2>Overview</h2>
+  <p class="lede">Embodied foundation models are now good enough to matter. Most of them still miss the latency, memory, and power budgets required to run on the robot itself. This workshop is about that gap: what it actually takes to make an embodied model general, fast, and deployable on real hardware rather than in a datacenter.</p>
+
+  <p><strong>This is for you if</strong> you work on compression, quantization, distillation, adaptive compute, action chunking, hardware-aware design, edge-cloud systems, or safety and control under timing constraints, whether you build vision-language-action policies, world-action models, or something that does not fit either label. Contributed papers are <strong>non-archival</strong>; submissions closed <strong>October 19</strong> and acceptance notifications have been released.</p>
+
+  <h3>Why now</h3>
+  <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, and that is a desktop GPU rather than anything that rides onboard. Dexterous manipulation generally wants closed-loop rates well above what these policies deliver, and while some systems close that gap with a fast low-level servo loop under a slower policy, the policy rate still bounds how quickly the robot can change its mind. Meanwhile humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: on platforms where the robot costs less than a datacenter GPU, onboard compute is a budget rather than a preference.</p>
+
+  <table class="data">
+    <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure</th><th>Measures</th></tr>
+    <tr class="grp"><td colspan="5">Action policies</td></tr>
+    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz</td><td class="meas">closed-loop control</td></tr>
+    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&ndash;</td><td>50 Hz</td><td class="meas">open-loop chunk rate</td></tr>
+    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; vs OpenVLA</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO)</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://github.com/Stanford-ILIAD/openvla-mini">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>482&rarr;4 ms/step</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&ndash;</td><td>11&times; vs OFT</td><td class="meas">relative memory</td></tr>
+    <tr class="grp"><td colspan="5">World models</td></tr>
+    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS</td><td class="meas">offline rollout</td></tr>
+    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz</td><td class="meas">closed-loop control</td></tr>
+  </table>
+  <p class="caption">The last column is the point: these numbers measure different things on different hardware, so they cannot be ranked against each other. Building an evaluation that can is one of the things we want papers about.</p>
+
+  <div class="trilemma">
+    <div><h4>General</h4><p>One policy across tasks, objects, and embodiments, rather than a model per skill.</p></div>
+    <div><h4>Fast</h4><p>Closed-loop rates that keep up with contact-rich manipulation.</p></div>
+    <div><h4>Deployable</h4><p>Inside a fixed onboard power, memory, and cost budget, not merely running somewhere.</p></div>
+  </div>
+  <p class="trilemma-note">Systems trade these off differently, and few manage all three at once. Speed and deployability pull apart in particular, because raw Hz can be bought with bigger hardware: OpenVLA-OFT reaches 109.7 Hz, but on an A100 that will never ride on the robot.</p>
+
+  <h3>What we want papers on</h3>
+  <div class="rq">
+    <h3>Architecture and compression</h3>
+    <p>Smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute for policies and world models alike. Results reporting real latency, memory, energy, or control-rate gains on robot-relevant hardware are especially welcome, as is any evidence about whether these techniques compose.</p>
+  </div>
+  <div class="rq">
+    <h3>Edge-cloud co-design</h3>
+    <p>Deployment trade-offs across onboard, hybrid, and cloud setups, and across heterogeneous accelerators: GPUs, TPUs, Trainium and Inferentia, mobile NPUs. Total cost of ownership at fleet scale is close to unstudied.</p>
+  </div>
+  <div class="rq">
+    <h3>Safety under latency</h3>
+    <p>Interruption, fallback, and certification when inference is slow or its timing is variable. Action chunking commits a robot to open-loop execution with no principled way to interrupt it, and certifying systems with stochastic response time remains open.</p>
+  </div>
+</section>
+
+<section id="updates">
+  <h2>Updates</h2>
+  <dl class="dates">
+    <div class="row"><dt>November 6, 2026</dt><dd>Updated workshop session time and venue per the <a href="https://www.corl.org/program/workshops">CoRL 2026 workshop schedule</a>: Thursday, November 12, 2026, Afternoon Session (2:00&ndash;6:00 PM CST) at Hilton Austin (500 E. 4th St), Room 408.</dd></div>
+    <div class="row"><dt>November 5, 2026</dt><dd>Paper submission results and final acceptance notifications have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>. The final workshop program will be published on November 7, 2026.</dd></div>
+    <div class="row"><dt>October 30, 2026</dt><dd>Launched the <a href="challenge/">EmbodiedX Season 1 Benchmark and Challenge</a> (<code>v1.0.0</code>) on NVIDIA L40S and Google Cloud TPU v6e-1. Checkpoint 1 submissions for the CoRL 2026 live workshop spotlight close November 10, 2026 (23:59 UTC).</dd></div>
+  </dl>
+</section>
+
+<section id="speakers">
+  <h2>Speakers</h2>
+  <div class="person">
+    <div class="avatar"><img src="speakers/jiajun_wu.jpg" alt="Jiajun Wu" loading="lazy" onerror="this.remove()"><span>JW</span></div>
+    <div>
+      <div class="name">Jiajun Wu</div>
+      <div class="aff">Stanford University</div>
+      <div class="topic">World models for embodied AI: efficient learned models for online planning.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/jason_ma.jpg" alt="Yecheng &ldquo;Jason&rdquo; Ma" loading="lazy" onerror="this.remove()"><span>JM</span></div>
+    <div>
+      <div class="name">Yecheng &ldquo;Jason&rdquo; Ma</div>
+      <div class="aff">Dyna Robotics</div>
+      <div class="topic">Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/dhruv_shah.jpg" alt="Dhruv Shah" loading="lazy" onerror="this.remove()"><span>DS</span></div>
+    <div>
+      <div class="name">Dhruv Shah</div>
+      <div class="aff">Princeton University and Google DeepMind</div>
+      <div class="topic">Post-training as the stage where most deployable-efficiency decisions are made.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/ouais_alsharif.jpg" alt="Ouais Alsharif" loading="lazy" onerror="this.remove()"><span>OA</span></div>
+    <div>
+      <div class="name">Ouais Alsharif</div>
+      <div class="aff">Google DeepMind</div>
+      <div class="topic">Engineering robot foundation models for production deployment.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/kaifeng_zhang.svg" alt="Kaifeng Zhang" loading="lazy"><span>KZ</span></div>
+    <div>
+      <div class="name">Kaifeng Zhang</div>
+      <div class="aff">Sharpa</div>
+      <div class="topic">Topic to be announced.</div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:1.1rem">Additional invited speakers will be announced here as invitations are confirmed.</p>
+</section>
+
+<section id="schedule">
+  <h2>Schedule</h2>
+  <p>Thursday, November 12, 2026, Afternoon Session (2:00&ndash;6:00 PM CST, 14:00&ndash;18:00) at <strong>Hilton Austin</strong> (500 E. 4th Street, Austin, TX 78701), <strong>Room 408</strong>. The four-hour program pairs four invited talks with contributed lightning talks, a poster session, a moderated panel, and a closing synthesis. Time is deliberately weighted toward the interactive parts, including live profiling on real Jetson hardware.</p>
+  <table>
+    <tr><th>Time (CST)</th><th>Session</th></tr>
+    <tr><td class="t">14:00</td><td>Opening, framing, and live profiling<div class="d">Organizers frame the generality, speed, and deployability trilemma, then profile vanilla OpenVLA on a Jetson on stage, narrating memory and kernel bottlenecks</div></td></tr>
+    <tr><td class="t">14:15</td><td>Invited talk<div class="d">30 minutes including questions</div></td></tr>
+    <tr><td class="t">14:45</td><td>Invited talk<div class="d">30 minutes including questions</div></td></tr>
+    <tr><td class="t">15:15</td><td>Lightning talks<div class="d">Five contributed papers, selected for method diversity</div></td></tr>
+    <tr><td class="t">15:35</td><td>Afternoon break and posters<div class="d">All accepted papers; live demos welcome</div></td></tr>
+    <tr><td class="t">16:00</td><td>Invited talk<div class="d">30 minutes including questions</div></td></tr>
+    <tr><td class="t">16:30</td><td>Invited talk<div class="d">30 minutes including questions</div></td></tr>
+    <tr><td class="t">17:00</td><td>Panel, topic to be announced<div class="d">Moderated, seating invited speakers and guests, with an audience vote before and after</div></td></tr>
+    <tr><td class="t">17:35</td><td>Challenge results<div class="d">Top entries present their submissions</div></td></tr>
+    <tr><td class="t">17:45</td><td>Synthesis: roadmap working session<div class="d">Organizer-facilitated, feeding the post-workshop report</div></td></tr>
+    <tr><td class="t">17:55</td><td>Best paper and closing</td></tr>
+  </table>
+  <p class="note">Room assignments follow the <a href="https://www.corl.org/program/workshops">official CoRL 2026 workshop schedule</a> and remain subject to final venue confirmation. Attendees arriving on Thursday should note that <a href="https://www.corl.org/program">conference badge pickup</a> is held exclusively at JW Marriott Austin (110 E. 2nd St, Room 201) from 8:00 AM to 1:30 PM CST and closes before the afternoon session begins.</p>
+</section>
+
+<section id="cfp">
+  <h2>Call for Papers</h2>
+  <p>We solicit four-page extended abstracts, plus unlimited pages for references, on efficiency across the whole space of embodied foundation models: VLA policies, world-action models, and emerging architectures alike.</p>
+
+  <h3>Topics</h3>
+  <ul>
+    <li>Efficient architectures for VLA policies, world-action models, and emerging designs: action chunking, mixture-of-experts, early exit, diffusion and flow step-reduction</li>
+    <li>Compression for robot foundation models: quantization, pruning, distillation</li>
+    <li>Memory-efficient adaptation and fine-tuning</li>
+    <li>Benchmarking methodology, including whether efficiency techniques compose</li>
+    <li>Hardware-aware design across accelerators: GPU, TPU, AWS Trainium and Inferentia, mobile NPUs</li>
+    <li>Edge-cloud hybrid architectures for robot fleets</li>
+    <li>Safety and latency trade-offs, and fallback policies under stochastic response time</li>
+    <li>Efficient world models for online planning and real-time safety monitoring</li>
+  </ul>
+
+  <h3>Submission</h3>
+  <p>Four pages plus unlimited references, hosted on OpenReview, reviewed double-blind. Submissions must be anonymized.</p>
+  <p><strong>Non-archival.</strong> Accepted papers are not archived as formal publications, so submitting here does not affect your ability to submit the same work to a main conference. Concurrent submissions and work under review elsewhere are permitted. Previously published work that fits the scope is also eligible, tracked and reviewed separately from new work, so the two do not compete against each other. Every accepted paper in either track gets a poster, and lightning talks are drawn from both. Best Paper is limited to the new-work track. Papers already accepted to the CoRL 2026 main conference are not eligible.</p>
+  <p><strong>Submission portal: <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>.</strong> Paper submissions closed on October 19, 2026, and acceptance notifications have been released.</p>
+
+  <h3>Review and presentation</h3>
+  <p>We aim for three reviews per submission, from the organizing committee and an invited program committee, subject to reviewer availability. Paper acceptance decisions have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a> as of <strong>November 5, 2026</strong>. All accepted papers are presented as posters, and roughly five are additionally selected for a five-minute lightning talk.</p>
+</section>
+
+<section id="challenge">
+  <h2>Embodied Efficiency Challenge</h2>
+  <p><strong>EmbodiedX (<code>embodied-efficiency-bench</code>)</strong> is an open, closed-loop serving benchmark charting single-chip latency-throughput Pareto frontiers across <strong>Track 1A</strong> (<code>&pi;<sub>0.5</sub>-LIBERO</code>), <strong>Track 1B</strong> (<code>GR00T N1.7-3B</code>), and <strong>Track 2</strong> (<code>Cosmos-Predict2.5-2B</code>) in both <strong>Closed</strong> (frozen-checkpoint parity) and <strong>Open</strong> (Stage-2 task-verified compression) divisions. Season 1 standardizes on two accessible cloud accelerators, <strong>NVIDIA L40S (48 GB)</strong> and <strong>Google Cloud TPU v6e-1 (32 GB)</strong>, opening unseeded on October 30 with a two-phase commit-reveal protocol that keeps participant kernels private until the freeze.</p>
+  <p><strong>Awards and checkpoints.</strong> Early submissions merged before the <strong>November 10, 2026 (23:59 UTC)</strong> freeze are recognized live on stage at CoRL on November 12 as Founding Frontier Leaders. Season 1 closes <strong>December 18, 2026 (23:59 AoE)</strong> for official category awards across each track in <strong>Interactive Reactivity (<code>C = 1</code> <code>p99</code>)</strong>, <strong>Real-Time Fleet Throughput</strong>, and <strong>Green Embodied Efficiency (<code>Actions/J</code>, <code>Predictions/J</code>)</strong>, verified on clean organizer hardware over a held-out trace split. Verified Season 1 category winners receive monetary prizes, an official CoRL 2026 EEAI Workshop Award Certificate, an invitation to apply for Google Cloud credits, and an invitation to co-author the post-season <em>EmbodiedX Season 1 Systems Report</em>.</p>
+  <p><strong><a href="challenge/">Challenge page and live leaderboard &rarr;</a></strong> &nbsp;&middot;&nbsp; <a href="challenge/#awards">Awards &amp; dates</a> &nbsp;&middot;&nbsp; <a href="challenge/#rules">Protocol &amp; commit-reveal</a> &nbsp;&middot;&nbsp; <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench">GitHub repository</a> &nbsp;&middot;&nbsp; <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench/blob/main/docs/EmbodiedX_Benchmark_Methodology_and_Metrics.pdf">Methodology specification (PDF)</a></p>
+</section>
+
+<section id="dates">
+  <h2>Important Dates</h2>
+  <dl>
+    <div class="row"><dt>October 19, 2026</dt><dd>Paper submission deadline (extended from October 12)</dd></div>
+    <div class="row"><dt>October 30, 2026</dt><dd>EmbodiedX Season 1 benchmark and leaderboard open</dd></div>
+    <div class="row"><dt>November 5, 2026</dt><dd>Final paper acceptance notifications released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a></dd></div>
+    <div class="row"><dt>November 7, 2026</dt><dd>Final workshop program published</dd></div>
+    <div class="row"><dt>November 10, 2026</dt><dd>Challenge Checkpoint 1: CoRL live spotlight freeze (23:59 UTC)</dd></div>
+    <div class="row"><dt>November 12, 2026</dt><dd>Workshop at CoRL 2026 (2:00&ndash;6:00 PM CST, Hilton Austin, Room 408), with live Founding Frontier presentation</dd></div>
+    <div class="row"><dt>December 18, 2026</dt><dd>Challenge Checkpoint 2: Season 1 awards freeze (23:59 AoE; +24h private finalist container reveal)</dd></div>
+  </dl>
+  <p class="note">Paper deadlines are 23:59 Anywhere on Earth (AoE). Following the December 18 Season 1 freeze, the public EmbodiedX leaderboard remains open continuously for rolling pull requests in 2027.</p>
+</section>
+
+<section id="organizers">
+  <h2>Organizers</h2>
+  <div class="person">
+    <div class="avatar"><img src="speakers/jiafan_yu.jpg" alt="Jiafan Yu" loading="lazy" onerror="this.remove()"><span>JY</span></div>
+    <div>
+      <div class="name">Jiafan Yu</div>
+      <div class="aff">Google</div>
+      <div class="topic">Inference optimization for embodied foundation models.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/ouais_alsharif.jpg" alt="Ouais Alsharif" loading="lazy" onerror="this.remove()"><span>OA</span></div>
+    <div>
+      <div class="name">Ouais Alsharif</div>
+      <div class="aff">Google DeepMind</div>
+      <div class="topic">Engineering robot foundation models for production deployment.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/changliu_liu.jpg" alt="Changliu Liu" loading="lazy" onerror="this.remove()"><span>CL</span></div>
+    <div>
+      <div class="name">Changliu Liu</div>
+      <div class="aff">Carnegie Mellon University</div>
+      <div class="topic">Safe robot learning and real-time optimization-based control.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/dhruv_shah.jpg" alt="Dhruv Shah" loading="lazy" onerror="this.remove()"><span>DS</span></div>
+    <div>
+      <div class="name">Dhruv Shah</div>
+      <div class="aff">Princeton University and Google DeepMind</div>
+      <div class="topic">Post-training for robot foundation models, and navigation policies on constrained hardware.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/jiajun_wu.jpg" alt="Jiajun Wu" loading="lazy" onerror="this.remove()"><span>JW</span></div>
+    <div>
+      <div class="name">Jiajun Wu</div>
+      <div class="aff">Stanford University</div>
+      <div class="topic">World models and visual reasoning for robot learning.</div>
+    </div>
+  </div>
+  <div class="person">
+    <div class="avatar"><img src="speakers/zhuoyang_zhang.jpg" alt="Zhuoyang Zhang" loading="lazy" onerror="this.remove()"><span>ZZ</span></div>
+    <div>
+      <div class="name">Zhuoyang Zhang</div>
+      <div class="aff">MIT</div>
+      <div class="topic">Efficient vision-language-action models and foundation-model acceleration.</div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:1.1rem">The program committee is being formed and will be announced here shortly.</p>
+</section>
+
+<footer>
+  Contact <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> &nbsp;&middot;&nbsp; A workshop at the Conference on Robot Learning &nbsp;&middot;&nbsp; November 12, 2026, 2:00&ndash;6:00 PM CST &nbsp;&middot;&nbsp; Hilton Austin, Room 408, Austin, Texas.
+</footer>
+
+</div>
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('nav a[href^="#"]'));
+  if(!links.length || !('IntersectionObserver' in window)) return;
+  var map={}; links.forEach(function(a){ map[a.getAttribute('href').slice(1)]=a; });
+  var vis={};
+  var obs=new IntersectionObserver(function(es){
+    es.forEach(function(e){ vis[e.target.id]=e.isIntersecting?e.intersectionRatio:0; });
+    var best=null,b=0;
+    Object.keys(vis).forEach(function(id){ if(vis[id]>b){b=vis[id];best=id;} });
+    links.forEach(function(a){ a.classList.remove('on'); });
+    if(best&&map[best]) map[best].classList.add('on');
+  },{rootMargin:'-20% 0px -60% 0px',threshold:[0,.2,.6,1]});
+  Object.keys(map).forEach(function(id){ var el=document.getElementById(id); if(el) obs.observe(el); });
+})();
+</script>
+</body>
+</html>
