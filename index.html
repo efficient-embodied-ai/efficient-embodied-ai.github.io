@@ -15,7 +15,8 @@
   --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+html{
+  scroll-padding-top:4.75rem;-webkit-text-size-adjust:100%}
 body{
   font-family:var(--sans);
   font-size:16.5px;
@@ -24,6 +25,8 @@ body{
   background:var(--bg);
   padding:0 1.5rem;
 }
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:.5rem;top:.5rem;z-index:30;background:var(--ink);color:var(--bg);padding:.4rem .7rem;border-radius:3px}
 .wrap{max-width:44rem;margin:0 auto}
 
 /* Masthead */
@@ -167,6 +170,8 @@ code{
 .papers li{margin-bottom:.75rem;line-height:1.5}
 .papers a{text-decoration:none;border-bottom:1px solid #e0cfcb}
 .papers a:hover{border-bottom-color:var(--accent)}
+.papers .place{font-size:.82rem;color:var(--muted);margin-top:.2rem}
+.papers .lt{color:var(--accent);font-weight:600}
 .papers .by{font-size:.86rem;color:var(--muted);margin-top:.15rem}
 .pc{list-style:none;padding:0;margin:.6rem 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:.4rem 1.2rem}
 @media(max-width:40rem){.data{display:block;overflow-x:auto}}
@@ -185,7 +190,8 @@ footer{
   <h1>Efficient Foundation Models<br>for Real-Time Embodied AI</h1>
   <p class="standfirst">Making robot foundation models fast enough, cheap enough, and safe enough to actually deploy.</p>
   <p class="meta"><strong>CoRL 2026</strong> &nbsp;&middot;&nbsp; November 12, 2026 &nbsp;&middot;&nbsp; 2:00&ndash;6:00 PM CST &nbsp;&middot;&nbsp; Hilton Austin, Room 408</p>
-  <nav>
+  <a class="skip" href="#overview">Skip to content</a>
+<nav>
     <a href="#overview">Overview</a><a href="#updates">Updates</a><a href="#speakers">Speakers</a><a href="#schedule">Schedule</a><a href="#papers">Papers</a><a href="#cfp">Call for Papers</a><a href="#challenge">Challenge</a><a href="#dates">Dates</a><a href="#organizers">Organizers</a>
   </nav>
 </header>
@@ -242,13 +248,14 @@ footer{
   <h2>Updates</h2>
   <dl class="dates">
     <div class="row"><dt>November 6, 2026</dt><dd>Updated workshop session time and venue per the <a href="https://www.corl.org/program/workshops">CoRL 2026 workshop schedule</a>: Thursday, November 12, 2026, Afternoon Session (2:00&ndash;6:00 PM CST) at Hilton Austin (500 E. 4th St), Room 408.</dd></div>
-    <div class="row"><dt>November 5, 2026</dt><dd>Paper submission results and final acceptance notifications have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>. The final workshop program will be published on November 7, 2026.</dd></div>
-    <div class="row"><dt>October 30, 2026</dt><dd>Launched the <a href="challenge/">EmbodiedX Season 1 Benchmark and Challenge</a> (<code>v1.0.0</code>) on NVIDIA L40S and Google Cloud TPU v6e-1. Checkpoint 1 submissions for the CoRL 2026 live workshop spotlight close November 10, 2026 (23:59 UTC).</dd></div>
+    <div class="row"><dt>November 5, 2026</dt><dd>Paper submission results and final acceptance notifications have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>. The final workshop program was published on November 7, 2026.</dd></div>
+    <div class="row"><dt>October 30, 2026</dt><dd>Launched the <a href="challenge/">EmbodiedX Season 1 Benchmark and Challenge</a> (<code>v1.0.0</code>) on NVIDIA L40S and Google Cloud TPU v6e-1. Checkpoint 1 submissions for the CoRL 2026 live workshop spotlight close tomorrow, November 10, 2026, at 23:59 UTC (17:59 CST).</dd></div>
   </dl>
 </section>
 
 <section id="speakers">
   <h2>Speakers</h2>
+  <p class="note">Talk times are in the schedule above. Each talk is 25 minutes with 5 for questions.</p>
   <div class="person">
     <div class="avatar"><img src="speakers/jiajun_wu.jpg" alt="Jiajun Wu" loading="lazy" onerror="this.remove()"><span>JW</span></div>
     <div>
@@ -269,7 +276,7 @@ footer{
     <div class="avatar"><img src="speakers/dhruv_shah.jpg" alt="Dhruv Shah" loading="lazy" onerror="this.remove()"><span>DS</span></div>
     <div>
       <div class="name">Dhruv Shah</div>
-      <div class="aff">Princeton University and Google DeepMind</div>
+      <div class="aff">Princeton University</div>
       <div class="topic">Post-training as the stage where most deployable-efficiency decisions are made.</div>
     </div>
   </div>
@@ -278,7 +285,7 @@ footer{
     <div>
       <div class="name">Ouais Alsharif</div>
       <div class="aff">Google DeepMind</div>
-      <div class="topic">Engineering robot foundation models for production deployment.</div>
+      <div class="topic">Panelist.</div>
     </div>
   </div>
   <div class="person">
@@ -289,28 +296,25 @@ footer{
       <div class="topic">Topic to be announced.</div>
     </div>
   </div>
-  <p class="note" style="margin-top:1.1rem">Additional invited speakers will be announced here as invitations are confirmed.</p>
 </section>
 
 <section id="schedule">
   <h2>Schedule</h2>
   <p>Thursday, November 12, 2026, Afternoon Session (2:00&ndash;6:00 PM CST, 14:00&ndash;18:00) at <strong>Hilton Austin</strong>, <strong>Room 408</strong> (<a href="https://maps.google.com/?q=Hilton+Austin,+500+East+4th+Street,+Austin,+TX+78701">500 East 4th Street, Austin, TX 78701</a>). The four-hour program pairs four invited talks with contributed lightning talks, a poster session in two shifts and a moderated panel. Time is deliberately weighted toward the interactive parts, including live profiling on real Jetson hardware at the open.</p>
-  <p class="note">Times are tentative and may shift slightly on the day. Speaker running order will be confirmed here before the workshop.</p>
   <table>
     <tr><th>Time (CST)</th><th>Session</th></tr>
-    <tr><td class="t">14:00</td><td>Opening, framing, and live profiling<div class="d">Organizers frame the generality, speed, and deployability trilemma, then profile vanilla OpenVLA on a Jetson on stage, narrating memory and kernel bottlenecks</div></td></tr>
-    <tr><td class="t">14:20</td><td>Invited talk<div class="d">20 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">14:45</td><td>Invited talk<div class="d">20 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">14:00</td><td>Opening and live profiling<div class="d">Organizers frame the generality, speed, and deployability trilemma, then profile vanilla OpenVLA on a Jetson on stage</div></td></tr>
+    <tr><td class="t">14:10</td><td>Dhruv Shah, Princeton University<div class="d">Post-training as the stage where most deployable-efficiency decisions are made. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">14:40</td><td>Yecheng &ldquo;Jason&rdquo; Ma, Dyna Robotics<div class="d">Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model. 25 minutes with 5 for questions</div></td></tr>
     <tr><td class="t">15:10</td><td>Lightning talks<div class="d">Five contributed papers, five minutes each, selected for method diversity</div></td></tr>
     <tr><td class="t">15:35</td><td>Poster session, first shift<div class="d">Eighteen papers on the boards inside Room 408. Afternoon refreshments are served through both shifts</div></td></tr>
     <tr><td class="t">16:00</td><td>Poster session, second shift<div class="d">The remaining seventeen papers. First-shift presenters take their posters down at 16:00 so the second shift can put theirs up</div></td></tr>
-    <tr><td class="t">16:25</td><td>Invited talk<div class="d">20 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">16:50</td><td>Break<div class="d">Five minutes</div></td></tr>
-    <tr><td class="t">16:55</td><td>Invited talk<div class="d">20 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">17:20</td><td>Panel, topic to be announced<div class="d">Moderated, seating the invited speakers and invited guests, with an audience vote before and after</div></td></tr>
+    <tr><td class="t">16:25</td><td>Kaifeng Zhang, Sharpa<div class="d">Topic to be confirmed. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">16:55</td><td>Hengtao Guo and Yin Li, Google Cloud MaxText<div class="d">Topic to be confirmed. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">17:25</td><td>Panel<div class="d">Moderated, seating the speakers with Jiajun Wu of Stanford University and Ouais Alsharif of Google DeepMind, and an audience vote before and after</div></td></tr>
     <tr><td class="t">17:50</td><td>Awards and closing<div class="d">Best Paper, the Founding Frontier Leaders recognition for challenge submissions merged before the freeze, and closing remarks</div></td></tr>
   </table>
-  <p class="note">Room assignments follow the <a href="https://www.corl.org/program/workshops">official CoRL 2026 workshop schedule</a> and remain subject to final venue confirmation. Attendees arriving on Thursday should note that <a href="https://www.corl.org/program">conference badge pickup</a> is held exclusively at JW Marriott Austin (110 E. 2nd St, Room 201) from 8:00 AM to 1:30 PM CST and closes before the afternoon session begins.</p>
+  <p class="note">Room assignments follow the <a href="https://www.corl.org/program/workshops">official CoRL 2026 workshop schedule</a>. Attendees arriving on Thursday should note that <a href="https://www.corl.org/program">conference badge pickup</a> is held exclusively at JW Marriott Austin (110 E. 2nd St, Room 201) from 8:00 AM to 1:30 PM CST and closes before the afternoon session begins.</p>
 </section>
 
 <section id="papers">
@@ -318,46 +322,46 @@ footer{
   <p>Thirty-five papers were accepted from 56 submissions. Every one is presented as a poster in Room 408, and five are additionally selected for a five-minute lightning talk. Titles link to the OpenReview forum, where the review and decision for each paper are posted.</p>
 
   <h3>For poster presenters</h3>
-  <p>Posters must be <strong>smaller than 4&nbsp;ft by 4&nbsp;ft</strong>, and two posters share each face of a double-sided board, so please print no wider than <strong>48&nbsp;in by 36&nbsp;in</strong>. Taping posters to the walls is not permitted by the venue.</p>
-  <p>Room 408 holds twenty poster slots and we accepted thirty-five papers, so the poster session runs in <strong>two shifts</strong>: eighteen papers from 15:35 to 16:00, and seventeen from 16:00 to 16:25. Shift assignments will be published here and emailed to presenters before the workshop. If you need a particular shift because of travel, please email <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> and we will try to accommodate it.</p>
+  <p>CoRL poster boards are <strong>4&nbsp;ft by 8&nbsp;ft, landscape</strong>, and two posters share a board, so please print no larger than <strong>4&nbsp;ft by 4&nbsp;ft</strong> (48&nbsp;in by 48&nbsp;in). Authors are responsible for printing their own posters. Taping posters to the walls is not permitted by the venue. We are confirming the mounting supplied and will update this line.</p>
+  <p>Room 408 holds twenty poster slots and we accepted thirty-five papers, so the poster session runs in <strong>two shifts</strong>: eighteen papers from 15:35 to 16:00, and seventeen from 16:00 to 16:25. Each paper below carries its shift. Presenters are also being emailed. If you need a particular shift because of travel, please email <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> and we will try to accommodate it.</p>
   <p class="note">At least one author should attend and present in Austin. We cannot promise remote presentation. If your plans change, please email <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> as early as you can.</p>
 
   <ol class="papers">
-    <li><a href="https://openreview.net/forum?id=JD1Vbertnv">Use the Whole Control Period and Not a Millisecond More: The Exact Model Size for a Real-Time Policy, and Why Asynchronous Inference Is a Fix for the Wrong Model</a><div class="by">Varun Puttagunta</div></li>
-    <li><a href="https://openreview.net/forum?id=VUuO0hceYF">Beyond Aggregate Success: Paired Statewise Evaluation of VLA Policy Updates</a><div class="by">Qiang Guo</div></li>
-    <li><a href="https://openreview.net/forum?id=OKUnsOpqwZ">Inference Latency and Chunk Transitions in Whole-Body Humanoid Loco-Manipulation</a><div class="by">Chuan Qin et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=vw9les3poJ">Group-Wise INT4 Prevents Quantization-Induced Plan Collapse in a Driving Vision-Language-Action Policy</a><div class="by">Justin Williams et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=tppHW2ceKG">What Makes a VLA Reactive? A Study of Execution Strategies for Dynamic Manipulation</a><div class="by">Zhuoyue Li et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=EcmAv0Thwo">Revisiting Open-Loop Execution in Robotics: Toward Reactive, Higher-Performing Policies</a><div class="by">Michael Zeng et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=OCvjNpgmnT">Lost in Translation? Democratizing VLAs through Language-Anchored VLM-to-VLA Adaptation</a><div class="by">Yuri Ishitoya et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=GdQ1pIa0Bq">DeFM: Efficient Depth Foundation Models for Real-Time Robot Learning</a><div class="by">Manthan Patel et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=wEL2inoE61">Phaseformer: Minimum Requirements for Multimodal Behavior Cloning</a><div class="by">Joseph C. Liechty and Tucker Hermans</div></li>
-    <li><a href="https://openreview.net/forum?id=BQgxyZmdfL">Cache or Denoise Less? Residual Reuse in a Flow-Matching World Action Model</a><div class="by">Abhinav Gupta et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=DAF1CAtYeu">Can Perception Models Run Together? A Memory Ledger for Foundation-Model Perception Beside a Full Navigation Stack on an 8&#8201;GB Jetson</a><div class="by">Smit shende et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=dUww53ayeI">Steeract: Unlocking Action Models Through Few-Shot Temporal Steering</a><div class="by">Kaichen Zhou et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=TVUvBCzGa5">Can a Quantized JEPA World-Model Planner Keep Its Task Success on a Neural Engine? A Paired Study of LeWorldModel</a><div class="by">Thomas Blanc</div></li>
-    <li><a href="https://openreview.net/forum?id=h6FKvKR6g6">Beyond Guard Accuracy: Safety Screening Under Robot Timing Budgets</a><div class="by">Praneeth Narisetty and Shiva Nagendra Babu Kore</div></li>
-    <li><a href="https://openreview.net/forum?id=wUAHiqqioS">Hertz Is Not Reactivity: Reaction Latency of Chunked Robot Policies Under Stochastic Inference Latency</a><div class="by">Hyunjun Yi et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=QY6dqlv5Qq">DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?</a><div class="by">Rohan Nagabhirava et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=FdmopJWuzp">Decoupling Balance from Reasoning: When Does a Slow Vision-Language Brain Make a Humanoid Fall?</a><div class="by">Quang Vu Luu</div></li>
-    <li><a href="https://openreview.net/forum?id=Gf88kkFdnY">WINK: World-Action Imagination in a Blink</a><div class="by">Kaitlyn Zhang et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=s5d7AMGplq">Where Does the Per-Step Cost of History Go? Frame Pooling, Recurrent State and Cache Budgets in a Small-Scale VLA Study</a><div class="by">Johnathan Luu et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=xp1EE4OxGa">Ternary Vision Encoders Without the Straight-Through Estimator: Toward Onboard Robot Perception</a><div class="by">Akshat Bhalani</div></li>
-    <li><a href="https://openreview.net/forum?id=0kBqOpNFAq">Running OmniVLA-7B on an 8 GB Jetson Orin Nano: What int4 Preserves and What Token Pruning Breaks</a><div class="by">Jayden Vasquez</div></li>
-    <li><a href="https://openreview.net/forum?id=m6vfL7l08G">Selective Q-Chunking: One-Step Candidate Selection for Real-Time Multi-Stage Manipulation</a><div class="by">Daniel Zhu</div></li>
-    <li><a href="https://openreview.net/forum?id=eo5Cf8kHzg">Sixteen Numbers per Skill: A Compact Linear Action Space for Segment-Level Robot Planning</a><div class="by">Srihith Mudakala</div></li>
-    <li><a href="https://openreview.net/forum?id=4X3kRdJPPn">Adaptive Loss Weighting for Efficient One-Step Flow Policies in Robot Manipulation</a><div class="by">Bharath Chandra Reddy Irigireddy</div></li>
-    <li><a href="https://openreview.net/forum?id=tjC2RzGiPw">Real-Time Motion Generation and Steering via Asynchronous Denoising for Humanoid Whole-Body Control</a><div class="by">Zifan Xu et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=0actxuA0OY">&pi;R&sup2;: Reactive Real-time Flow Policies</a><div class="by">Sungjae Park and Shubham Tulsiani</div></li>
-    <li><a href="https://openreview.net/forum?id=ihyWOu4G1y">ApertureVLA: A Fast 0.2B Vision-Language-Action Policy</a><div class="by">Shukun Huang et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=thlMvkXfnW">Does a Robot’s Failure Monitor Still Work After a Speed-Up?</a><div class="by">Abraham Yeung</div></li>
-    <li><a href="https://openreview.net/forum?id=TN0DscfoHb">When Visual Token Pruning Loses Count</a><div class="by">Sarah Alharbi and Marios Savvides</div></li>
-    <li><a href="https://openreview.net/forum?id=bGZwrLhh1u">Clean Forcing: Drift-Resistant Autoregressive Video Diffusion with a Frozen Base</a><div class="by">Wenqing Wang et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=tsFMDHk8il">FirmVLA: Task-Grounded Sequence-SLO Serving for Heterogeneous Robot Policies</a><div class="by">Ahnaf Adib et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=kdIGgL9d4W">Streaming Failure Forecasting: Closed-Form Online Learning of VLA Failure Monitors under Drift</a><div class="by">Amit Hemant Jadhav et al.</div></li>
-    <li><a href="https://openreview.net/forum?id=4nSnbcYab0">What Survives Structural Compression of a Navigation VLA? Selection, Distillation, and Evaluation at a Device Memory Budget</a><div class="by">Timothy Tong</div></li>
-    <li><a href="https://openreview.net/forum?id=FO63myXM14">Plan-Staleness Deadlines for Onboard Reasoning</a><div class="by">Hassan Iqbal</div></li>
-    <li><a href="https://openreview.net/forum?id=Y5cPyZHPXY">How a VLA Is Trained Shapes How It Quantizes</a><div class="by">Vishruth Bharath</div></li>
+    <li><a href="https://openreview.net/forum?id=JD1Vbertnv">Use the Whole Control Period and Not a Millisecond More: The Exact Model Size for a Real-Time Policy, and Why Asynchronous Inference Is a Fix for the Wrong Model</a><div class="by">Varun Puttagunta</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=VUuO0hceYF">Beyond Aggregate Success: Paired Statewise Evaluation of VLA Policy Updates</a><div class="by">Qiang Guo</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=OKUnsOpqwZ">Inference Latency and Chunk Transitions in Whole-Body Humanoid Loco-Manipulation</a><div class="by">Chuan Qin et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=vw9les3poJ">Group-Wise INT4 Prevents Quantization-Induced Plan Collapse in a Driving Vision-Language-Action Policy</a><div class="by">Justin Williams et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=tppHW2ceKG">What Makes a VLA Reactive? A Study of Execution Strategies for Dynamic Manipulation</a><div class="by">Zhuoyue Li et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=EcmAv0Thwo">Revisiting Open-Loop Execution in Robotics: Toward Reactive, Higher-Performing Policies</a><div class="by">Michael Zeng et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=OCvjNpgmnT">Lost in Translation? Democratizing VLAs through Language-Anchored VLM-to-VLA Adaptation</a><div class="by">Yuri Ishitoya et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=GdQ1pIa0Bq">DeFM: Efficient Depth Foundation Models for Real-Time Robot Learning</a><div class="by">Manthan Patel et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=wEL2inoE61">Phaseformer: Minimum Requirements for Multimodal Behavior Cloning</a><div class="by">Joseph C. Liechty and Tucker Hermans</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=BQgxyZmdfL">Cache or Denoise Less? Residual Reuse in a Flow-Matching World Action Model</a><div class="by">Abhinav Gupta et al.</div><div class="place"><span class="lt">Lightning talk, 15:10</span> &middot; Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=DAF1CAtYeu">Can Perception Models Run Together? A Memory Ledger for Foundation-Model Perception Beside a Full Navigation Stack on an 8&#8201;GB Jetson</a><div class="by">Smit shende et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=dUww53ayeI">Steeract: Unlocking Action Models Through Few-Shot Temporal Steering</a><div class="by">Kaichen Zhou et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=TVUvBCzGa5">Can a Quantized JEPA World-Model Planner Keep Its Task Success on a Neural Engine? A Paired Study of LeWorldModel</a><div class="by">Thomas Blanc</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=h6FKvKR6g6">Beyond Guard Accuracy: Safety Screening Under Robot Timing Budgets</a><div class="by">Praneeth Narisetty and Shiva Nagendra Babu Kore</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=wUAHiqqioS">Hertz Is Not Reactivity: Reaction Latency of Chunked Robot Policies Under Stochastic Inference Latency</a><div class="by">Hyunjun Yi et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=QY6dqlv5Qq">DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?</a><div class="by">Rohan Nagabhirava et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=FdmopJWuzp">Decoupling Balance from Reasoning: When Does a Slow Vision-Language Brain Make a Humanoid Fall?</a><div class="by">Quang Vu Luu</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=Gf88kkFdnY">WINK: World-Action Imagination in a Blink</a><div class="by">Kaitlyn Zhang et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=s5d7AMGplq">Where Does the Per-Step Cost of History Go? Frame Pooling, Recurrent State and Cache Budgets in a Small-Scale VLA Study</a><div class="by">Johnathan Luu et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=xp1EE4OxGa">Ternary Vision Encoders Without the Straight-Through Estimator: Toward Onboard Robot Perception</a><div class="by">Akshat Bhalani</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=0kBqOpNFAq">Running OmniVLA-7B on an 8 GB Jetson Orin Nano: What int4 Preserves and What Token Pruning Breaks</a><div class="by">Jayden Vasquez</div><div class="place"><span class="lt">Lightning talk, 15:10</span> &middot; Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=m6vfL7l08G">Selective Q-Chunking: One-Step Candidate Selection for Real-Time Multi-Stage Manipulation</a><div class="by">Daniel Zhu</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=eo5Cf8kHzg">Sixteen Numbers per Skill: A Compact Linear Action Space for Segment-Level Robot Planning</a><div class="by">Srihith Mudakala</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=4X3kRdJPPn">Adaptive Loss Weighting for Efficient One-Step Flow Policies in Robot Manipulation</a><div class="by">Bharath Chandra Reddy Irigireddy</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=tjC2RzGiPw">Real-Time Motion Generation and Steering via Asynchronous Denoising for Humanoid Whole-Body Control</a><div class="by">Zifan Xu et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=0actxuA0OY">&pi;R&sup2;: Reactive Real-time Flow Policies</a><div class="by">Sungjae Park and Shubham Tulsiani</div><div class="place"><span class="lt">Lightning talk, 15:10</span> &middot; Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=ihyWOu4G1y">ApertureVLA: A Fast 0.2B Vision-Language-Action Policy</a><div class="by">Shukun Huang et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=thlMvkXfnW">Does a Robot’s Failure Monitor Still Work After a Speed-Up?</a><div class="by">Abraham Yeung</div><div class="place"><span class="lt">Lightning talk, 15:10</span> &middot; Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=TN0DscfoHb">When Visual Token Pruning Loses Count</a><div class="by">Sarah Alharbi and Marios Savvides</div><div class="place"><span class="lt">Lightning talk, 15:10</span> &middot; Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=bGZwrLhh1u">Clean Forcing: Drift-Resistant Autoregressive Video Diffusion with a Frozen Base</a><div class="by">Wenqing Wang et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=tsFMDHk8il">FirmVLA: Task-Grounded Sequence-SLO Serving for Heterogeneous Robot Policies</a><div class="by">Ahnaf Adib et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=kdIGgL9d4W">Streaming Failure Forecasting: Closed-Form Online Learning of VLA Failure Monitors under Drift</a><div class="by">Amit Hemant Jadhav et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
+    <li><a href="https://openreview.net/forum?id=4nSnbcYab0">What Survives Structural Compression of a Navigation VLA? Selection, Distillation, and Evaluation at a Device Memory Budget</a><div class="by">Timothy Tong</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=FO63myXM14">Plan-Staleness Deadlines for Onboard Reasoning</a><div class="by">Hassan Iqbal</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
+    <li><a href="https://openreview.net/forum?id=Y5cPyZHPXY">How a VLA Is Trained Shapes How It Quantizes</a><div class="by">Vishruth Bharath</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
   </ol>
 </section>
 
@@ -437,7 +441,7 @@ footer{
     <div class="avatar"><img src="speakers/dhruv_shah.jpg" alt="Dhruv Shah" loading="lazy" onerror="this.remove()"><span>DS</span></div>
     <div>
       <div class="name">Dhruv Shah</div>
-      <div class="aff">Princeton University and Google DeepMind</div>
+      <div class="aff">Princeton University</div>
       <div class="topic">Post-training for robot foundation models, and navigation policies on constrained hardware.</div>
     </div>
   </div>
