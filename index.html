@@ -166,10 +166,18 @@ code{
 .data a{text-decoration:none;border-bottom:1px solid #e0cfcb}
 .data a:hover{border-bottom-color:var(--accent)}
 .caption{font-size:.83rem;color:var(--muted);line-height:1.6;margin-bottom:0}
-.papers{margin:1.2rem 0 0;padding-left:1.6rem}
+.papers{margin:.4rem 0 1.1rem;padding-left:0;list-style:none}
 .papers li{margin-bottom:.75rem;line-height:1.5}
 .papers a{text-decoration:none;border-bottom:1px solid #e0cfcb}
 .papers a:hover{border-bottom-color:var(--accent)}
+.fold{border-top:1px solid var(--rule);margin:0}
+.fold:last-of-type{border-bottom:1px solid var(--rule)}
+.fold summary{cursor:pointer;list-style:none;padding:.75rem 0;font-family:var(--serif);font-size:1.06rem;font-weight:600}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary::before{content:"+";display:inline-block;width:1.15rem;color:var(--accent)}
+.fold[open] summary::before{content:"\2212"}
+.fold summary .ct{font-family:var(--sans);font-size:.85rem;font-weight:400;color:var(--muted);margin-left:.45rem}
+.fold summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .papers .place{font-size:.82rem;color:var(--muted);margin-top:.2rem}
 .papers .lt{color:var(--accent);font-weight:600}
 .papers .by{font-size:.86rem;color:var(--muted);margin-top:.15rem}
@@ -190,59 +198,11 @@ footer{
   <h1>Efficient Foundation Models<br>for Real-Time Embodied AI</h1>
   <p class="standfirst">Making robot foundation models fast enough, cheap enough, and safe enough to actually deploy.</p>
   <p class="meta"><strong>CoRL 2026</strong> &nbsp;&middot;&nbsp; November 12, 2026 &nbsp;&middot;&nbsp; 2:00&ndash;6:00 PM CST &nbsp;&middot;&nbsp; Hilton Austin, Room 408</p>
-  <a class="skip" href="#overview">Skip to content</a>
+  <a class="skip" href="#updates">Skip to content</a>
 <nav>
-    <a href="#overview">Overview</a><a href="#updates">Updates</a><a href="#speakers">Speakers</a><a href="#schedule">Schedule</a><a href="#papers">Papers</a><a href="#cfp">Call for Papers</a><a href="#challenge">Challenge</a><a href="#dates">Dates</a><a href="#organizers">Organizers</a><a href="#sponsor">Sponsor</a>
+    <a href="#updates">Updates</a><a href="#schedule">Schedule</a><a href="#presenting">Presenting</a><a href="#papers">Papers</a><a href="#speakers">Speakers</a><a href="#challenge">Challenge</a><a href="#overview">Overview</a><a href="#organizers">Organizers</a><a href="#sponsor">Sponsor</a><a href="#dates">Dates</a><a href="#cfp">Call for Papers</a>
   </nav>
 </header>
-
-<section id="overview">
-  <h2>Overview</h2>
-  <p class="lede">Embodied foundation models are now good enough to matter. Most of them still miss the latency, memory, and power budgets required to run on the robot itself. This workshop is about that gap: what it actually takes to make an embodied model general, fast, and deployable on real hardware rather than in a datacenter.</p>
-
-  <p><strong>This is for you if</strong> you work on compression, quantization, distillation, adaptive compute, action chunking, hardware-aware design, edge-cloud systems, or safety and control under timing constraints, whether you build vision-language-action policies, world-action models, or something that does not fit either label. Contributed papers are <strong>non-archival</strong>; submissions closed <strong>October 19</strong> and acceptance notifications have been released.</p>
-
-  <h3>Why now</h3>
-  <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, and that is a desktop GPU rather than anything that rides onboard. Dexterous manipulation generally wants closed-loop rates well above what these policies deliver, and while some systems close that gap with a fast low-level servo loop under a slower policy, the policy rate still bounds how quickly the robot can change its mind. Meanwhile humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: on platforms where the robot costs less than a datacenter GPU, onboard compute is a budget rather than a preference.</p>
-
-  <table class="data">
-    <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure</th><th>Measures</th></tr>
-    <tr class="grp"><td colspan="5">Action policies</td></tr>
-    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz</td><td class="meas">closed-loop control</td></tr>
-    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz</td><td class="meas">throughput</td></tr>
-    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&ndash;</td><td>50 Hz</td><td class="meas">open-loop chunk rate</td></tr>
-    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; vs OpenVLA</td><td class="meas">relative latency</td></tr>
-    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO)</td><td class="meas">throughput</td></tr>
-    <tr><td><a href="https://github.com/Stanford-ILIAD/openvla-mini">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td><td class="meas">throughput</td></tr>
-    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>482&rarr;4 ms/step</td><td class="meas">relative latency</td></tr>
-    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&ndash;</td><td>11&times; vs OFT</td><td class="meas">relative memory</td></tr>
-    <tr class="grp"><td colspan="5">World models</td></tr>
-    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS</td><td class="meas">offline rollout</td></tr>
-    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz</td><td class="meas">closed-loop control</td></tr>
-  </table>
-  <p class="caption">The last column is the point: these numbers measure different things on different hardware, so they cannot be ranked against each other. Building an evaluation that can is one of the things we want papers about.</p>
-
-  <div class="trilemma">
-    <div><h4>General</h4><p>One policy across tasks, objects, and embodiments, rather than a model per skill.</p></div>
-    <div><h4>Fast</h4><p>Closed-loop rates that keep up with contact-rich manipulation.</p></div>
-    <div><h4>Deployable</h4><p>Inside a fixed onboard power, memory, and cost budget, not merely running somewhere.</p></div>
-  </div>
-  <p class="trilemma-note">Systems trade these off differently, and few manage all three at once. Speed and deployability pull apart in particular, because raw Hz can be bought with bigger hardware: OpenVLA-OFT reaches 109.7 Hz, but on an A100 that will never ride on the robot.</p>
-
-  <h3>What we want papers on</h3>
-  <div class="rq">
-    <h3>Architecture and compression</h3>
-    <p>Smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute for policies and world models alike. Results reporting real latency, memory, energy, or control-rate gains on robot-relevant hardware are especially welcome, as is any evidence about whether these techniques compose.</p>
-  </div>
-  <div class="rq">
-    <h3>Edge-cloud co-design</h3>
-    <p>Deployment trade-offs across onboard, hybrid, and cloud setups, and across heterogeneous accelerators: GPUs, TPUs, Trainium and Inferentia, mobile NPUs. Total cost of ownership at fleet scale is close to unstudied.</p>
-  </div>
-  <div class="rq">
-    <h3>Safety under latency</h3>
-    <p>Interruption, fallback, and certification when inference is slow or its timing is variable. Action chunking commits a robot to open-loop execution with no principled way to interrupt it, and certifying systems with stochastic response time remains open.</p>
-  </div>
-</section>
 
 <section id="updates">
   <h2>Updates</h2>
@@ -251,6 +211,91 @@ footer{
     <div class="row"><dt>November 5, 2026</dt><dd>Paper submission results and final acceptance notifications have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>. The final workshop program was published on November 7, 2026.</dd></div>
     <div class="row"><dt>October 30, 2026</dt><dd>Launched the <a href="challenge/">EmbodiedX Season 1 Benchmark and Challenge</a> (<code>v1.0.0</code>) on NVIDIA L40S and Google Cloud TPU v6e-1. Checkpoint 1 submissions for the CoRL 2026 live workshop spotlight close tomorrow, November 10, 2026, at 23:59 UTC (17:59 CST).</dd></div>
   </dl>
+</section>
+
+<section id="schedule">
+  <h2>Schedule</h2>
+  <p>Thursday, November 12, 2026, Afternoon Session (2:00&ndash;6:00 PM CST, 14:00&ndash;18:00) at <strong>Hilton Austin</strong>, <strong>Room 408</strong> (<a href="https://maps.google.com/?q=Hilton+Austin,+500+East+4th+Street,+Austin,+TX+78701">500 East 4th Street, Austin, TX 78701</a>). The four-hour program pairs four invited talks with contributed lightning talks, a poster session in two shifts and a moderated panel. Time is deliberately weighted toward the interactive parts, including live profiling on real Jetson hardware at the open.</p>
+  <table>
+    <tr><th>Time (CST)</th><th>Session</th></tr>
+    <tr><td class="t">14:00</td><td>Opening and live profiling<div class="d">Organizers frame the generality, speed, and deployability trilemma, then profile vanilla OpenVLA on a Jetson on stage</div></td></tr>
+    <tr><td class="t">14:10</td><td>Dhruv Shah, Princeton University<div class="d">Post-training as the stage where most deployable-efficiency decisions are made. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">14:40</td><td>Yecheng &ldquo;Jason&rdquo; Ma, Dyna Robotics<div class="d">Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">15:10</td><td>Lightning talks<div class="d">Five contributed papers, five minutes each, selected for method diversity</div></td></tr>
+    <tr><td class="t">15:35</td><td>Poster session, first shift<div class="d">Eighteen papers on the boards inside Room 408. Afternoon refreshments are served through both shifts</div></td></tr>
+    <tr><td class="t">16:00</td><td>Poster session, second shift<div class="d">The remaining seventeen papers. First-shift presenters take their posters down at 16:00 so the second shift can put theirs up</div></td></tr>
+    <tr><td class="t">16:25</td><td>Kaifeng Zhang, Sharpa<div class="d">Towards human-like dexterous manipulation. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">16:55</td><td>Xuetao Guo and Yin Li, Google<div class="d">Embodied AI on Cloud TPUs. 25 minutes with 5 for questions</div></td></tr>
+    <tr><td class="t">17:25</td><td>Panel<div class="d">Moderated, seating the speakers with Jiajun Wu of Stanford University and Ouais Alsharif of Google DeepMind, and an audience vote before and after</div></td></tr>
+    <tr><td class="t">17:50</td><td>Awards and closing<div class="d">Best Paper, the Founding Frontier Leaders recognition for challenge submissions merged before the freeze, and closing remarks</div></td></tr>
+  </table>
+  <p class="note">Room assignments follow the <a href="https://www.corl.org/program/workshops">official CoRL 2026 workshop schedule</a>. Attendees arriving on Thursday should note that <a href="https://www.corl.org/program">conference badge pickup</a> is held exclusively at JW Marriott Austin (110 E. 2nd St, Room 201) from 8:00 AM to 1:30 PM CST and closes before the afternoon session begins.</p>
+</section>
+
+<section id="presenting">
+  <h2>Presenting</h2>
+  <p>What accepted authors need for Thursday. Questions go to <a href="mailto:yu@jiafan.org">yu@jiafan.org</a>.</p>
+
+  <h3>Posters</h3>
+  <p>Every accepted paper is presented as a poster in Room 408. The room holds twenty poster slots, so the session runs in two shifts: eighteen papers from 15:35 to 16:00, and seventeen from 16:00 to 16:25. Your shift is the group your paper is listed under. First-shift presenters take their posters down at 16:00 so the second shift can put theirs up.</p>
+  <p>CoRL poster boards are 4&nbsp;ft by 8&nbsp;ft and double-sided, with two posters side by side on each face, so your poster must be smaller than 4&nbsp;ft by 4&nbsp;ft, for example 48&nbsp;in by 36&nbsp;in. Authors print their own posters. Taping to the walls is not permitted by the venue. We are confirming the mounting supplied and will update this line.</p>
+
+  <h3>Lightning talks</h3>
+  <p>Five papers give a five-minute lightning talk at 15:10, and five minutes is strict. Please email your slides as a PDF to <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> by Wednesday, November 11, at 18:00 CST, so all five run from one machine. Lightning papers also present a poster in their shift.</p>
+
+  <h3>Attending</h3>
+  <p>At least one author should present in person in Austin. We cannot promise remote presentation. If your plans change, or you need a particular shift because of travel, email <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> as early as you can.</p>
+</section>
+
+<section id="papers">
+  <h2>Accepted Papers</h2>
+  <p>Thirty-five papers were accepted from 56 submissions, grouped below by poster shift. Titles link to the OpenReview forum, where each paper's review and decision are posted.</p>
+
+  <details class="fold">
+    <summary>Shift 1, 15:35 to 16:00 <span class="ct">18 papers</span></summary>
+    <ul class="papers">
+      <li><a href="https://openreview.net/forum?id=Pfu1lJPzHj">Rolling-WAM: World Action Models with Rolling Imagination</a><div class="by">Yinghua Zhou et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=vw9les3poJ">Group-Wise INT4 Prevents Quantization-Induced Plan Collapse in a Driving Vision-Language-Action Policy</a><div class="by">Justin Williams et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=EcmAv0Thwo">Revisiting Open-Loop Execution in Robotics: Toward Reactive, Higher-Performing Policies</a><div class="by">Michael Zeng et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=OCvjNpgmnT">Lost in Translation? Democratizing VLAs through Language-Anchored VLM-to-VLA Adaptation</a><div class="by">Yuri Ishitoya et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=BQgxyZmdfL">Cache or Denoise Less? Residual Reuse in a Flow-Matching World Action Model</a><div class="by">Abhinav Gupta et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=DAF1CAtYeu">Can Perception Models Run Together? A Memory Ledger for Foundation-Model Perception Beside a Full Navigation Stack on an 8&#8201;GB Jetson</a><div class="by">Smit shende et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=h6FKvKR6g6">Beyond Guard Accuracy: Safety Screening Under Robot Timing Budgets</a><div class="by">Praneeth Narisetty and Shiva Nagendra Babu Kore</div></li>
+      <li><a href="https://openreview.net/forum?id=FdmopJWuzp">Decoupling Balance from Reasoning: When Does a Slow Vision-Language Brain Make a Humanoid Fall?</a><div class="by">Quang Vu Luu</div></li>
+      <li><a href="https://openreview.net/forum?id=Gf88kkFdnY">WINK: World-Action Imagination in a Blink</a><div class="by">Kaitlyn Zhang et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=xp1EE4OxGa">Ternary Vision Encoders Without the Straight-Through Estimator: Toward Onboard Robot Perception</a><div class="by">Akshat Bhalani</div></li>
+      <li><a href="https://openreview.net/forum?id=m6vfL7l08G">Selective Q-Chunking: One-Step Candidate Selection for Real-Time Multi-Stage Manipulation</a><div class="by">Daniel Zhu</div></li>
+      <li><a href="https://openreview.net/forum?id=eo5Cf8kHzg">Sixteen Numbers per Skill: A Compact Linear Action Space for Segment-Level Robot Planning</a><div class="by">Srihith Mudakala</div></li>
+      <li><a href="https://openreview.net/forum?id=T2PPKB4KmP">ASPEN: Adaptive Semantic Reasoning via Command Persistence Prediction for Efficient Navigation VLAs</a><div class="by">Vieri Naufal Akustia and Bin Hu</div></li>
+      <li><a href="https://openreview.net/forum?id=0actxuA0OY">&pi;R&sup2;: Reactive Real-time Flow Policies</a><div class="by">Sungjae Park and Shubham Tulsiani</div></li>
+      <li><a href="https://openreview.net/forum?id=ihyWOu4G1y">ApertureVLA: A Fast 0.2B Vision-Language-Action Policy</a><div class="by">Shukun Huang et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=TN0DscfoHb">When Visual Token Pruning Loses Count</a><div class="by">Sarah Alharbi and Marios Savvides</div></li>
+      <li><a href="https://openreview.net/forum?id=kdIGgL9d4W">Streaming Failure Forecasting: Closed-Form Online Learning of VLA Failure Monitors under Drift</a><div class="by">Amit Hemant Jadhav et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=Y5cPyZHPXY">How a VLA Is Trained Shapes How It Quantizes</a><div class="by">Vishruth Bharath</div></li>
+    </ul>
+  </details>
+  <details class="fold">
+    <summary>Shift 2, 16:00 to 16:25 <span class="ct">17 papers</span></summary>
+    <ul class="papers">
+      <li><a href="https://openreview.net/forum?id=VUuO0hceYF">Beyond Aggregate Success: Paired Statewise Evaluation of VLA Policy Updates</a><div class="by">Qiang Guo</div></li>
+      <li><a href="https://openreview.net/forum?id=OKUnsOpqwZ">Inference Latency and Chunk Transitions in Whole-Body Humanoid Loco-Manipulation</a><div class="by">Chuan Qin et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=tppHW2ceKG">What Makes a VLA Reactive? A Study of Execution Strategies for Dynamic Manipulation</a><div class="by">Zhuoyue Li et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=GdQ1pIa0Bq">DeFM: Efficient Depth Foundation Models for Real-Time Robot Learning</a><div class="by">Manthan Patel et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=wEL2inoE61">Phaseformer: Minimum Requirements for Multimodal Behavior Cloning</a><div class="by">Joseph C. Liechty and Tucker Hermans</div></li>
+      <li><a href="https://openreview.net/forum?id=dUww53ayeI">Steeract: Unlocking Action Models Through Few-Shot Temporal Steering</a><div class="by">Kaichen Zhou et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=TVUvBCzGa5">Can a Quantized JEPA World-Model Planner Keep Its Task Success on a Neural Engine? A Paired Study of LeWorldModel</a><div class="by">Thomas Blanc</div></li>
+      <li><a href="https://openreview.net/forum?id=wUAHiqqioS">Hertz Is Not Reactivity: Reaction Latency of Chunked Robot Policies Under Stochastic Inference Latency</a><div class="by">Hyunjun Yi et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=QY6dqlv5Qq">DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?</a><div class="by">Rohan Nagabhirava et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=s5d7AMGplq">Where Does the Per-Step Cost of History Go? Frame Pooling, Recurrent State and Cache Budgets in a Small-Scale VLA Study</a><div class="by">Johnathan Luu et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=0kBqOpNFAq">Running OmniVLA-7B on an 8 GB Jetson Orin Nano: What int4 Preserves and What Token Pruning Breaks</a><div class="by">Jayden Vasquez</div></li>
+      <li><a href="https://openreview.net/forum?id=4X3kRdJPPn">Adaptive Loss Weighting for Efficient One-Step Flow Policies in Robot Manipulation</a><div class="by">Bharath Chandra Reddy Irigireddy</div></li>
+      <li><a href="https://openreview.net/forum?id=thlMvkXfnW">Does a Robot’s Failure Monitor Still Work After a Speed-Up?</a><div class="by">Abraham Yeung</div></li>
+      <li><a href="https://openreview.net/forum?id=bGZwrLhh1u">Clean Forcing: Drift-Resistant Autoregressive Video Diffusion with a Frozen Base</a><div class="by">Wenqing Wang et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=tsFMDHk8il">FirmVLA: Task-Grounded Sequence-SLO Serving for Heterogeneous Robot Policies</a><div class="by">Ahnaf Adib et al.</div></li>
+      <li><a href="https://openreview.net/forum?id=4nSnbcYab0">What Survives Structural Compression of a Navigation VLA? Selection, Distillation, and Evaluation at a Device Memory Budget</a><div class="by">Timothy Tong</div></li>
+      <li><a href="https://openreview.net/forum?id=FO63myXM14">Plan-Staleness Deadlines for Onboard Reasoning</a><div class="by">Hassan Iqbal</div></li>
+    </ul>
+  </details>
 </section>
 
 <section id="speakers">
@@ -314,117 +359,59 @@ footer{
   </div>
 </section>
 
-<section id="schedule">
-  <h2>Schedule</h2>
-  <p>Thursday, November 12, 2026, Afternoon Session (2:00&ndash;6:00 PM CST, 14:00&ndash;18:00) at <strong>Hilton Austin</strong>, <strong>Room 408</strong> (<a href="https://maps.google.com/?q=Hilton+Austin,+500+East+4th+Street,+Austin,+TX+78701">500 East 4th Street, Austin, TX 78701</a>). The four-hour program pairs four invited talks with contributed lightning talks, a poster session in two shifts and a moderated panel. Time is deliberately weighted toward the interactive parts, including live profiling on real Jetson hardware at the open.</p>
-  <table>
-    <tr><th>Time (CST)</th><th>Session</th></tr>
-    <tr><td class="t">14:00</td><td>Opening and live profiling<div class="d">Organizers frame the generality, speed, and deployability trilemma, then profile vanilla OpenVLA on a Jetson on stage</div></td></tr>
-    <tr><td class="t">14:10</td><td>Dhruv Shah, Princeton University<div class="d">Post-training as the stage where most deployable-efficiency decisions are made. 25 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">14:40</td><td>Yecheng &ldquo;Jason&rdquo; Ma, Dyna Robotics<div class="d">Embodied foundation models on a commercial duty cycle, from DYNA-1 to the DYNA-2 world-action model. 25 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">15:10</td><td>Lightning talks<div class="d">Five contributed papers, five minutes each, selected for method diversity</div></td></tr>
-    <tr><td class="t">15:35</td><td>Poster session, first shift<div class="d">Eighteen papers on the boards inside Room 408. Afternoon refreshments are served through both shifts</div></td></tr>
-    <tr><td class="t">16:00</td><td>Poster session, second shift<div class="d">The remaining seventeen papers. First-shift presenters take their posters down at 16:00 so the second shift can put theirs up</div></td></tr>
-    <tr><td class="t">16:25</td><td>Kaifeng Zhang, Sharpa<div class="d">Towards human-like dexterous manipulation. 25 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">16:55</td><td>Xuetao Guo and Yin Li, Google<div class="d">Embodied AI on Cloud TPUs. 25 minutes with 5 for questions</div></td></tr>
-    <tr><td class="t">17:25</td><td>Panel<div class="d">Moderated, seating the speakers with Jiajun Wu of Stanford University and Ouais Alsharif of Google DeepMind, and an audience vote before and after</div></td></tr>
-    <tr><td class="t">17:50</td><td>Awards and closing<div class="d">Best Paper, the Founding Frontier Leaders recognition for challenge submissions merged before the freeze, and closing remarks</div></td></tr>
-  </table>
-  <p class="note">Room assignments follow the <a href="https://www.corl.org/program/workshops">official CoRL 2026 workshop schedule</a>. Attendees arriving on Thursday should note that <a href="https://www.corl.org/program">conference badge pickup</a> is held exclusively at JW Marriott Austin (110 E. 2nd St, Room 201) from 8:00 AM to 1:30 PM CST and closes before the afternoon session begins.</p>
-</section>
-
-<section id="papers">
-  <h2>Accepted Papers</h2>
-  <p>Thirty-five papers were accepted from 56 submissions. Every one is presented as a poster in Room 408, and five are additionally selected for a five-minute lightning talk. Titles link to the OpenReview forum, where the review and decision for each paper are posted.</p>
-
-  <h3>For poster presenters</h3>
-  <p>CoRL poster boards are <strong>4&nbsp;ft by 8&nbsp;ft</strong> and double-sided, with two posters side by side on each face, so your poster must be <strong>smaller than 4&nbsp;ft by 4&nbsp;ft</strong>, for example 48&nbsp;in by 36&nbsp;in. Authors are responsible for printing their own posters. Taping posters to the walls is not permitted by the venue. We are confirming the mounting supplied and will update this line.</p>
-  <p>Room 408 holds twenty poster slots and we accepted thirty-five papers, so the poster session runs in <strong>two shifts</strong>: eighteen papers from 15:35 to 16:00, and seventeen from 16:00 to 16:25. Each paper below carries its shift. Presenters are also being emailed. If you need a particular shift because of travel, please email <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> and we will try to accommodate it.</p>
-  <p class="note">At least one author should attend and present in Austin. We cannot promise remote presentation. If your plans change, please email <a href="mailto:yu@jiafan.org">yu@jiafan.org</a> as early as you can.</p>
-
-  <ol class="papers">
-    <li><a href="https://openreview.net/forum?id=Pfu1lJPzHj">Rolling-WAM: World Action Models with Rolling Imagination</a><div class="by">Yinghua Zhou et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=VUuO0hceYF">Beyond Aggregate Success: Paired Statewise Evaluation of VLA Policy Updates</a><div class="by">Qiang Guo</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=OKUnsOpqwZ">Inference Latency and Chunk Transitions in Whole-Body Humanoid Loco-Manipulation</a><div class="by">Chuan Qin et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=vw9les3poJ">Group-Wise INT4 Prevents Quantization-Induced Plan Collapse in a Driving Vision-Language-Action Policy</a><div class="by">Justin Williams et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=tppHW2ceKG">What Makes a VLA Reactive? A Study of Execution Strategies for Dynamic Manipulation</a><div class="by">Zhuoyue Li et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=EcmAv0Thwo">Revisiting Open-Loop Execution in Robotics: Toward Reactive, Higher-Performing Policies</a><div class="by">Michael Zeng et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=OCvjNpgmnT">Lost in Translation? Democratizing VLAs through Language-Anchored VLM-to-VLA Adaptation</a><div class="by">Yuri Ishitoya et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=GdQ1pIa0Bq">DeFM: Efficient Depth Foundation Models for Real-Time Robot Learning</a><div class="by">Manthan Patel et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=wEL2inoE61">Phaseformer: Minimum Requirements for Multimodal Behavior Cloning</a><div class="by">Joseph C. Liechty and Tucker Hermans</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=BQgxyZmdfL">Cache or Denoise Less? Residual Reuse in a Flow-Matching World Action Model</a><div class="by">Abhinav Gupta et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=DAF1CAtYeu">Can Perception Models Run Together? A Memory Ledger for Foundation-Model Perception Beside a Full Navigation Stack on an 8&#8201;GB Jetson</a><div class="by">Smit shende et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=dUww53ayeI">Steeract: Unlocking Action Models Through Few-Shot Temporal Steering</a><div class="by">Kaichen Zhou et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=TVUvBCzGa5">Can a Quantized JEPA World-Model Planner Keep Its Task Success on a Neural Engine? A Paired Study of LeWorldModel</a><div class="by">Thomas Blanc</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=h6FKvKR6g6">Beyond Guard Accuracy: Safety Screening Under Robot Timing Budgets</a><div class="by">Praneeth Narisetty and Shiva Nagendra Babu Kore</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=wUAHiqqioS">Hertz Is Not Reactivity: Reaction Latency of Chunked Robot Policies Under Stochastic Inference Latency</a><div class="by">Hyunjun Yi et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=QY6dqlv5Qq">DoomShift: How Much Adaptation Do World Models Need Under Domain Shift?</a><div class="by">Rohan Nagabhirava et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=FdmopJWuzp">Decoupling Balance from Reasoning: When Does a Slow Vision-Language Brain Make a Humanoid Fall?</a><div class="by">Quang Vu Luu</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=Gf88kkFdnY">WINK: World-Action Imagination in a Blink</a><div class="by">Kaitlyn Zhang et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=s5d7AMGplq">Where Does the Per-Step Cost of History Go? Frame Pooling, Recurrent State and Cache Budgets in a Small-Scale VLA Study</a><div class="by">Johnathan Luu et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=xp1EE4OxGa">Ternary Vision Encoders Without the Straight-Through Estimator: Toward Onboard Robot Perception</a><div class="by">Akshat Bhalani</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=0kBqOpNFAq">Running OmniVLA-7B on an 8 GB Jetson Orin Nano: What int4 Preserves and What Token Pruning Breaks</a><div class="by">Jayden Vasquez</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=m6vfL7l08G">Selective Q-Chunking: One-Step Candidate Selection for Real-Time Multi-Stage Manipulation</a><div class="by">Daniel Zhu</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=eo5Cf8kHzg">Sixteen Numbers per Skill: A Compact Linear Action Space for Segment-Level Robot Planning</a><div class="by">Srihith Mudakala</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=4X3kRdJPPn">Adaptive Loss Weighting for Efficient One-Step Flow Policies in Robot Manipulation</a><div class="by">Bharath Chandra Reddy Irigireddy</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=T2PPKB4KmP">ASPEN: Adaptive Semantic Reasoning via Command Persistence Prediction for Efficient Navigation VLAs</a><div class="by">Vieri Naufal Akustia and Bin Hu</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=0actxuA0OY">&pi;R&sup2;: Reactive Real-time Flow Policies</a><div class="by">Sungjae Park and Shubham Tulsiani</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=ihyWOu4G1y">ApertureVLA: A Fast 0.2B Vision-Language-Action Policy</a><div class="by">Shukun Huang et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=thlMvkXfnW">Does a Robot’s Failure Monitor Still Work After a Speed-Up?</a><div class="by">Abraham Yeung</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=TN0DscfoHb">When Visual Token Pruning Loses Count</a><div class="by">Sarah Alharbi and Marios Savvides</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=bGZwrLhh1u">Clean Forcing: Drift-Resistant Autoregressive Video Diffusion with a Frozen Base</a><div class="by">Wenqing Wang et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=tsFMDHk8il">FirmVLA: Task-Grounded Sequence-SLO Serving for Heterogeneous Robot Policies</a><div class="by">Ahnaf Adib et al.</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=kdIGgL9d4W">Streaming Failure Forecasting: Closed-Form Online Learning of VLA Failure Monitors under Drift</a><div class="by">Amit Hemant Jadhav et al.</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-    <li><a href="https://openreview.net/forum?id=4nSnbcYab0">What Survives Structural Compression of a Navigation VLA? Selection, Distillation, and Evaluation at a Device Memory Budget</a><div class="by">Timothy Tong</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=FO63myXM14">Plan-Staleness Deadlines for Onboard Reasoning</a><div class="by">Hassan Iqbal</div><div class="place">Shift 2, 16:00 to 16:25</div></li>
-    <li><a href="https://openreview.net/forum?id=Y5cPyZHPXY">How a VLA Is Trained Shapes How It Quantizes</a><div class="by">Vishruth Bharath</div><div class="place">Shift 1, 15:35 to 16:00</div></li>
-  </ol>
-</section>
-
-<section id="cfp">
-  <h2>Call for Papers</h2>
-  <p>We solicit four-page extended abstracts, plus unlimited pages for references, on efficiency across the whole space of embodied foundation models: VLA policies, world-action models, and emerging architectures alike.</p>
-
-  <h3>Topics</h3>
-  <ul>
-    <li>Efficient architectures for VLA policies, world-action models, and emerging designs: action chunking, mixture-of-experts, early exit, diffusion and flow step-reduction</li>
-    <li>Compression for robot foundation models: quantization, pruning, distillation</li>
-    <li>Memory-efficient adaptation and fine-tuning</li>
-    <li>Benchmarking methodology, including whether efficiency techniques compose</li>
-    <li>Hardware-aware design across accelerators: GPU, TPU, AWS Trainium and Inferentia, mobile NPUs</li>
-    <li>Edge-cloud hybrid architectures for robot fleets</li>
-    <li>Safety and latency trade-offs, and fallback policies under stochastic response time</li>
-    <li>Efficient world models for online planning and real-time safety monitoring</li>
-  </ul>
-
-  <h3>Submission</h3>
-  <p>Four pages plus unlimited references, hosted on OpenReview, reviewed double-blind. Submissions must be anonymized.</p>
-  <p><strong>Non-archival.</strong> Accepted papers are not archived as formal publications, so submitting here does not affect your ability to submit the same work to a main conference. Concurrent submissions and work under review elsewhere are permitted. Previously published work that fits the scope is also eligible, tracked and reviewed separately from new work, so the two do not compete against each other. Every accepted paper in either track gets a poster, and lightning talks are drawn from both. Best Paper is limited to the new-work track. Papers already accepted to the CoRL 2026 main conference are not eligible.</p>
-  <p><strong>Submission portal: <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>.</strong> Paper submissions closed on October 19, 2026, and acceptance notifications have been released.</p>
-
-  <h3>Review and presentation</h3>
-  <p>We aimed for three reviews per submission. With 56 submissions and a program committee of six, each submission received one review, from the organizing committee or the invited program committee, together with a decision rationale from the chair. Paper acceptance decisions have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a> as of <strong>November 5, 2026</strong>. All accepted papers are presented as posters, and five are additionally selected for a five-minute lightning talk.</p>
-</section>
-
 <section id="challenge">
   <h2>Embodied Efficiency Challenge</h2>
   <p><strong>EmbodiedX (<code>embodied-efficiency-bench</code>)</strong> is an open, closed-loop serving benchmark charting single-chip latency-throughput Pareto frontiers across <strong>Track 1A</strong> (<code>&pi;<sub>0.5</sub>-LIBERO</code>), <strong>Track 1B</strong> (<code>GR00T N1.7-3B</code>), and <strong>Track 2</strong> (<code>Cosmos-Predict2.5-2B</code>) in both <strong>Closed</strong> (frozen-checkpoint parity) and <strong>Open</strong> (Stage-2 task-verified compression) divisions. Season 1 standardizes on two accessible cloud accelerators, <strong>NVIDIA L40S (48 GB)</strong> and <strong>Google Cloud TPU v6e-1 (32 GB)</strong>, opening unseeded on October 30 with a two-phase commit-reveal protocol that keeps participant kernels private until the freeze.</p>
   <p><strong>Awards and checkpoints.</strong> Early submissions merged before the <strong>November 10, 2026 (23:59 UTC)</strong> freeze are recognized live on stage at CoRL on November 12 as Founding Frontier Leaders. Season 1 closes <strong>December 18, 2026 (23:59 AoE)</strong> for official category awards across each track in <strong>Interactive Reactivity (<code>C = 1</code> <code>p99</code>)</strong>, <strong>Real-Time Fleet Throughput</strong>, and <strong>Green Embodied Efficiency (<code>Actions/J</code>, <code>Predictions/J</code>)</strong>, verified on clean organizer hardware over a held-out trace split. Verified Season 1 category winners receive monetary prizes, an official CoRL 2026 EEAI Workshop Award Certificate, an invitation to apply for Google Cloud credits, and an invitation to co-author the post-season <em>EmbodiedX Season 1 Systems Report</em>.</p>
-  <p><strong><a href="challenge/">Challenge page and live leaderboard &rarr;</a></strong> &nbsp;&middot;&nbsp; <a href="challenge/#awards">Awards &amp; dates</a> &nbsp;&middot;&nbsp; <a href="challenge/#rules">Protocol &amp; commit-reveal</a> &nbsp;&middot;&nbsp; <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench">GitHub repository</a> &nbsp;&middot;&nbsp; <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench/blob/main/docs/EmbodiedX_Benchmark_Methodology_and_Metrics.pdf">Methodology specification (PDF)</a></p>
+  <p><strong><a href="challenge/">Challenge page</a></strong> &nbsp;&middot;&nbsp; <a href="challenge/#awards">Awards &amp; dates</a> &nbsp;&middot;&nbsp; <a href="challenge/#rules">Protocol &amp; commit-reveal</a> &nbsp;&middot;&nbsp; <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench">GitHub repository</a> &nbsp;&middot;&nbsp; <a href="https://github.com/efficient-embodied-ai/embodied-efficiency-bench/blob/main/docs/EmbodiedX_Benchmark_Methodology_and_Metrics.pdf">Methodology specification (PDF)</a></p>
 </section>
 
-<section id="dates">
-  <h2>Important Dates</h2>
-  <dl>
-    <div class="row"><dt>October 19, 2026</dt><dd>Paper submission deadline (extended from October 12)</dd></div>
-    <div class="row"><dt>October 30, 2026</dt><dd>EmbodiedX Season 1 benchmark and leaderboard open</dd></div>
-    <div class="row"><dt>November 5, 2026</dt><dd>Final paper acceptance notifications released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a></dd></div>
-    <div class="row"><dt>November 7, 2026</dt><dd>Final workshop program published</dd></div>
-    <div class="row"><dt>November 10, 2026</dt><dd>Challenge Checkpoint 1: CoRL live spotlight freeze (23:59 UTC)</dd></div>
-    <div class="row"><dt>November 12, 2026</dt><dd>Workshop at CoRL 2026 (2:00&ndash;6:00 PM CST, Hilton Austin, Room 408), with live Founding Frontier presentation</dd></div>
-    <div class="row"><dt>December 18, 2026</dt><dd>Challenge Checkpoint 2: Season 1 awards freeze (23:59 AoE; +24h private finalist container reveal)</dd></div>
-  </dl>
-  <p class="note">Paper deadlines are 23:59 Anywhere on Earth (AoE). Following the December 18 Season 1 freeze, the public EmbodiedX leaderboard remains open continuously for rolling pull requests in 2027.</p>
+<section id="overview">
+  <h2>Overview</h2>
+  <p class="lede">Embodied foundation models are now good enough to matter. Most of them still miss the latency, memory, and power budgets required to run on the robot itself. This workshop is about that gap: what it actually takes to make an embodied model general, fast, and deployable on real hardware rather than in a datacenter.</p>
+
+  <p><strong>This is for you if</strong> you work on compression, quantization, distillation, adaptive compute, action chunking, hardware-aware design, edge-cloud systems, or safety and control under timing constraints, whether you build vision-language-action policies, world-action models, or something that does not fit either label. Contributed papers are <strong>non-archival</strong>; submissions closed <strong>October 19</strong> and acceptance notifications have been released.</p>
+
+  <h3>Why now</h3>
+  <p>RT-2's 55B parameters run at 1 to 3 Hz on cloud TPUs that cost more than the robot. OpenVLA reports roughly 6 Hz on an RTX 4090, and that is a desktop GPU rather than anything that rides onboard. Dexterous manipulation generally wants closed-loop rates well above what these policies deliver, and while some systems close that gap with a fast low-level servo loop under a slower policy, the policy rate still bounds how quickly the robot can change its mind. Meanwhile humanoid programs at scale (Tesla Optimus, Agility Digit, Unitree G1) make per-unit inference cost a first-order constraint: on platforms where the robot costs less than a datacenter GPU, onboard compute is a budget rather than a preference.</p>
+
+  <table class="data">
+    <tr><th>Model</th><th>Params</th><th>Hardware</th><th>Reported figure</th><th>Measures</th></tr>
+    <tr class="grp"><td colspan="5">Action policies</td></tr>
+    <tr><td><a href="https://robotics-transformer2.github.io/">RT-2</a></td><td>55B</td><td>Cloud TPU</td><td>1&ndash;3 Hz</td><td class="meas">closed-loop control</td></tr>
+    <tr><td><a href="https://openvla.github.io/">OpenVLA</a></td><td>7B</td><td>RTX 4090</td><td>~6 Hz</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://www.pi.website/blog/pi0">&pi;<sub>0</sub></a></td><td>3.3B</td><td>&ndash;</td><td>50 Hz</td><td class="meas">open-loop chunk rate</td></tr>
+    <tr><td><a href="https://tiny-vla.github.io/">TinyVLA</a></td><td>0.7&ndash;1.3B</td><td>RTX A6000</td><td>20&times; vs OpenVLA</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://openvla-oft.github.io/">OpenVLA-OFT</a></td><td>7B</td><td>A100</td><td>109.7 Hz (LIBERO)</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://github.com/Stanford-ILIAD/openvla-mini">MiniVLA</a></td><td>1B</td><td>L40S</td><td>12.5 Hz</td><td class="meas">throughput</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2510.04898">HyperVLA</a></td><td>90&times; fewer active</td><td>L4</td><td>482&rarr;4 ms/step</td><td class="meas">relative latency</td></tr>
+    <tr><td><a href="https://arxiv.org/abs/2506.07530">BitVLA</a></td><td>1.58-bit ternary</td><td>&ndash;</td><td>11&times; vs OFT</td><td class="meas">relative memory</td></tr>
+    <tr class="grp"><td colspan="5">World models</td></tr>
+    <tr><td><a href="https://dreamdojo-world.github.io/">DreamDojo</a></td><td>2&ndash;14B</td><td>RTX 5090</td><td>10.8 FPS</td><td class="meas">offline rollout</td></tr>
+    <tr><td><a href="https://dreamzero0.github.io/">DreamZero</a></td><td>14B</td><td>GB200</td><td>7 Hz</td><td class="meas">closed-loop control</td></tr>
+  </table>
+  <p class="caption">The last column is the point: these numbers measure different things on different hardware, so they cannot be ranked against each other. Building an evaluation that can is one of the things we want papers about.</p>
+
+  <div class="trilemma">
+    <div><h4>General</h4><p>One policy across tasks, objects, and embodiments, rather than a model per skill.</p></div>
+    <div><h4>Fast</h4><p>Closed-loop rates that keep up with contact-rich manipulation.</p></div>
+    <div><h4>Deployable</h4><p>Inside a fixed onboard power, memory, and cost budget, not merely running somewhere.</p></div>
+  </div>
+  <p class="trilemma-note">Systems trade these off differently, and few manage all three at once. Speed and deployability pull apart in particular, because raw Hz can be bought with bigger hardware: OpenVLA-OFT reaches 109.7 Hz, but on an A100 that will never ride on the robot.</p>
+
+  <h3>What we want papers on</h3>
+  <div class="rq">
+    <h3>Architecture and compression</h3>
+    <p>Smaller backbones, action chunking, quantization, pruning, distillation, and adaptive compute for policies and world models alike. Results reporting real latency, memory, energy, or control-rate gains on robot-relevant hardware are especially welcome, as is any evidence about whether these techniques compose.</p>
+  </div>
+  <div class="rq">
+    <h3>Edge-cloud co-design</h3>
+    <p>Deployment trade-offs across onboard, hybrid, and cloud setups, and across heterogeneous accelerators: GPUs, TPUs, Trainium and Inferentia, mobile NPUs. Total cost of ownership at fleet scale is close to unstudied.</p>
+  </div>
+  <div class="rq">
+    <h3>Safety under latency</h3>
+    <p>Interruption, fallback, and certification when inference is slow or its timing is variable. Action chunking commits a robot to open-loop execution with no principled way to interrupt it, and certifying systems with stochastic response time remains open.</p>
+  </div>
 </section>
 
 <section id="organizers">
@@ -487,6 +474,46 @@ footer{
     <li><strong>Mangat Rai</strong>, IBM</li>
     <li><strong>Sriharsha Sammeta</strong>, Google</li>
   </ul>
+</section>
+
+<section id="dates">
+  <h2>Important Dates</h2>
+  <dl>
+    <div class="row"><dt>November 10, 2026</dt><dd>Challenge Checkpoint 1: CoRL live spotlight freeze (23:59 UTC, 17:59 CST)</dd></div>
+    <div class="row"><dt>November 12, 2026</dt><dd>Workshop at CoRL 2026 (2:00&ndash;6:00 PM CST, Hilton Austin, Room 408), with live Founding Frontier presentation</dd></div>
+    <div class="row"><dt>December 18, 2026</dt><dd>Challenge Checkpoint 2: Season 1 awards freeze (23:59 AoE; +24h private finalist container reveal)</dd></div>
+  </dl>
+  <p class="note">Already passed: paper submissions closed October 19, the benchmark opened October 30, decisions were released November 5, and the program was published November 7. Following the December 18 Season 1 freeze, the public EmbodiedX leaderboard remains open continuously for rolling pull requests in 2027.</p>
+</section>
+
+<section id="cfp">
+  <h2>Call for Papers</h2>
+  <p>Submissions closed on October 19, 2026, and decisions were released on November 5.</p>
+  <details class="fold">
+    <summary>The original call</summary>
+
+  <p>We solicit four-page extended abstracts, plus unlimited pages for references, on efficiency across the whole space of embodied foundation models: VLA policies, world-action models, and emerging architectures alike.</p>
+
+  <h3>Topics</h3>
+  <ul>
+    <li>Efficient architectures for VLA policies, world-action models, and emerging designs: action chunking, mixture-of-experts, early exit, diffusion and flow step-reduction</li>
+    <li>Compression for robot foundation models: quantization, pruning, distillation</li>
+    <li>Memory-efficient adaptation and fine-tuning</li>
+    <li>Benchmarking methodology, including whether efficiency techniques compose</li>
+    <li>Hardware-aware design across accelerators: GPU, TPU, AWS Trainium and Inferentia, mobile NPUs</li>
+    <li>Edge-cloud hybrid architectures for robot fleets</li>
+    <li>Safety and latency trade-offs, and fallback policies under stochastic response time</li>
+    <li>Efficient world models for online planning and real-time safety monitoring</li>
+  </ul>
+
+  <h3>Submission</h3>
+  <p>Four pages plus unlimited references, hosted on OpenReview, reviewed double-blind. Submissions must be anonymized.</p>
+  <p><strong>Non-archival.</strong> Accepted papers are not archived as formal publications, so submitting here does not affect your ability to submit the same work to a main conference. Concurrent submissions and work under review elsewhere are permitted. Previously published work that fits the scope is also eligible, tracked and reviewed separately from new work, so the two do not compete against each other. Every accepted paper in either track gets a poster, and lightning talks are drawn from both. Best Paper is limited to the new-work track. Papers already accepted to the CoRL 2026 main conference are not eligible.</p>
+  <p><strong>Submission portal: <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a>.</strong> Paper submissions closed on October 19, 2026, and acceptance notifications have been released.</p>
+
+  <h3>Review and presentation</h3>
+  <p>We aimed for three reviews per submission. With 56 submissions and a program committee of six, each submission received one review, from the organizing committee or the invited program committee, together with a decision rationale from the chair. Paper acceptance decisions have been released on <a href="https://openreview.net/group?id=robot-learning.org/CoRL/2026/Workshop/EEAI">OpenReview</a> as of <strong>November 5, 2026</strong>. All accepted papers are presented as posters, and five are additionally selected for a five-minute lightning talk.</p>
+  </details>
 </section>
 
 <section id="sponsor">
