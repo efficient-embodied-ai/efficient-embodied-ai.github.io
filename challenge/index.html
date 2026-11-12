@@ -259,7 +259,7 @@ footer{
   <dl>
     <div class="row"><dt>Oct 30, 2026</dt><dd>Benchmark v1.0 harness and public Season 1 leaderboard open for pull requests.</dd></div>
     <div class="row"><dt>Nov 10, 2026 (23:59 UTC)</dt><dd><strong>Checkpoint 1: CoRL live spotlight freeze.</strong> All valid pull requests merged by this deadline are featured on stage on November 12 as Founding Frontier Leaders.</dd></div>
-    <div class="row"><dt>Nov 12, 2026</dt><dd><strong>CoRL 2026 EEAI Workshop session</strong> at Hilton Austin, Room 408 (2:00&ndash;6:00 PM CST; 17:35 CST challenge session) and live founding-frontier presentation.</dd></div>
+    <div class="row"><dt>Nov 12, 2026</dt><dd><strong>CoRL 2026 EEAI Workshop session</strong> at Hilton Austin, Room 408 (2:00&ndash;6:00 PM CST). Founding Frontier Leaders are recognized during the 17:50 CST awards.</dd></div>
     <div class="row"><dt>Dec 18, 2026 (23:59 AoE)</dt><dd><strong>Checkpoint 2: Season 1 final PR freeze.</strong> Shortlisted finalists complete their 24-hour private container reveal for clean-hardware organizer re-runs; the public leaderboard continues on a rolling basis in 2027.</dd></div>
   </dl>
 </section>
@@ -599,9 +599,9 @@ eeb verify-bundle ./submissions/track1_vla/my_lab_pi05_l40s --strict</code></pre
     if (leadEl) {
       if (state.totalLive > 0) {
         var safeCount = Number(state.totalLive) || 0;
-        leadEl.innerHTML = 'Season 1 live leaderboard: <strong>' + safeCount + '</strong> verified community ' +
+        leadEl.innerHTML = 'Season 1 live leaderboard: <strong>' + safeCount + '</strong> community ' +
           (safeCount === 1 ? 'submission' : 'submissions') +
-          ' recorded on standardized single-chip cloud hardware. Curves plot measured concurrency sweeps across <em>C</em> &isin; {1, 2, 4, 8, 16} against each track\'s gapless real-time control deadline.';
+          ' merged before the November 10 freeze, self-measured on standardized single-chip cloud hardware; organizer re-runs follow the December 18 freeze. Curves plot measured concurrency sweeps across <em>C</em> &isin; {1, 2, 4, 8, 16} against each track\'s gapless real-time control deadline.';
       } else {
         leadEl.innerHTML = 'Season 1 opened October 30, 2026 (0 community submissions recorded so far; the reference harness and eight-gate verifier were validated end-to-end on physical NVIDIA L40S and Cloud TPU v6e-1 without seeding organizer scores). Merged pull requests populate this chart automatically; dashed lines illustrate how concurrency sweeps (<em>C</em> = 1..16) trace the latency-throughput frontier against each track\'s real-time control deadline.';
       }

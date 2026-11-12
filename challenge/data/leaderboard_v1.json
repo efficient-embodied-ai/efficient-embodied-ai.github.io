@@ -3,10 +3,215 @@
   "benchmark": "embodied-efficiency-bench",
   "benchmark_version": "1.0.0",
   "season": "Season 1",
-  "status": "OPEN_FOR_FOUNDING_SUBMISSIONS",
-  "updated_at": "2026-10-30T00:00:00Z",
+  "status": "OPEN",
+  "updated_at": "2026-11-12T18:00:00Z",
   "checkpoint_1_corl_spotlight_freeze_utc": "2026-11-10T23:59:59Z",
   "corl_2026_workshop_date": "2026-11-12",
   "checkpoint_2_season_1_awards_freeze_aoe": "2026-12-18T23:59:59-12:00",
-  "entries": []
+  "entries": [
+    {
+      "submission_id": "orchestral_labs_track1a_closed_l40s_01",
+      "name": "orchestral_labs · L40S · Closed",
+      "team": "orchestral_labs",
+      "track": "track1a pi05",
+      "model": "π0.5",
+      "division": "CLOSED",
+      "hardware_sku": "L40S_48GB",
+      "power_provenance": "MEASURED",
+      "status": "SELF_MEASURED_PENDING_ORGANIZER_RERUN",
+      "quality_gate": "GOLDEN_REPLAY",
+      "quality_certified": true,
+      "merged_before_checkpoint_1": true,
+      "points": [
+        {
+          "concurrency": 1,
+          "p99_ms": 32.24,
+          "p50_ms": 31.43,
+          "actions_per_s": 314.4,
+          "actions_per_joule": 0.5108
+        },
+        {
+          "concurrency": 2,
+          "p99_ms": 63.23,
+          "p50_ms": 61.03,
+          "actions_per_s": 326.0,
+          "actions_per_joule": 0.5062
+        },
+        {
+          "concurrency": 4,
+          "p99_ms": 149.94,
+          "p50_ms": 116.63,
+          "actions_per_s": 341.5,
+          "actions_per_joule": 0.548
+        },
+        {
+          "concurrency": 8,
+          "p99_ms": 265.56,
+          "p50_ms": 231.44,
+          "actions_per_s": 340.4,
+          "actions_per_joule": 0.5399
+        },
+        {
+          "concurrency": 16,
+          "p99_ms": 505.17,
+          "p50_ms": 467.62,
+          "actions_per_s": 340.5,
+          "actions_per_joule": 0.5315
+        }
+      ]
+    },
+    {
+      "submission_id": "orchestral_labs_track1a_open_l40s_01",
+      "name": "orchestral_labs · L40S · Open",
+      "team": "orchestral_labs",
+      "track": "track1a pi05",
+      "model": "π0.5",
+      "division": "OPEN",
+      "hardware_sku": "L40S_48GB",
+      "power_provenance": "MEASURED",
+      "status": "SELF_MEASURED_PENDING_ORGANIZER_RERUN",
+      "quality_gate": "SANITY_ONLY",
+      "quality_certified": false,
+      "merged_before_checkpoint_1": true,
+      "points": [
+        {
+          "concurrency": 1,
+          "p99_ms": 9.27,
+          "p50_ms": 9.04,
+          "actions_per_s": 1066.4,
+          "actions_per_joule": 1.6889
+        },
+        {
+          "concurrency": 2,
+          "p99_ms": 15.66,
+          "p50_ms": 12.85,
+          "actions_per_s": 1475.2,
+          "actions_per_joule": 2.3642
+        },
+        {
+          "concurrency": 4,
+          "p99_ms": 26.61,
+          "p50_ms": 21.89,
+          "actions_per_s": 1710.7,
+          "actions_per_joule": 2.7293
+        },
+        {
+          "concurrency": 8,
+          "p99_ms": 47.95,
+          "p50_ms": 43.17,
+          "actions_per_s": 1750.8,
+          "actions_per_joule": 2.8763
+        },
+        {
+          "concurrency": 16,
+          "p99_ms": 93.52,
+          "p50_ms": 83.25,
+          "actions_per_s": 1806.7,
+          "actions_per_joule": 2.9631
+        }
+      ]
+    },
+    {
+      "submission_id": "orchestral_labs_track1b_closed_l40s_01",
+      "name": "orchestral_labs · L40S · Closed",
+      "team": "orchestral_labs",
+      "track": "track1b gr00t",
+      "model": "GR00T N1.7",
+      "division": "CLOSED",
+      "hardware_sku": "L40S_48GB",
+      "power_provenance": "MEASURED",
+      "status": "SELF_MEASURED_PENDING_ORGANIZER_RERUN",
+      "quality_gate": "GOLDEN_REPLAY",
+      "quality_certified": true,
+      "merged_before_checkpoint_1": true,
+      "points": [
+        {
+          "concurrency": 1,
+          "p99_ms": 61.52,
+          "p50_ms": 61.2,
+          "actions_per_s": 259.9,
+          "actions_per_joule": 0.4171
+        },
+        {
+          "concurrency": 2,
+          "p99_ms": 77.95,
+          "p50_ms": 74.14,
+          "actions_per_s": 426.5,
+          "actions_per_joule": 0.6311
+        },
+        {
+          "concurrency": 4,
+          "p99_ms": 100.4,
+          "p50_ms": 97.24,
+          "actions_per_s": 649.0,
+          "actions_per_joule": 0.9597
+        },
+        {
+          "concurrency": 8,
+          "p99_ms": 173.56,
+          "p50_ms": 168.76,
+          "actions_per_s": 745.7,
+          "actions_per_joule": 1.1063
+        },
+        {
+          "concurrency": 16,
+          "p99_ms": 333.01,
+          "p50_ms": 320.78,
+          "actions_per_s": 787.9,
+          "actions_per_joule": 1.1447
+        }
+      ]
+    },
+    {
+      "submission_id": "orchestral_labs_track1b_open_l40s_01",
+      "name": "orchestral_labs · L40S · Open",
+      "team": "orchestral_labs",
+      "track": "track1b gr00t",
+      "model": "GR00T N1.7",
+      "division": "OPEN",
+      "hardware_sku": "L40S_48GB",
+      "power_provenance": "MEASURED",
+      "status": "SELF_MEASURED_PENDING_ORGANIZER_RERUN",
+      "quality_gate": "SANITY_ONLY",
+      "quality_certified": false,
+      "merged_before_checkpoint_1": true,
+      "points": [
+        {
+          "concurrency": 1,
+          "p99_ms": 7.16,
+          "p50_ms": 6.91,
+          "actions_per_s": 2201.6,
+          "actions_per_joule": 5.0314
+        },
+        {
+          "concurrency": 2,
+          "p99_ms": 12.91,
+          "p50_ms": 11.08,
+          "actions_per_s": 2781.7,
+          "actions_per_joule": 5.2402
+        },
+        {
+          "concurrency": 4,
+          "p99_ms": 24.19,
+          "p50_ms": 22.9,
+          "actions_per_s": 2738.9,
+          "actions_per_joule": 5.1607
+        },
+        {
+          "concurrency": 8,
+          "p99_ms": 49.26,
+          "p50_ms": 46.95,
+          "actions_per_s": 2689.5,
+          "actions_per_joule": 5.0449
+        },
+        {
+          "concurrency": 16,
+          "p99_ms": 98.52,
+          "p50_ms": 96.38,
+          "actions_per_s": 2623.9,
+          "actions_per_joule": 4.9633
+        }
+      ]
+    }
+  ]
 }
